@@ -1,5 +1,7 @@
 package com.exist.altheo;
 
+import com.exist.altheo.model.ContactInformationTest;
+import com.exist.altheo.model.PersonTest;
 import com.exist.altheo.model.RoleTest;
 
 import junit.framework.Test;
@@ -29,6 +31,8 @@ public class ModelTest
     {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(RoleTest.class);
+        suite.addTestSuite(ContactInformationTest.class);
+        suite.addTestSuite(PersonTest.class);
         return suite;
     }
 

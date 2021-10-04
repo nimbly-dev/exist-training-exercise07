@@ -5,12 +5,8 @@ import junit.framework.TestCase;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
 import org.junit.Before;
 import org.junit.Test;
-import junit.framework.TestCase;
 
 
 public class DBConnectionTest extends TestCase {

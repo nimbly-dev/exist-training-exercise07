@@ -23,6 +23,12 @@
         <property name="suffix" column="suffix" type="string"/>
         <property name="title" column="title" type="string"/>
 
+        <property name="streetNum" column="street_num" type="string"></property>
+        <property name="barangay" column="barangay" type="string"></property>
+        <property name="city" column="city" type="string"></property>
+        <property name="zipCode" column="zip_code" type="string"></property>
+        <property name="gwa" column="gwa" type="double"></property>
+
         <property name="dateHired" column="date_hired" type="date"/>
         <property name="isCurrentlyEmployed" column="is_currently_employed" type="boolean"/>
 
@@ -32,7 +38,7 @@
         <set name="contactInformations" table="CONTACT_INFORMATION"
             inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="PERSON_ID" not-null="true"></column>
+                <column name="PERSON_ID" not-null="false"></column>
             </key>
             <one-to-many class="ContactInformation"/>
         </set>
@@ -46,10 +52,13 @@
                 <column name="ROLE_ID" not-null="true"></column>
             </many-to-many>
          </list> -->
-        <bag name="roles" table="ROLE" order-by="PERSON_ID asc" inverse="true">
-            <key column="ROLE_ID"></key>
-            <many-to-many class="com.exist.altheo.model.Role"></many-to-many>
+        <bag name="roles" table="ROLE" order-by="PERSON_ID asc" inverse="true"
+            lazy="true" cascade="all">
+            <key column="PERSON_ID" not-null="false"></key>
+            <many-to-many class="com.exist.altheo.model.Role" column="ROLE_ID"></many-to-many>
         </bag>
+
+        
     </class>
 
 </hibernate-mapping>

@@ -13,6 +13,13 @@ public class Person {
     String suffix;
     String title;
 
+    double gwa;
+
+    String streetNum;
+    String barangay;
+    String city;
+    String zipCode;
+
     Date dateHired;
     boolean isCurrentlyEmployed;
     Set<ContactInformation> contactInformations = new HashSet<ContactInformation>(0);
@@ -22,18 +29,25 @@ public class Person {
 
     }
     
-    public Person(String firstName, String lastName, String middleName, String suffix, String title, Date dateHired,
-            boolean isCurrentlyEmployed, Set<ContactInformation> contactInformations, List<Role> roles) {
+    public Person(String firstName, String lastName, String middleName, String suffix, String title, double gwa,
+            String streetNum, String barangay, String city, String zipCode, Date dateHired, boolean isCurrentlyEmployed,
+            Set<ContactInformation> contactInformations, List<Role> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.suffix = suffix;
         this.title = title;
+        this.gwa = gwa;
+        this.streetNum = streetNum;
+        this.barangay = barangay;
+        this.city = city;
+        this.zipCode = zipCode;
         this.dateHired = dateHired;
         this.isCurrentlyEmployed = isCurrentlyEmployed;
         this.contactInformations = contactInformations;
         this.roles = roles;
     }
+
 
 
 
@@ -117,7 +131,47 @@ public class Person {
         this.contactInformations = contactInformations;
     }
 
-    
+    public String getStreetNum() {
+        return streetNum;
+    }
+
+    public void setStreetNum(String streetNum) {
+        this.streetNum = streetNum;
+    }
+
+    public String getBarangay() {
+        return barangay;
+    }
+
+    public void setBarangay(String barangay) {
+        this.barangay = barangay;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public double getGwa() {
+        return gwa;
+    }
+
+    public void setGwa(double gwa) {
+        this.gwa = gwa;
+    }
+
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
 
     
 }
