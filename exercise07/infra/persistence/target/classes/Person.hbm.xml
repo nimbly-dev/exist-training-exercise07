@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Hibernate, Relational Persistence for Idiomatic Java
+  ~
+  ~ License: GNU Lesser General Public License (LGPL), version 2.1 or later.
+  ~ See the lgpl.txt file in the root directory or <http://www.gnu.org/licenses/lgpl-2.1.html>.
+  -->
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.exist.altheo.model">
+
+    <class name="com.exist.altheo.model.Person" table="PERSON">
+        <id name="personId" column="PERSON_ID">
+            <generator class="increment"/>
+        </id>
+        <property name="firstName" column="first_name" type="string"/>
+        <property name="lastName" column="last_name" type="string"/>
+        <property name="middleName" column="middle_name" type="string"/>
+
+        <property name="suffix" column="suffix" type="string"/>
+        <property name="title" column="title" type="string"/>
+
+        <property name="dateHired" column="date_hired" type="date"/>
+        <property name="isCurrentlyEmployed" column="is_currently_employed" type="boolean"/>
+
+        <!-- <one-to-one name="contactInformation" class="com.exist.altheo.model.ContactInformation">
+        </one-to-one> -->
+        
+        <set name="contactInformations" table="CONTACT_INFORMATION"
+            inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PERSON_ID" not-null="true"></column>
+            </key>
+            <one-to-many class="ContactInformation"/>
+        </set>
+
+        <!-- <list name = "roles" table="ROLE" cascade="all" >
+            <key>
+                <column name="PERSON_ID" not-null="true"></column>
+            </key>
+                 <list-index column="idx"/>
+            <many-to-many entity-name="com.exist.altheo.model.Role">
+                <column name="ROLE_ID" not-null="true"></column>
+            </many-to-many>
+         </list> -->
+        <bag name="roles" table="ROLE" order-by="PERSON_ID asc" inverse="true">
+            <key column="ROLE_ID"></key>
+            <many-to-many class="com.exist.altheo.model.Role"></many-to-many>
+        </bag>
+    </class>
+
+</hibernate-mapping>

@@ -23,4 +23,19 @@
       <module>persistence</module>
       <module>buildtools</module>
    </modules>
+   <dependencyManagement>
+      <dependencies>
+         <dependency>
+            <groupId>com.exist.altheo</groupId>
+            <artifactId>persistence</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>com.exist.altheo</groupId>
+            <artifactId>buildtools</artifactId>
+            <version>${project.version}</version>
+         </dependency>
+      </dependencies>
+
+   </dependencyManagement>
 </project>

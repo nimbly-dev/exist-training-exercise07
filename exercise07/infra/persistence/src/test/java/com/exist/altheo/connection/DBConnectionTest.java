@@ -26,6 +26,10 @@ public class DBConnectionTest extends TestCase {
 	@Test
 	public void test_connection(){
 		Session session = sessionFactory.openSession();
+
+		assertTrue(session != null);
+
+		session.close();
 	}
 
 

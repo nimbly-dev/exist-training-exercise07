@@ -101,13 +101,12 @@
           <artifactId>infra</artifactId>
           <version>${project.version}</version>
         </dependency>
-  
+
         <dependency>
-          <groupId>com.exist.altheo</groupId>
-          <artifactId>utilities</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-  
+         <groupId>com.exist.altheo</groupId>
+         <artifactId>model</artifactId>
+         <version>${project.version}</version>
+       </dependency>
   
       </dependencies>
     </dependencyManagement>

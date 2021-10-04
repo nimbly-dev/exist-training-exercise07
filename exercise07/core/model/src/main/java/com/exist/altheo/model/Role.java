@@ -1,15 +1,24 @@
 package com.exist.altheo.model;
 
+import java.util.List;
+
 public class Role {
     int roleId;
-    int roleName;
+    String roleName;
+
+    List<Person> persons;
 
     public Role(){
         
     }
 
-    public Role(int roleName) {
+    public Role(String roleName) {
         this.roleName = roleName;
+    }
+
+    public Role(String roleName, List<Person> persons) {
+        this.roleName = roleName;
+        this.persons = persons;
     }
 
     public int getRoleId() {
@@ -18,11 +27,19 @@ public class Role {
     public void setRoleId(int roleId) {
         this.roleId = roleId;
     }
-    public int getRoleName() {
+    public String getRoleName() {
         return roleName;
     }
-    public void setRoleName(int roleName) {
+    public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public List<Person> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(List<Person>  persons) {
+        this.persons = persons;
     }
 
     

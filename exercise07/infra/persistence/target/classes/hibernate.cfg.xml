@@ -36,10 +36,10 @@
         <property name="hbm2ddl.auto">create</property>
 
         <mapping resource="Role.hbm.xml"/>
-        <!-- <mapping resource="Person.hbm.xml"/>
-        <mapping resource="ContactInformation.hbm.xml"/> -->
+        <mapping resource="ContactInformation.hbm.xml"/>
+        <mapping resource="Person.hbm.xml"/>
 
-        <!-- <mapping class="com.exist.altheo.model.Person"/> -->
+
     </session-factory>
 
 </hibernate-configuration>
