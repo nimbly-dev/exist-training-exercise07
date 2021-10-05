@@ -34,17 +34,23 @@ public class ContactInformationTest extends TestCase {
 
         List<Role> testRoles = new ArrayList<Role>();
         Set<ContactInformation> testContact = new HashSet<>();
-		this.person1 = new Person("John", "Doe", "Doo", "Jr", "King", 1.25, "7100", 
-        "Doobi", "Manila", "322", dateToday, true, testContact, 
-        testRoles);
+		this.person1 = new Person(1.25, "322", "King John Doe Doo Jr.", "Doobi Manila", dateToday, 
+        true, testContact, testRoles);
+        // new Person("John", "Doe", "Doo", "Jr", "King", 1.25, "7100", 
+        // "Doobi", "Manila", "322", dateToday, true, testContact, 
+        // testRoles);
 
-        this.person2 = new Person("Scooby", "Doobo", "Doo", "", "Dog", 5 , "7200", 
-        "Sne", "Makati", "122", exampleDate, true, testContact, 
-        testRoles);
+        this.person2 = new Person(1.25, "122", "King Scooby Doo Doobo", "Sne Makati", exampleDate, 
+        true, testContact, testRoles);
+        // new Person("Scooby", "Doobo", "Doo", "", "Dog", 5 , "7200", 
+        // "Sne", "Makati", "122", exampleDate, true, testContact, 
+        // testRoles);
         
-        this.jolibee = new Person("Bida", "Ang", "Saya", "Bumble", "Bee", 3 , "750", 
-        "Brasil", "Brazil", "52", exampleDate, true, testContact, 
-        testRoles);
+        this.jolibee = new Person(3, "52", "Bida Ang Saya", "Brasil Brazil", exampleDate, 
+        true, testContact, testRoles);
+        // new Person("Bida", "Ang", "Saya", "Bumble", "Bee", 3 , "750", 
+        // "Brasil", "Brazil", "52", exampleDate, true, testContact, 
+        // testRoles);
 	}
 
     @Test
@@ -55,7 +61,7 @@ public class ContactInformationTest extends TestCase {
         assertTrue(contactInformation1.getLandline() == "1111");
         assertTrue(contactInformation1.getMobileNumber() == "2222-3333");
         assertTrue(contactInformation1.getEmail() == "hotdigitydog@gmail.com");
-        assertTrue(contactInformation1.getPerson().getFirstName() == "John");
+        assertTrue(contactInformation1.getPerson().getName() == "King John Doe Doo Jr.");
     }
 
     @Test
@@ -71,6 +77,6 @@ public class ContactInformationTest extends TestCase {
         assertTrue(contactInformation.getLandline() == "9999");
         assertTrue(contactInformation.getMobileNumber() == "8-7000");
         assertTrue(contactInformation.getEmail() == "writeus@ph.mcd.com");
-        assertTrue(contactInformation.getPerson().getFirstName() == "Bida");
+        assertTrue(contactInformation.getPerson().getName() == "Bida Ang Saya");
     }
 }

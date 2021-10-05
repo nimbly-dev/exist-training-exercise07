@@ -2,6 +2,7 @@ package com.exist.altheo.model;
 
 public class ContactInformation {
     int contactId;
+    int personId;
     String landline;
     String mobileNumber;
     String email;
@@ -10,7 +11,7 @@ public class ContactInformation {
 
     public ContactInformation(){ }
 
-    public ContactInformation(String landline, String mobileNumber, String email) {
+    public ContactInformation(String landline, String mobileNumber, String email, int personId) {
         this.landline = landline;
         this.mobileNumber = mobileNumber;
         this.email = email;
@@ -22,6 +23,13 @@ public class ContactInformation {
         this.email = email;
         this.person = person;
     }
+
+    // public ContactInformation(int personId, String landline, String mobileNumber, String email) {
+    //     this.personId = personId;
+    //     this.landline = landline;
+    //     this.mobileNumber = mobileNumber;
+    //     this.email = email;
+    // }
 
     public int getContactId() {
         return contactId;
@@ -63,5 +71,12 @@ public class ContactInformation {
         this.person = person;
     }
 
+    public int getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(int personId) {
+        this.personId = personId;
+    }
     
 }

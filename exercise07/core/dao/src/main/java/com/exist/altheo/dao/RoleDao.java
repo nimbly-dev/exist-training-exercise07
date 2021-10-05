@@ -3,6 +3,8 @@ package com.exist.altheo.dao;
 import java.util.List;
 
 import com.exist.altheo.connection.DBConnection;
+import com.exist.altheo.model.ContactInformation;
+import com.exist.altheo.model.Person;
 import com.exist.altheo.model.Role;
 
 import org.hibernate.Session;
@@ -16,11 +18,12 @@ public class RoleDao {
         this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
     }
 
-    public void addRole(String input){
+    public void addRole(String input, List<Person> persons){
         Session session = sessionFactory.openSession();
+        Role newRole = new Role(input, persons);
 
         session.beginTransaction();
-        session.save(new Role(input));
+        session.save(newRole);
 
         session.getTransaction().commit();
         session.close();
@@ -85,17 +88,17 @@ public class RoleDao {
     }
 
     @SuppressWarnings("unchecked")
-    public boolean setPersonToRole(int selectedRoleId,int personId ,String input) {
+    public boolean setPersonToRole(int selectedContactId,int personId ,String input) {
         Session session = sessionFactory.openSession();
 
         //Setting the update statement
         String hsql = "UPDATE Role set "
         +"roleName= :roleName ,"
         +"personId= :personId"
-        +"where roleId= :roleId";
+        +"where contactId= :contactId";
 
         Query<Role> query = session.createQuery(hsql);
-        query.setParameter("roleId", selectedRoleId);
+        query.setParameter("contactId", selectedContactId);
         query.setParameter("roleName", input);
         query.setParameter("personId", personId);
 
@@ -110,8 +113,20 @@ public class RoleDao {
             return false;
         }else{
             return true;
-        }
+        }   
+    }
+
+
+    //Helper method to select a specific contact
+    @SuppressWarnings("unchecked")
+    public List<Role> selectRole(int selectedRoleId) {
+        Session session = sessionFactory.openSession();
+        String hsql_get_person = "FROM Role R WHERE R.roleId = "+selectedRoleId;
         
+        List<Role> results = session.createQuery(hsql_get_person).list();
+
+        session.close();
+        return results;
     }
     
 

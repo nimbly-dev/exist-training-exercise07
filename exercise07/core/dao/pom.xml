@@ -17,5 +17,6 @@
         <groupId>com.exist.altheo</groupId>
         <artifactId>persistence</artifactId>
     </dependency>
+    
   </dependencies>
 </project>

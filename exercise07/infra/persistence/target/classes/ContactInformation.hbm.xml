@@ -15,9 +15,9 @@
     <class name="ContactInformation" table="CONTACT_INFORMATION">
         <id name="contactId" type="java.lang.Integer">
             <column name="CONTACT_ID"></column>
-            <generator class="identity"></generator>
+            <generator class="increment"></generator>
         </id>
-        <many-to-one name="person" class="com.exist.altheo.model.Person" fetch="select">
+        <many-to-one name="person" class="Person" cascade="all" >
             <column name="PERSON_ID" not-null="false"></column>
         </many-to-one> 
         

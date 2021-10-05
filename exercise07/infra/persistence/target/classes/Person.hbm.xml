@@ -16,16 +16,18 @@
         <id name="personId" column="PERSON_ID">
             <generator class="increment"/>
         </id>
-        <property name="firstName" column="first_name" type="string"/>
+        <property name="name" column="name" type="string"></property>
+        <!-- <property name="firstName" column="first_name" type="string"/>
         <property name="lastName" column="last_name" type="string"/>
         <property name="middleName" column="middle_name" type="string"/>
 
         <property name="suffix" column="suffix" type="string"/>
-        <property name="title" column="title" type="string"/>
+        <property name="title" column="title" type="string"/> -->
 
-        <property name="streetNum" column="street_num" type="string"></property>
+        <!-- <property name="streetNum" column="street_num" type="string"></property>
         <property name="barangay" column="barangay" type="string"></property>
-        <property name="city" column="city" type="string"></property>
+        <property name="city" column="city" type="string"></property> -->
+        <property name="address" column="address" type="string"></property>
         <property name="zipCode" column="zip_code" type="string"></property>
         <property name="gwa" column="gwa" type="double"></property>
 
@@ -36,10 +38,8 @@
         </one-to-one> -->
         
         <set name="contactInformations" table="CONTACT_INFORMATION"
-            inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="PERSON_ID" not-null="false"></column>
-            </key>
+            inverse="true" fetch="select" cascade="all">
+            <key column="CONTACT_ID" not-null="false"/>
             <one-to-many class="ContactInformation"/>
         </set>
 

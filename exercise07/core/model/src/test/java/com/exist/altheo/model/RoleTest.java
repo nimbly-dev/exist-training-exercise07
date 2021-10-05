@@ -36,13 +36,18 @@ public class RoleTest extends TestCase{
 
         List<Role> testRoles = new ArrayList<Role>();
         Set<ContactInformation> testContact = new HashSet();
-		this.person1 = new Person("John", "Doe", "Doo", "Jr", "King", 1.25, "7100", 
-        "Doobi", "Manila", "322", dateToday, true, testContact, 
-        testRoles);
+		this.person1 = new Person(1.25, "322", "John Doe Doo Jr.", "Doobi Manila", 
+        dateToday, true, testContact, testRoles);
+        // new Person("John", "Doe", "Doo", "Jr", "King", 1.25, "7100", 
+        // "Doobi", "Manila", "322", dateToday, true, testContact, 
+        // testRoles);
 
-        this.person2 = new Person("Scooby", "Doobo", "Doo", "", "Dog", 5 , "7200", 
-        "Sne", "Makati", "122", exampleDate, true, testContact, 
-        testRoles);
+        this.person2 = 
+        new Person(5, "322", "Scooby Doobo Doo Sr.", "Sne Makati", 
+        dateToday, true, testContact, testRoles);
+        // new Person("Scooby", "Doobo", "Doo", "", "Dog", 5 , "7200", 
+        // "Sne", "Makati", "122", exampleDate, true, testContact, 
+        // testRoles);
 	}
 
     @Test
@@ -59,7 +64,7 @@ public class RoleTest extends TestCase{
 
        assertTrue(hacker.getRoleName() == "Hecker");
        assertTrue(hacker.getPersons().size() == 1);
-       assertTrue(hacker.getPersons().get(0).getFirstName() == "John");
+       assertTrue(hacker.getPersons().get(0).getName() == "John Doe Doo Jr.");
     }
 
     @Test
@@ -83,7 +88,7 @@ public class RoleTest extends TestCase{
 
         assertTrue(hacker.getRoleName() == "Hacker");
         assertTrue(hacker.getPersons().size() == 2);
-        assertTrue(hacker.getPersons().get(1).getFirstName() == "Scooby");
+        assertTrue(hacker.getPersons().get(1).getName() == "Scooby Doobo Doo Sr.");
     }
 
 }

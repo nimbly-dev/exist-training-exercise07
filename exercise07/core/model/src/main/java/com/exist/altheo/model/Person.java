@@ -7,18 +7,21 @@ import java.util.Set;
 
 public class Person {
     int personId;
-    String firstName;
-    String lastName;
-    String middleName;
-    String suffix;
-    String title;
+    // String firstName;
+    // String lastName;
+    // String middleName;
+    // String suffix;
+    // String title;
 
     double gwa;
 
-    String streetNum;
-    String barangay;
-    String city;
+    // String streetNum;
+    // String barangay;
+    // String city;
     String zipCode;
+
+    String name;
+    String address;
 
     Date dateHired;
     boolean isCurrentlyEmployed;
@@ -28,26 +31,18 @@ public class Person {
     public Person(){
 
     }
-    
-    public Person(String firstName, String lastName, String middleName, String suffix, String title, double gwa,
-            String streetNum, String barangay, String city, String zipCode, Date dateHired, boolean isCurrentlyEmployed,
+
+    public Person(double gwa, String zipCode, String name, String address, Date dateHired, boolean isCurrentlyEmployed,
             Set<ContactInformation> contactInformations, List<Role> roles) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.middleName = middleName;
-        this.suffix = suffix;
-        this.title = title;
         this.gwa = gwa;
-        this.streetNum = streetNum;
-        this.barangay = barangay;
-        this.city = city;
         this.zipCode = zipCode;
+        this.name = name;
+        this.address = address;
         this.dateHired = dateHired;
         this.isCurrentlyEmployed = isCurrentlyEmployed;
         this.contactInformations = contactInformations;
         this.roles = roles;
     }
-
 
 
 
@@ -59,44 +54,36 @@ public class Person {
         this.personId = personId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public double getGwa() {
+        return gwa;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setGwa(double gwa) {
+        this.gwa = gwa;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
-    public String getMiddleName() {
-        return middleName;
+    public String getName() {
+        return name;
     }
 
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getSuffix() {
-        return suffix;
+    public String getAddress() {
+        return address;
     }
 
-    public void setSuffix(String suffix) {
-        this.suffix = suffix;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Date getDateHired() {
@@ -115,14 +102,6 @@ public class Person {
         this.isCurrentlyEmployed = isCurrentlyEmployed;
     }
 
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
     public Set<ContactInformation> getContactInformations() {
         return contactInformations;
     }
@@ -131,47 +110,14 @@ public class Person {
         this.contactInformations = contactInformations;
     }
 
-    public String getStreetNum() {
-        return streetNum;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setStreetNum(String streetNum) {
-        this.streetNum = streetNum;
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
-
-    public String getBarangay() {
-        return barangay;
-    }
-
-    public void setBarangay(String barangay) {
-        this.barangay = barangay;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public double getGwa() {
-        return gwa;
-    }
-
-    public void setGwa(double gwa) {
-        this.gwa = gwa;
-    }
-
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
+    
+   
     
 }
