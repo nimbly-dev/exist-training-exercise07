@@ -13,6 +13,13 @@
    <name>core</name>
    <url>http://maven.apache.org</url>
    
+   <dependencies>
+      <dependency>
+         <groupId>com.exist.altheo</groupId>
+         <artifactId>utility</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+   </dependencies>
    <modules>
       <module>model</module>
       <module>service</module>
