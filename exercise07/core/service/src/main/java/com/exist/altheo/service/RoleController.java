@@ -16,7 +16,7 @@ public class RoleController {
         roleDao = new RoleDao();
     }
 
-    public boolean addNewRole(String input) {
+    public boolean addNewRole(String input,int assignedPersonId) {
         //Returns true if valid otherwise returns false
         if(StringUtils.isEmpty(input)){
             System.out.println("Input is blank, please try again");
@@ -26,7 +26,7 @@ public class RoleController {
             System.out.println("Input is invalid");
             return false;
         }else{
-            // roleDao.addRole(input);
+            roleDao.addRole(input,assignedPersonId);
             return true;
         }
     }
@@ -72,7 +72,8 @@ public class RoleController {
             switch (command.toUpperCase()) {
                 case "A":
                     String inputAdd = Reader.readString("Enter rolename ");
-                    addNewRole(inputAdd);
+                    int assignedPersonId = Reader.readInt("Enter assigned person id ");
+                    addNewRole(inputAdd,assignedPersonId);
                     break;
                 case "D":
                     deleteRole();

@@ -18,6 +18,24 @@ public class ContactInformationDao {
     }
 
     public void addContactInformation(
+        String landline, String mobileNumber, String email
+    ) {
+        Session session = sessionFactory.openSession();
+
+        ContactInformation contactInformation = new ContactInformation();
+
+        contactInformation.setLandline(landline);
+        contactInformation.setMobileNumber(mobileNumber);
+        contactInformation.setEmail(email);
+
+        session.beginTransaction();
+        session.save(contactInformation);
+
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    public void addContactInformation(
         String landline, String mobileNumber, String email, Person person
     ) {
         Session session = sessionFactory.openSession();

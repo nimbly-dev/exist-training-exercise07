@@ -2,6 +2,8 @@ package com.exist.altheo.dao;
 
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import com.exist.altheo.connection.DBConnection;
 import com.exist.altheo.model.Role;
 
@@ -17,7 +19,7 @@ public class RoleDao {
     }
 
     @SuppressWarnings("unchecked")
-    public void addRole(String input, int selectedPersonId){
+    public void addRole(String input, int selectedPersonId) throws PersistenceException{
         Session session = sessionFactory.openSession();
 
 		session.beginTransaction();
@@ -86,7 +88,8 @@ public class RoleDao {
     }
 
     @SuppressWarnings("unchecked")
-    public boolean deleteRole(int selectedId){
+    public boolean deleteRole(int selectedId)
+    {
         Session session = sessionFactory.openSession();
 
         String hsql = "DELETE from Role where roleId=:id";
@@ -107,34 +110,34 @@ public class RoleDao {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public boolean setPersonToRole(int selectedContactId,int personId ,String input) {
-        Session session = sessionFactory.openSession();
+    // @SuppressWarnings("unchecked")
+    // public boolean setPersonToRole(int selectedContactId,int personId ,String input) {
+    //     Session session = sessionFactory.openSession();
 
-        //Setting the update statement
-        String hsql = "UPDATE Role set "
-        +"roleName= :roleName ,"
-        +"personId= :personId"
-        +"where contactId= :contactId";
+    //     //Setting the update statement
+    //     String hsql = "UPDATE Role set "
+    //     +"roleName= :roleName ,"
+    //     +"personId= :personId"
+    //     +"where contactId= :contactId";
 
-        Query<Role> query = session.createQuery(hsql);
-        query.setParameter("contactId", selectedContactId);
-        query.setParameter("roleName", input);
-        query.setParameter("personId", personId);
+    //     Query<Role> query = session.createQuery(hsql);
+    //     query.setParameter("contactId", selectedContactId);
+    //     query.setParameter("roleName", input);
+    //     query.setParameter("personId", personId);
 
-        //Begin updating
-        session.beginTransaction();
-        int result = query.executeUpdate();
+    //     //Begin updating
+    //     session.beginTransaction();
+    //     int result = query.executeUpdate();
 
-        session.getTransaction().commit();
+    //     session.getTransaction().commit();
 
-        session.close();
-        if(result <= 0){
-            return false;
-        }else{
-            return true;
-        }   
-    }
+    //     session.close();
+    //     if(result <= 0){
+    //         return false;
+    //     }else{
+    //         return true;
+    //     }   
+    // }
 
 
     //Helper method to select a specific contact

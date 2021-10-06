@@ -1,8 +1,11 @@
 package com.exist.altheo.dao;
 
+import static org.junit.Assert.assertThrows;
+
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
 
 import com.exist.altheo.connection.DBConnection;
 import com.exist.altheo.model.Person;
@@ -58,9 +61,17 @@ public class RoleDaoTest extends TestCase {
 		session.getTransaction().commit();
 		session.close();
 
-		roleDao.addRole("Hotdog", savedPersonId1);		
+		roleDao.addRole("Mamba", savedPersonId1);		
+    }
 
-		assertTrue(true);
+	@Test
+    public void test_add_role_invalid_assigned_person_id_fail() {
+		
+		PersistenceException exception = assertThrows(PersistenceException.class, 
+			()->roleDao.addRole("Hotdog", 2));
+
+		assertTrue(exception.getMessage() != null);//Check if there is an exception mssg
+	
     }
 
     @SuppressWarnings("unchecked")
