@@ -24,10 +24,6 @@
         <property name="landline" column="landline" type="string"/>
         <property name="mobileNumber" column="mobile_number" type="string"/>
         <property name="email" column="email" type="string"/>
-
-		<!-- <one-to-one name="person" class="com.exist.altheo.model.Person"
-			constrained="true">
-        </one-to-one> -->
         
     </class>
 

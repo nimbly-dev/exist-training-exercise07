@@ -8,20 +8,12 @@ import java.util.Set;
 
 public class Person implements Serializable{
     int personId;
-    // String firstName;
-    // String lastName;
-    // String middleName;
-    // String suffix;
-    // String title;
-
     double gwa;
 
-    // String streetNum;
-    // String barangay;
-    // String city;
     String zipCode;
 
     String name;
+    //TODO - CHANGE TO ENUM
     String address;
 
     Date dateHired;

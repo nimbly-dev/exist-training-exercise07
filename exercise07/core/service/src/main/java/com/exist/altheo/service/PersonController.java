@@ -21,4 +21,21 @@ public class PersonController {
     public void personInterface(){
 
     }
+
+
+    //Utility or Helper methods
+    //TODO
+    public void printPersonsByDateHired(){
+
+    }
+
+    //TODO
+    public void printPersonsByGwa(){
+
+    }
+
+    //TODO
+    public void printPersonsByLastName(){
+
+    }
 }

@@ -18,15 +18,13 @@
         </id>
         <property name="name" column="name" type="string"></property>
 
+        <!-- TODO - CHANGE ADDRESS TO ENUM TYPE -->
         <property name="address" column="address" type="string"></property>
         <property name="zipCode" column="zip_code" type="string"></property>
         <property name="gwa" column="gwa" type="double"></property>
 
         <property name="dateHired" column="date_hired" type="date"/>
         <property name="isCurrentlyEmployed" column="is_currently_employed" type="boolean"/>
-
-        <!-- <one-to-one name="contactInformation" class="com.exist.altheo.model.ContactInformation">
-        </one-to-one> -->
         
         <set name="contactInformations" table="CONTACT_INFORMATION"
             inverse="true" fetch="select" cascade="all">
@@ -41,19 +39,6 @@
                 <column name="ROLE_ID" not-null="false" ></column>
             </many-to-many>
         </bag>
-
-        <!-- <list name = "roles" cascade="all">
-            <key column = "PERSON_ID"/>
-            <list-index column = "idx"/>
-            <many-to-many class="com.exist.altheo.Role"/>
-         </list> -->
-
-        <!-- <set name="roles" table="ROLE"  cascade="save-update" inverse="true" fetch="select">
-            <key column="PERSON_ID" ></key>
-            <many-to-many class="Role" column="ROLE_ID">
-                <column name="ROLE_ID" not-null="true" ></column>
-            </many-to-many>
-        </set> -->
 
     </class>
 

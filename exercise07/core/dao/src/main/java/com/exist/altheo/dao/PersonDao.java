@@ -11,6 +11,7 @@ import com.exist.altheo.model.Role;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 public class PersonDao {
     private SessionFactory sessionFactory;
@@ -54,9 +55,46 @@ public class PersonDao {
         return results;
     }
 
-    //TODO
-    public void updatePerson(){
+    
+    @SuppressWarnings("unchecked")
+    public boolean updatePerson(
+        double inputGwa, String inputZipCode, String inputName,
+        String inputAddress, Date inputDateHired , boolean inputIsCurrentlyEmployed,
+        int selectedPersonId
+    ){
+        Session session = sessionFactory.openSession();
 
+        //Setting the update statement
+        String hsql = "UPDATE Person"+ 
+        " set gwa= : gwa ," + 
+        "zipCode= : zipCode ," + 
+        "name= : name ," + 
+        "address= : address ," + 
+        "dateHired= : dateHired ," + 
+        "isCurrentlyEmployed= : isCurrentlyEmployed " + 
+        "where personId= :personId";
+
+        Query<Role> query = session.createQuery(hsql);
+        query.setParameter("gwa", inputGwa);
+        query.setParameter("zipCode", inputZipCode);
+        query.setParameter("name", inputName);
+        query.setParameter("address", inputAddress);
+        query.setParameter("dateHired", inputDateHired);
+        query.setParameter("isCurrentlyEmployed", inputIsCurrentlyEmployed);
+        query.setParameter("personId", selectedPersonId);
+
+        //Begin updating
+        session.beginTransaction();
+        int result = query.executeUpdate();
+
+        session.getTransaction().commit();
+
+        session.close();
+        if(result <= 0){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     //TODO

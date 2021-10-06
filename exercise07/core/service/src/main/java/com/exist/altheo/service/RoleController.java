@@ -31,11 +31,13 @@ public class RoleController {
         }
     }
 
+    //TODO - IF DELETE FAIL, PRINT SAYING DELETE FAILED
     public void deleteRole() {
         int selectedIndex = Reader.readInt("Enter roleId you wish to delete ");
         roleDao.deleteRole(selectedIndex);
     }
 
+    //TODO - IF UPDATE FAIL, PRINT SAYING UPDATE FAILED
     public boolean updateRole(String input) {
         int selectedIndex = Reader.readInt("Enter roleId you wish to update");
 

@@ -56,6 +56,7 @@ public class ContactInformationController {
         contactInformationDao.deleteContact(selectedIndex);
     }
 
+    //Contact information UI
     public void contactInformationInterface(){
         System.out.println("You are now in the Contact Information Functionality Interface");
         boolean isEndRoleUserInterface = false;

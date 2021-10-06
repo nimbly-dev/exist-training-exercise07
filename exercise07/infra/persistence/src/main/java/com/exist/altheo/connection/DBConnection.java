@@ -7,6 +7,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 
+//TODO - ADD AUTOMATIC GENERATION OF TABLE WITHOUT USING hbmbml.auto PROPERTY
 public class DBConnection {
     
     public static SessionFactory setSessionFactory( SessionFactory sessionFactory) {

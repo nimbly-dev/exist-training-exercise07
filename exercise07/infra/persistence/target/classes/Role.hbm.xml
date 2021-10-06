@@ -26,30 +26,6 @@
                 <column name="PERSON_ID" not-null="false" ></column>
             </many-to-many>
         </bag>
-
-
-        <!-- <set name="persons" table="PERSON" cascade="save-update"  fetch="select"  inverse="true">
-            <key column="ROLE_ID" ></key>
-            <many-to-many class="Person" column="PERSON_ID">
-               <column name="PERSON_ID" not-null="true" ></column>
-            </many-to-many>
-        </set> -->
-
-        <!-- <list name="persons" table="PERSON" fetch="select" cascade="all">
-            <key>
-                <column name="ROLE_ID"></column>
-            </key>
-            <index column="seq"></index>
-            <many-to-many class="com.exist.altheo.Person">
-                <column name="PERSON_ID"></column>
-            </many-to-many>
-        </list> -->
-
-        <!-- <list name = "persons" cascade="all">
-            <key column = "ROLE_ID"/>
-            <list-index column = "idx"/>
-            <many-to-many class="com.exist.altheo.Person"/>
-         </list> -->
         
     </class>    
 

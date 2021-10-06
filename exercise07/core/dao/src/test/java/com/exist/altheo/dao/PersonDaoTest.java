@@ -3,6 +3,7 @@ package com.exist.altheo.dao;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -35,7 +36,6 @@ public class PersonDaoTest extends TestCase {
 	private boolean testIsCurrentlyEmployed;
 	private Set<ContactInformation> testContactInformations;
 	private List<Role> testRoles;
-
     
     private SimpleDateFormat ft;
     @Override
@@ -113,4 +113,49 @@ public class PersonDaoTest extends TestCase {
         session.close();
         // assertEquals(expected, actual);
     }
+
+    @Test
+    public void test_update_person_success(){
+        //Create person with id of 1
+        personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
+        testIsCurrentlyEmployed, testContactInformations, testRoles);
+
+        String inputUpdateName = "Scooby Doobi Doo";
+        String inputUpdateAddress = "Hallo Jo";
+        double inputUpdateGwa = 5;
+        String inputUpdateZipCode = "255";
+        Date inputUpdateDate = new Date();
+        boolean testIsCurrentlyEmployed = false;
+
+        personDao.updatePerson(inputUpdateGwa, inputUpdateZipCode, inputUpdateName, inputUpdateAddress, 
+        inputUpdateDate, testIsCurrentlyEmployed, 1);
+
+    }
+
+    @Test //TODO
+    public void test_update_person_input_nonexistent_id_fail(){
+
+    }
+
+    @Test //TODO
+    public void test_delete_person_success(){
+
+    }
+
+    @Test //TODO
+    public void test_delete_person_input_nonexistent_id_fail(){
+
+    }
+
+
+    @Test //TODO
+    public void test_select_nonexistent_personId_fail(){
+
+    }
+
+    @Test //TODO
+    public void test_get_list_of_persons(){
+
+    }
+
 }
