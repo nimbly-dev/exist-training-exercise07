@@ -1,7 +1,7 @@
 package com.exist.altheo;
 
 import com.exist.altheo.dao.ContactInformationDaoTest;
-import com.exist.altheo.dao.RoleDao;
+import com.exist.altheo.dao.PersonDaoTest;
 import com.exist.altheo.dao.RoleDaoTest;
 
 import junit.framework.Test;
@@ -30,6 +30,7 @@ public class DaoTest
     public static Test suite()
     {
         TestSuite suite = new TestSuite();
+        suite.addTestSuite(PersonDaoTest.class);
         suite.addTestSuite(RoleDaoTest.class);
         suite.addTestSuite(ContactInformationDaoTest.class);
         return suite;

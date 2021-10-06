@@ -25,11 +25,12 @@ public class PersonDao {
         Set<ContactInformation> contactInformations, List<Role> roles
     ) {
         Person person = 
-        new Person(gwa, zipCode, name, address, dateHired, 
-        isCurrentlyEmployed, contactInformations, roles);
-        // new Person(firstName, lastName, middleName, suffix, 
-        // title, gwa, streetNum, barangay, city, zipCode, dateHired, 
+        // new Person(gwa, zipCode, name, address, dateHired, 
         // isCurrentlyEmployed, contactInformations, roles);
+        new Person(gwa, zipCode, name, address, dateHired, 
+        isCurrentlyEmployed);
+
+        person.setRoles(roles);
 
         Session session = sessionFactory.openSession();
 

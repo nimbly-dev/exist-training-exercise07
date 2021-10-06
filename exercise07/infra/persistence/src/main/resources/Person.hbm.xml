@@ -12,21 +12,12 @@
 
 <hibernate-mapping package="com.exist.altheo.model">
 
-    <class name="com.exist.altheo.model.Person" table="PERSON">
+    <class name="com.exist.altheo.model.Person" table="PERSON" >
         <id name="personId" column="PERSON_ID">
-            <generator class="increment"/>
+            <generator class="identity"/>
         </id>
         <property name="name" column="name" type="string"></property>
-        <!-- <property name="firstName" column="first_name" type="string"/>
-        <property name="lastName" column="last_name" type="string"/>
-        <property name="middleName" column="middle_name" type="string"/>
 
-        <property name="suffix" column="suffix" type="string"/>
-        <property name="title" column="title" type="string"/> -->
-
-        <!-- <property name="streetNum" column="street_num" type="string"></property>
-        <property name="barangay" column="barangay" type="string"></property>
-        <property name="city" column="city" type="string"></property> -->
         <property name="address" column="address" type="string"></property>
         <property name="zipCode" column="zip_code" type="string"></property>
         <property name="gwa" column="gwa" type="double"></property>
@@ -43,22 +34,27 @@
             <one-to-many class="ContactInformation"/>
         </set>
 
-        <!-- <list name = "roles" table="ROLE" cascade="all" >
-            <key>
-                <column name="PERSON_ID" not-null="true"></column>
-            </key>
-                 <list-index column="idx"/>
-            <many-to-many entity-name="com.exist.altheo.model.Role">
-                <column name="ROLE_ID" not-null="true"></column>
+        <bag name="roles" table="ROLE" 
+            lazy="false" cascade="all" inverse="true" fetch="select">
+            <key column="PERSON_ID" not-null="false" ></key>
+            <many-to-many entity-name="com.exist.altheo.model.Role" >
+                <column name="ROLE_ID" not-null="false" ></column>
             </many-to-many>
-         </list> -->
-        <bag name="roles" table="ROLE" order-by="PERSON_ID asc" inverse="true"
-            lazy="true" cascade="all">
-            <key column="PERSON_ID" not-null="false"></key>
-            <many-to-many class="com.exist.altheo.model.Role" column="ROLE_ID"></many-to-many>
         </bag>
 
-        
+        <!-- <list name = "roles" cascade="all">
+            <key column = "PERSON_ID"/>
+            <list-index column = "idx"/>
+            <many-to-many class="com.exist.altheo.Role"/>
+         </list> -->
+
+        <!-- <set name="roles" table="ROLE"  cascade="save-update" inverse="true" fetch="select">
+            <key column="PERSON_ID" ></key>
+            <many-to-many class="Role" column="ROLE_ID">
+                <column name="ROLE_ID" not-null="true" ></column>
+            </many-to-many>
+        </set> -->
+
     </class>
 
 </hibernate-mapping>

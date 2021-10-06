@@ -1,6 +1,5 @@
 package com.exist.altheo.model;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class ContactInformationTest extends TestCase {
     private Person person2;
     private Person jolibee;
     
-    private SimpleDateFormat ft;
+    // private SimpleDateFormat ft;
     private ZoneId defaultZoneId;
     private Date dateToday;
     private Date exampleDate;
@@ -27,30 +26,21 @@ public class ContactInformationTest extends TestCase {
 	@Override
 	@BeforeEach
 	protected void setUp() throws Exception {
-        this.ft = new SimpleDateFormat ("yyyy-MM-dd");
+        // this.ft = new SimpleDateFormat ("yyyy-MM-dd");
         this.defaultZoneId = ZoneId.systemDefault();
         this.dateToday = new Date();
         this.exampleDate = Date.from(LocalDate.of(2012, 12, 31).atStartOfDay(defaultZoneId).toInstant());
 
         List<Role> testRoles = new ArrayList<Role>();
-        Set<ContactInformation> testContact = new HashSet<>();
+        Set<ContactInformation> testContact = new HashSet<ContactInformation>();
 		this.person1 = new Person(1.25, "322", "King John Doe Doo Jr.", "Doobi Manila", dateToday, 
         true, testContact, testRoles);
-        // new Person("John", "Doe", "Doo", "Jr", "King", 1.25, "7100", 
-        // "Doobi", "Manila", "322", dateToday, true, testContact, 
-        // testRoles);
 
         this.person2 = new Person(1.25, "122", "King Scooby Doo Doobo", "Sne Makati", exampleDate, 
         true, testContact, testRoles);
-        // new Person("Scooby", "Doobo", "Doo", "", "Dog", 5 , "7200", 
-        // "Sne", "Makati", "122", exampleDate, true, testContact, 
-        // testRoles);
         
         this.jolibee = new Person(3, "52", "Bida Ang Saya", "Brasil Brazil", exampleDate, 
         true, testContact, testRoles);
-        // new Person("Bida", "Ang", "Saya", "Bumble", "Bee", 3 , "750", 
-        // "Brasil", "Brazil", "52", exampleDate, true, testContact, 
-        // testRoles);
 	}
 
     @Test
@@ -64,7 +54,7 @@ public class ContactInformationTest extends TestCase {
         assertTrue(contactInformation1.getPerson().getName() == "King John Doe Doo Jr.");
     }
 
-    @Test
+    @Test 
     public void test_contact_information_setters(){
         ContactInformation contactInformation = new ContactInformation(
             "4444", "5555", "feedback@jfc.com.ph", person2);

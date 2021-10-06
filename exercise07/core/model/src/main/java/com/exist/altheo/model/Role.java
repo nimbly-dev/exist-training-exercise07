@@ -1,18 +1,18 @@
 package com.exist.altheo.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Role {
+public class Role implements Serializable{
     int roleId;
     String roleName;
 
     List<Person> persons;
 
     public Role(){
-        
+       
     }
-
-    public Role(String roleName) {
+    public Role(String roleName){
         this.roleName = roleName;
     }
 
@@ -38,7 +38,7 @@ public class Role {
         return persons;
     }
 
-    public void setPersons(List<Person>  persons) {
+    public void setPersons(List<Person> persons) {
         this.persons = persons;
     }
 

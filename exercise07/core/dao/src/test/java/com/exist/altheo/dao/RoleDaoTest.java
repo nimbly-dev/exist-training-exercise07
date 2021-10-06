@@ -1,13 +1,10 @@
 package com.exist.altheo.dao;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 import com.exist.altheo.connection.DBConnection;
-import com.exist.altheo.model.ContactInformation;
 import com.exist.altheo.model.Person;
 import com.exist.altheo.model.Role;
 
@@ -20,7 +17,6 @@ import org.junit.jupiter.api.BeforeEach;
 import junit.framework.TestCase;
 
 public class RoleDaoTest extends TestCase {
-	private PersonDao personDao;
     private RoleDao roleDao;
     private SessionFactory sessionFactory;
 
@@ -31,15 +27,12 @@ public class RoleDaoTest extends TestCase {
 	private String testAddress;
 	private Date testDate;
 	private boolean testIsCurrentlyEmployed;
-	private Set<ContactInformation> testContactInformations;
-	private List<Role> testRoles;
     
     @Override
     @BeforeEach
     protected void setUp() throws Exception {
         this.roleDao = new RoleDao();
         this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
-		this.personDao = new PersonDao();
 
 		//Sets test values for test person obj
 		this.testName= "John Doe Doo Jr.";
@@ -49,138 +42,109 @@ public class RoleDaoTest extends TestCase {
 		this.testDate = new Date();
 		this.testIsCurrentlyEmployed = true;
 
-		this.testContactInformations = new HashSet<ContactInformation>(0);
-		this.testRoles = new ArrayList<Role>();
-		
     }
-
 
     @Test
     public void test_add_role_success() {
-		//Add Person Obj first
-		personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
-		testIsCurrentlyEmployed, testContactInformations, testRoles);
+		Session session = sessionFactory.openSession();
 
-		//Place created person obj to a lit
-		List<Person> persons = personDao.selectPerson(1);
-        String testInput = "Hecker";
+		session.beginTransaction();
 
-		//Add the new role to db, id of 1
-        roleDao.addRole(testInput,persons);
+		int savedPersonId1 = (Integer) session.save(
+			new Person( testGwa, testZipcode, testName, 
+						testAddress, testDate, 
+						testIsCurrentlyEmployed));
 
-		//call the newly created role with id of 1
-		List<Role> results = roleDao.selectRole(1);
+		session.getTransaction().commit();
+		session.close();
 
-		assertEquals(results.get(0).getRoleName(), testInput);
-		assertTrue(results.get(0).getPersons() != null);
+		roleDao.addRole("Hotdog", savedPersonId1);		
+
+		assertTrue(true);
     }
 
     @SuppressWarnings("unchecked")
 	@Test
-	public void test_update_role(){
+	public void test_update_role_success(){
 		//Add Person Obj first
-		personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
-		testIsCurrentlyEmployed, testContactInformations, testRoles);
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
 
-		//Place created person obj to a lit
-		List<Person> persons = personDao.selectPerson(1);
+		int savedPersonId1 = (Integer) session.save(
+			new Person( testGwa, testZipcode, testName, 
+						testAddress, testDate, 
+						testIsCurrentlyEmployed));
 
+		session.getTransaction().commit();
+		session.close();
 
-		//Firstly, create a role named Admin with id of 1
-		roleDao.addRole("Admin", persons);
-
+		//Secondly, create a role named Admin with id of 1
+		roleDao.addRole("Admin",savedPersonId1);
 		int selectedRoleId = 1;
 		String input= "Hecker";
 
+		//Call the method
 		boolean isUpdated = roleDao.updateRole(selectedRoleId, input);
 
 		//Check if there is a role name hecker
 		String hsql = "FROM Role R WHERE R.roleName = 'Hecker'";
 
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
+		Session session_2 = sessionFactory.openSession();
+		session_2.beginTransaction();
 
-		Query<Role> query = session.createQuery(hsql);
+		Query<Role> query = session_2.createQuery(hsql);
 
 		List<Role> results = query.list();
 
 		assertTrue(isUpdated == true);
 		assertEquals(results.get(0).getRoleName(), input);
 
-		session.close();
+		session_2.close();
 	}
 
 	
-	@SuppressWarnings("unchecked")
-	@Test
-	public void test_set_person_to_role(){
-		//Add Person Obj first
-		personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
-		testIsCurrentlyEmployed, testContactInformations, testRoles);
-
-		//Place created person obj to a lit
-		List<Person> persons = personDao.selectPerson(1);
-
-		//Firstly, create a role named Admin with id of 1
-		roleDao.addRole("Admin", persons);
-
-		int selectedRoleId = 1;
-		int selectedPersonId = 1;
-		String input= "Hecker";
-
-
-		boolean isUpdated = roleDao.setPersonToRole(selectedRoleId, selectedPersonId, input);
-
-		//Check if there is a role name hecker
-		String hsql = "FROM Role R WHERE R.roleName = 'Hecker'";
-
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-
-		Query<Role> query = session.createQuery(hsql);
-
-		List<Role> results = query.list();
-
-		assertTrue(isUpdated == true);
-		assertEquals(results.get(0).getRoleName(), input);
-
-		session.close();
-	}
-
-    @SuppressWarnings("unchecked")
 	@Test
 	public void test_update_role_fail(){
 		//Add Person Obj first
-		personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
-		testIsCurrentlyEmployed, testContactInformations, testRoles);
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
 
-		//Place created person obj to a lit
-		List<Person> persons = personDao.selectPerson(1);
+		int savedPersonId1 = (Integer) session.save(
+			new Person( testGwa, testZipcode, testName, 
+						testAddress, testDate, 
+						testIsCurrentlyEmployed));
 
-		//Firstly, create a role named Admin with id of 1
-		roleDao.addRole("Admin", persons);
+		session.getTransaction().commit();
+		session.close();
 
+		//Secondly, create a role named Admin with id of 1
+		roleDao.addRole("Admin",savedPersonId1);
 		int selectedRoleId = 5;
-		String input= "NotValid";
+		String input= "Hecker";
 
+		//Call the method
 		boolean isUpdated = roleDao.updateRole(selectedRoleId, input);
 
 		assertTrue(isUpdated == false);
-		
 	}
 
     @Test
 	public void test_select_role(){
 		//Add Person Obj first
-		personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
-		testIsCurrentlyEmployed, testContactInformations, testRoles);
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
 
-		//Place created person obj to a lit
-		List<Person> persons = personDao.selectPerson(1);
+		int savedPersonId1 = (Integer) session.save(
+			new Person( testGwa, testZipcode, testName, 
+						testAddress, testDate, 
+						testIsCurrentlyEmployed));
 
-		//Firstly, create a the roles
-		roleDao.addRole("Admin", persons);
-		roleDao.addRole("Hecker", persons);
+		session.getTransaction().commit();
+		session.close();
+
+		//Firstly, create a the roles and assign them to person
+		roleDao.addRole("Admin", savedPersonId1);
+		roleDao.addRole("Hecker", savedPersonId1);
 		
 		List<Role> listOfRoles = roleDao.getListsOfRoles();
 		
@@ -199,15 +163,20 @@ public class RoleDaoTest extends TestCase {
 	@Test
 	public void test_delete_role_success(){
 		//Add Person Obj first
-		personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
-		testIsCurrentlyEmployed, testContactInformations, testRoles);
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
 
-		//Place created person obj to a lit
-		List<Person> persons = personDao.selectPerson(1);
+		int savedPersonId1 = (Integer) session.save(
+			new Person( testGwa, testZipcode, testName, 
+						testAddress, testDate, 
+						testIsCurrentlyEmployed));
+
+		session.getTransaction().commit();
+		session.close();
 
 		//Firstly, create a the roles
-		roleDao.addRole("Admin", persons);
-		roleDao.addRole("Hecker", persons);
+		roleDao.addRole("Admin", savedPersonId1);
+		roleDao.addRole("Hecker", savedPersonId1);
 
 		int selectedId = 1; //Delete Admin
 
@@ -222,15 +191,20 @@ public class RoleDaoTest extends TestCase {
 	@Test
 	public void test_delete_role_with_invalid_input_fail() {
 		//Add Person Obj first
-		personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
-		testIsCurrentlyEmployed, testContactInformations, testRoles);
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
 
-		//Place created person obj to a lit
-		List<Person> persons = personDao.selectPerson(1);
+		int savedPersonId1 = (Integer) session.save(
+			new Person( testGwa, testZipcode, testName, 
+						testAddress, testDate, 
+						testIsCurrentlyEmployed));
+
+		session.getTransaction().commit();
+		session.close();
 
 		//Firstly, create a the roles
-		roleDao.addRole("Admin", persons);
-		roleDao.addRole("Hecker", persons);
+		roleDao.addRole("Admin", savedPersonId1);
+		roleDao.addRole("Hecker", savedPersonId1);
 		int selectedId = 5; //Delete Admin
 
 		boolean isDeleted = roleDao.deleteRole(selectedId);

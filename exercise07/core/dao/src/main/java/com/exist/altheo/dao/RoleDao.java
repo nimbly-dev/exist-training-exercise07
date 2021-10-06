@@ -3,8 +3,6 @@ package com.exist.altheo.dao;
 import java.util.List;
 
 import com.exist.altheo.connection.DBConnection;
-import com.exist.altheo.model.ContactInformation;
-import com.exist.altheo.model.Person;
 import com.exist.altheo.model.Role;
 
 import org.hibernate.Session;
@@ -18,13 +16,35 @@ public class RoleDao {
         this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
     }
 
-    public void addRole(String input, List<Person> persons){
+    @SuppressWarnings("unchecked")
+    public void addRole(String input, int selectedPersonId){
         Session session = sessionFactory.openSession();
-        Role newRole = new Role(input, persons);
 
-        session.beginTransaction();
-        session.save(newRole);
+		session.beginTransaction();
 
+		int savedRoleId = (Integer) session.save(new Role(input));
+	
+		System.out.println("ROLEID : "+savedRoleId);
+
+		//Update the newly created role to reference the person
+		// String hsql_role = "UPDATE Role set person.persons.personId= :personId where roleId= :roleId";
+		String native_query_role = "UPDATE Role SET person_id =:personId where role_id =:roleId";
+
+		Query<Role> query_role = session.createSQLQuery(native_query_role);
+        query_role.setParameter("roleId", savedRoleId);
+        query_role.setParameter("personId", selectedPersonId);
+
+		query_role.executeUpdate();
+
+		//Update the newly created person to reference the role
+		// String hsql_person = "UPDATE PERSON set roles.role.roleId= :roleId where personId= :personId";
+		String native_query_person = "UPDATE Person SET role_id =:roleId where person_id =:personId";
+
+		Query<Role> query_person = session.createSQLQuery(native_query_person);
+        query_person.setParameter("roleId", savedRoleId);
+        query_person.setParameter("personId", selectedPersonId);
+
+		query_person.executeUpdate();
         session.getTransaction().commit();
         session.close();
     }

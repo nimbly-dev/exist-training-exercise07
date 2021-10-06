@@ -12,37 +12,44 @@
 
 <hibernate-mapping>
 
-    <class name="com.exist.altheo.model.Role" table="ROLE">
+    <class name="com.exist.altheo.model.Role" table="ROLE" >
         <id name="roleId" type="int">
             <column name="ROLE_ID"></column>
-            <generator class="increment"/>
+            <generator class="identity"/>
         </id>
         <property name="roleName" column="role_name" type="string"/>
-        <!-- <many-to-one name="person" column="PERSON_ID"></many-to-one> -->
-        <!-- <list name="persons" table="PERSON" fetch="select" cascade="all">
-            <key>
-                <column name="ROLE_ID" `="true"></column>
-            </key>
+
+        <bag name="persons" table="PERSON" 
+         lazy="true" fetch="select" cascade="all"  inverse="false"> 
+            <key column="ROLE_ID" not-null="false" ></key>
             <many-to-many entity-name="com.exist.altheo.model.Person">
-                <column name="PERSON_ID" not-null="true"></column>
-            </many-to-many>
-        </list> -->
-        <!-- <list name="persons" table="PERSON" cascade="all">  
-            <key>
-                <column name="ROLE_ID" not-null="true"></column>
-            </key>
-            <list-index column="idx"></list-index>   
-            <many-to-many entity-name="com.exist.altheo.model.Person">
-                <column name="PERSON_ID" not-null="true"></column>
-            </many-to-many>
-        </list>   -->
-        <bag name="persons" table="PERSON" order-by="ROLE_ID asc" inverse="true" 
-         lazy="true" fetch="select">
-            <key column="ROLE_ID" not-null="false"></key>
-            <many-to-many entity-name="com.exist.altheo.model.Person">
-                <column name="PERSON_ID" not-null="true"></column>
+                <column name="PERSON_ID" not-null="false" ></column>
             </many-to-many>
         </bag>
+
+
+        <!-- <set name="persons" table="PERSON" cascade="save-update"  fetch="select"  inverse="true">
+            <key column="ROLE_ID" ></key>
+            <many-to-many class="Person" column="PERSON_ID">
+               <column name="PERSON_ID" not-null="true" ></column>
+            </many-to-many>
+        </set> -->
+
+        <!-- <list name="persons" table="PERSON" fetch="select" cascade="all">
+            <key>
+                <column name="ROLE_ID"></column>
+            </key>
+            <index column="seq"></index>
+            <many-to-many class="com.exist.altheo.Person">
+                <column name="PERSON_ID"></column>
+            </many-to-many>
+        </list> -->
+
+        <!-- <list name = "persons" cascade="all">
+            <key column = "ROLE_ID"/>
+            <list-index column = "idx"/>
+            <many-to-many class="com.exist.altheo.Person"/>
+         </list> -->
         
     </class>    
 

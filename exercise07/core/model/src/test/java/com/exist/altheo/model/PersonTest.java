@@ -19,7 +19,6 @@ public class PersonTest extends TestCase {
 
     private Person person2;
 
-    private SimpleDateFormat ft;
     private ZoneId defaultZoneId;
     private Date dateToday;
     private Date exampleDate;
@@ -30,7 +29,7 @@ public class PersonTest extends TestCase {
 	@Override
 	@BeforeEach
 	protected void setUp() throws Exception {
-        this.ft = new SimpleDateFormat ("yyyy-MM-dd");
+        new SimpleDateFormat ("yyyy-MM-dd");
         this.defaultZoneId = ZoneId.systemDefault();
         this.dateToday = new Date();
         this.exampleDate = Date.from(LocalDate.of(2012, 12, 31).atStartOfDay(defaultZoneId).toInstant());
@@ -52,7 +51,7 @@ public class PersonTest extends TestCase {
 	}
 
     
-    @Test
+    @Test 
     public void test_person_getters() {
 
         Person person = 

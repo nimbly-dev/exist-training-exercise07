@@ -11,11 +11,11 @@ public class ContactInformation {
 
     public ContactInformation(){ }
 
-    public ContactInformation(String landline, String mobileNumber, String email, int personId) {
-        this.landline = landline;
-        this.mobileNumber = mobileNumber;
-        this.email = email;
-    }
+    // public ContactInformation(String landline, String mobileNumber, String email, int personId) {
+    //     this.landline = landline;
+    //     this.mobileNumber = mobileNumber;
+    //     this.email = email;
+    // }
 
     public ContactInformation(String landline, String mobileNumber, String email, Person person) {
         this.landline = landline;

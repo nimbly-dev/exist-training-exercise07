@@ -56,8 +56,8 @@ public class ContactInformationDaoTest extends TestCase {
         this.testIsCurrentlyEmployed = true;
 
         this.testContactInformations = new HashSet<ContactInformation>(0);
-        this.testRoles = new ArrayList<Role>();
-
+        this.testRoles =new ArrayList<Role>();
+        
         //Sets test values for test contact obj
         this.testLandline = "1111";
         this.testMobileNum = "2222-3333";
@@ -148,7 +148,6 @@ public class ContactInformationDaoTest extends TestCase {
         assertEquals(contact.get(0).getEmail(), testEmail);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void test_delete_contact_information_success() {
         //Add Person obj first
@@ -165,7 +164,6 @@ public class ContactInformationDaoTest extends TestCase {
         assertTrue(didDelete == true);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void test_delete_contact_information_with_nonexistent_id_fail() {
         //Add Person obj first
