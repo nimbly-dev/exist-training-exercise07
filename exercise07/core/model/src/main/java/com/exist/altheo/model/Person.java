@@ -12,7 +12,13 @@ public class Person implements Serializable{
 
     String zipCode;
 
-    String name;
+    String firstName;
+    String middleName;
+    String lastName;
+    
+    String suffix;
+    String title;
+
     //TODO - CHANGE TO ENUM
     String address;
 
@@ -25,26 +31,20 @@ public class Person implements Serializable{
 
     }
 
-    public Person(double gwa, String zipCode, String name, String address, Date dateHired,
-            boolean isCurrentlyEmployed) {
-        this.gwa = gwa;
-        this.zipCode = zipCode;
-        this.name = name;
-        this.address = address;
-        this.dateHired = dateHired;
-        this.isCurrentlyEmployed = isCurrentlyEmployed;
-    }
+    
 
-    public Person(double gwa, String zipCode, String name, String address, Date dateHired, boolean isCurrentlyEmployed,
-            Set<ContactInformation> contactInformations, List<Role> roles) {
+    public Person(double gwa, String zipCode, String firstName, String middleName, String lastName, String suffix,
+            String title, String address, Date dateHired, boolean isCurrentlyEmployed) {
         this.gwa = gwa;
         this.zipCode = zipCode;
-        this.name = name;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.suffix = suffix;
+        this.title = title;
         this.address = address;
         this.dateHired = dateHired;
         this.isCurrentlyEmployed = isCurrentlyEmployed;
-        this.contactInformations = contactInformations;
-        this.roles = roles;
     }
 
 
@@ -71,14 +71,6 @@ public class Person implements Serializable{
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getAddress() {
@@ -119,6 +111,50 @@ public class Person implements Serializable{
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setCurrentlyEmployed(boolean isCurrentlyEmployed) {
+        this.isCurrentlyEmployed = isCurrentlyEmployed;
     }
     
    

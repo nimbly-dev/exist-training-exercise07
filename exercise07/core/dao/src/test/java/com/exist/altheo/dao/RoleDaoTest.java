@@ -26,7 +26,11 @@ public class RoleDaoTest extends TestCase {
     private SessionFactory sessionFactory;
 
 	//Data testfields for person
-	private String testName;
+	private String testFirstName;
+	private String testLastName;
+	private String testMiddleName;
+	private String testTitle;
+	private String testSuffix;
 	private double testGwa;
 	private String testZipcode;
 	private String testAddress;
@@ -40,13 +44,16 @@ public class RoleDaoTest extends TestCase {
         this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
 
 		//Sets test values for test person obj
-		this.testName= "John Doe Doo Jr.";
+		this.testFirstName = "John";
+		this.testMiddleName = "Doo";
+		this.testLastName = "Doe";
+		this.testSuffix = "Jr.";
+		this.testTitle = "The Third";
 		this.testGwa = 1.25;
 		this.testZipcode = "Doo1";
 		this.testAddress = "Winterfell, The North, Westeros";
 		this.testDate = new Date();
 		this.testIsCurrentlyEmployed = true;
-
     }
 
 	@Test
@@ -80,9 +87,9 @@ public class RoleDaoTest extends TestCase {
 		session.beginTransaction();
 
 		int savedPersonId1 = (Integer) session.save(
-			new Person( testGwa, testZipcode, testName, 
-						testAddress, testDate, 
-						testIsCurrentlyEmployed));
+			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
+			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
+			
 		session.getTransaction().commit();
 		session.close();
 
@@ -108,9 +115,9 @@ public class RoleDaoTest extends TestCase {
 		session.beginTransaction();
 
 		int savedPersonId1 = (Integer) session.save(
-			new Person( testGwa, testZipcode, testName, 
-						testAddress, testDate, 
-						testIsCurrentlyEmployed));
+			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
+			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
+		
 
 		session.getTransaction().commit();
 		session.close();
@@ -136,9 +143,8 @@ public class RoleDaoTest extends TestCase {
 		session.beginTransaction();
 
 		int savedPersonId1 = (Integer) session.save(
-			new Person( testGwa, testZipcode, testName, 
-						testAddress, testDate, 
-						testIsCurrentlyEmployed));
+			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
+			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
 
 		session.getTransaction().commit();
 		session.close();
@@ -174,9 +180,8 @@ public class RoleDaoTest extends TestCase {
 		session.beginTransaction();
 
 		int savedPersonId1 = (Integer) session.save(
-			new Person( testGwa, testZipcode, testName, 
-						testAddress, testDate, 
-						testIsCurrentlyEmployed));
+			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
+			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
 
 		session.getTransaction().commit();
 		session.close();
@@ -200,9 +205,8 @@ public class RoleDaoTest extends TestCase {
 		session.beginTransaction();
 
 		int savedPersonId1 = (Integer) session.save(
-			new Person( testGwa, testZipcode, testName, 
-						testAddress, testDate, 
-						testIsCurrentlyEmployed));
+			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
+			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
 
 		session.getTransaction().commit();
 		session.close();
@@ -233,9 +237,8 @@ public class RoleDaoTest extends TestCase {
 		session.beginTransaction();
 
 		int savedPersonId1 = (Integer) session.save(
-			new Person( testGwa, testZipcode, testName, 
-						testAddress, testDate, 
-						testIsCurrentlyEmployed));
+			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
+			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
 
 		session.getTransaction().commit();
 		session.close();
@@ -260,9 +263,8 @@ public class RoleDaoTest extends TestCase {
 		session.beginTransaction();
 
 		int savedPersonId1 = (Integer) session.save(
-			new Person( testGwa, testZipcode, testName, 
-						testAddress, testDate, 
-						testIsCurrentlyEmployed));
+			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
+			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
 
 		session.getTransaction().commit();
 		session.close();

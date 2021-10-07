@@ -65,6 +65,12 @@
          <artifactId>javassist</artifactId>
          <version>3.25.0-GA</version>
       </dependency>
+      <dependency>
+         <groupId>commons-validator</groupId>
+         <artifactId>commons-validator</artifactId>
+         <version>1.7</version>
+      </dependency>
+     
    </dependencies>
    <modules>
       <module>app</module>

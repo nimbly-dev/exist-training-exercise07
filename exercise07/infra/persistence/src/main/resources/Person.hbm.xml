@@ -16,7 +16,13 @@
         <id name="personId" column="PERSON_ID">
             <generator class="identity"/>
         </id>
-        <property name="name" column="name" type="string"></property>
+
+        <property name="firstName" column="first_name" type="string"></property>
+        <property name="middleName" column="middle_name" type="string"></property>
+        <property name="lastName" column="last_name" type="string"></property>
+        <property name="suffix" column="suffix" type="string"></property>
+        <property name="title" column="title" type="string"></property>
+
 
         <!-- TODO - CHANGE ADDRESS TO ENUM TYPE -->
         <property name="address" column="address" type="string"></property>

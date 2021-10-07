@@ -19,7 +19,7 @@ public class RoleController {
     public boolean addNewRole(String input,int assignedPersonId) {
         //Returns true if valid otherwise returns false
         if(StringUtils.isEmpty(input)){
-            System.out.println("Input is blank, please try again");
+            System.out.println("Input is blank, please fill out the fields");
             return false;
         }
         else if(!StringUtils.isAsciiPrintable(input)){

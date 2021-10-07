@@ -6,7 +6,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import com.exist.altheo.connection.DBConnection;
-import com.exist.altheo.model.Person;
 import com.exist.altheo.model.Role;
 
 import org.hibernate.Session;
@@ -35,17 +34,19 @@ public class RoleDao {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
+        
         String nativeQueryAssignPerson = "UPDATE Role SET person_id =:personId where role_name =:roleName";
         Query<Role> query = session.createSQLQuery(nativeQueryAssignPerson);
         query.setParameter("personId", selectedPersonId);
         query.setParameter("roleName", roleName);
 
         query.executeUpdate();
+        
         session.getTransaction().commit();
         session.close();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") //TODO - CONVERT THIS TO USE session instead of native sql
     public void addRoleAndAssignToPerson(String input, int selectedPersonId) 
         throws PersistenceException{
         Session session = sessionFactory.openSession();
@@ -79,27 +80,21 @@ public class RoleDao {
         session.close();
     }
 
-    @SuppressWarnings("unchecked")
     public void updateRole(int selectedRoleId ,String input)throws NoResultException{
         Session session = sessionFactory.openSession();
-
-        //Setting the update statement
-        String hsql = "UPDATE Role set roleName= :roleName where roleId= :roleId";
-
-        Query<Role> query = session.createQuery(hsql);
-        query.setParameter("roleId", selectedRoleId);
-        query.setParameter("roleName", input);
-
-        //Begin updating
         session.beginTransaction();
-        int result = query.executeUpdate();
+
+        Role role = session.get(Role.class, selectedRoleId);
+
+        if(role == null)
+            throw new NoResultException("Role id " + selectedRoleId + " does not exist");
+        
+        role.setRoleName(input);
+        session.update(role);
 
         session.getTransaction().commit();
-
         session.close();
-        if(result <= 0){
-            throw new NoResultException("Role id " + selectedRoleId + " does not exist");
-        }
+ 
     }
 
     @SuppressWarnings("unchecked")
@@ -110,6 +105,7 @@ public class RoleDao {
 		List<Role> result = session.createQuery( "from Role" ).list();
         session.getTransaction().commit();
         session.close();
+
         if(result.size() == 0){
             throw new NoResultException("No roles found on database");
         }else{
@@ -117,25 +113,20 @@ public class RoleDao {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public void deleteRole(int selectedId) throws NoResultException
     {
         Session session = sessionFactory.openSession();
-
-        String hsql = "DELETE from Role where roleId=:id";
-
-        Query<Role> query = session.createQuery(hsql);
-        query.setParameter("id", selectedId);
-
         session.beginTransaction();
-        int result = query.executeUpdate();
+
+        Role role = session.get(Role.class, selectedId);
+
+        if(role == null)
+            throw new NoResultException("Role id " + selectedId + " does not exist");
+
+        session.delete(session.get(Role.class, selectedId));
 
         session.getTransaction().commit();
         session.close();
-
-        if(result <= 0){
-            throw new NoResultException("Role id " + selectedId + " does not exist");
-        }
     }
 
     //Helper method to select a specific contact

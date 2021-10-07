@@ -54,30 +54,24 @@ public class PersonTest extends TestCase {
     @Test 
     public void test_person_getters() {
 
-        Person person = 
-        new Person(1.25, "322", "Scoobi Doobi Doo", "Doobi Manila", dateToday, 
-        true, testContact, testRoles);
-        // new Person("John", "Doe", "Doo", "Jr", "King", 1.25, "7100", 
-        // "Doobi", "Manila", "322", dateToday, true, testContact, 
-        // testRoles);
+        Person person = new Person(1.25, "322", "John", "Doe", "Doo", "Jr.", "The Third", 
+        "Doobi Manila", dateToday, true);
 
-        // assertTrue(person.getFirstName() == "John");
-        // assertTrue(person.getLastName() == "Doe");
-        // assertTrue(person.getMiddleName() == "Doo");
-        // assertTrue(person.getSuffix() == "Jr");
-        // assertTrue(person.getTitle() == "King");
+        person.setRoles(testRoles);
+
+
+        assertTrue(person.getFirstName() == "John");
+        assertTrue(person.getLastName() == "Doo");
+        assertTrue(person.getMiddleName() == "Doe");
+        assertTrue(person.getSuffix() == "Jr.");
+        assertTrue(person.getTitle() == "The Third");
         
         assertTrue(person.getGwa() == 1.25);
 
-        // assertTrue(person.getStreetNum() == "7100");
-        // assertTrue(person.getBarangay() == "Doobi");
-        // assertTrue(person.getCity() == "Manila");
         assertTrue(person.getZipCode() == "322");
 
-        assertTrue(person.getName() == "Scoobi Doobi Doo");
         assertTrue(person.getAddress() == "Doobi Manila");
 
-        // assertTrue(person.getTitle() == "King");
 
         assertEquals(person.getDateHired(), dateToday);
 
@@ -90,8 +84,8 @@ public class PersonTest extends TestCase {
     public void test_person_setters(){
 
         Person person =  
-        new Person(1.25, "322", "Scoobi Doobi Doo", "Doobi Manila", dateToday, 
-        true, testContact, testRoles);
+        new Person(1.25, "322", "John", "Doe", "Doo", "Jr.", "The Third", 
+        "Doobi Manila", dateToday, true);
 
         List<Role> roles1 = new ArrayList<Role>();
 
@@ -106,12 +100,12 @@ public class PersonTest extends TestCase {
 
         testContact1.add(contactInformation);
         
-        // person.setFirstName("Bida");
-        // person.setLastName("Ang");
-        // person.setMiddleName("Saya");
-        // person.setSuffix("Bumble");
-        // person.setTitle("Bee");
-        person.setName("Bida And Saya");
+        person.setFirstName("Bida");
+        person.setLastName("Ang");
+        person.setMiddleName("Saya");
+        person.setSuffix("Bumble");
+        person.setTitle("Bee");
+     
         person.setAddress("Manila City");
         person.setDateHired(exampleDate);
         person.setIsCurrentlyEmployed(false);
@@ -125,21 +119,16 @@ public class PersonTest extends TestCase {
         person.setZipCode("423");
         
 
-        // assertTrue(person.getFirstName() == "Bida");
-        // assertTrue(person.getLastName() == "Ang");
-        // assertTrue(person.getMiddleName() == "Saya");
-        // assertTrue(person.getSuffix() == "Bumble");
-        // assertTrue(person.getTitle() == "Bee");
-        assertTrue(person.getName() == "Bida And Saya");
+        assertTrue(person.getFirstName() == "Bida");
+        assertTrue(person.getLastName() == "Ang");
+        assertTrue(person.getMiddleName() == "Saya");
+        assertTrue(person.getSuffix() == "Bumble");
+        assertTrue(person.getTitle() == "Bee");
         assertTrue(person.getAddress() == "Manila City");
         assertEquals(person.getDateHired(), exampleDate);
         assertTrue(person.getIsCurrentlyEmployed() == false);
         assertTrue(person.getContactInformations() != null);
         assertTrue(person.getRoles().size() == 1);
-
-        // assertTrue(person.getBarangay() == "Lobi");
-        // assertTrue(person.getStreetNum() == "91");
-        // assertTrue(person.getCity() == "Loki");
         assertTrue(person.getGwa() == 1.50);
         assertTrue(person.getZipCode() == "423");
     }

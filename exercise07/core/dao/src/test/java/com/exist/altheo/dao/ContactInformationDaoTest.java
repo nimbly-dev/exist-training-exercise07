@@ -5,8 +5,6 @@ import static org.junit.Assert.assertThrows;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.persistence.NoResultException;
 
@@ -17,7 +15,6 @@ import com.exist.altheo.model.Role;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -30,15 +27,16 @@ public class ContactInformationDaoTest extends TestCase {
     private SessionFactory sessionFactory;
     
     //Data testfields for person
-    private String testName;
+    private String testFirstName;
+	private String testLastName;
+	private String testMiddleName;
+	private String testTitle;
+	private String testSuffix;
     private double testGwa;
     private String testZipcode;
     private String testAddress;
     private Date testDate;
     private boolean testIsCurrentlyEmployed;
-    private Set<ContactInformation> testContactInformations;
-    private List<Role> testRoles;
-
     //Data testfields for contact
     private String testLandline;
     private String testMobileNum;
@@ -51,16 +49,20 @@ public class ContactInformationDaoTest extends TestCase {
         this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
         this.personDao = new PersonDao();
 
-        //Sets test values for test person obj
-        this.testName= "John Doe Doo Jr.";
+		//Sets test values for test person obj
+		this.testFirstName = "John";
+		this.testMiddleName = "Doo";
+		this.testLastName = "Doe";
+		this.testSuffix = "Jr.";
+		this.testTitle = "The Third";
         this.testGwa = 1.25;
         this.testZipcode = "Doo1";
         this.testAddress = "Winterfell, The North, Westeros";
         this.testDate = new Date();
         this.testIsCurrentlyEmployed = true;
 
-        this.testContactInformations = new HashSet<ContactInformation>(0);
-        this.testRoles =new ArrayList<Role>();
+        new HashSet<ContactInformation>(0);
+        new ArrayList<Role>();
         
         //Sets test values for test contact obj
         this.testLandline = "1111";
@@ -76,17 +78,16 @@ public class ContactInformationDaoTest extends TestCase {
 
         session.beginTransaction();
 
-        int savedPersonId = (Integer) session.save(
-            new Person(testGwa, testZipcode, testName, testAddress, 
-            testDate, testIsCurrentlyEmployed)
-        );
+		int savedPersonId1 = (Integer) session.save(
+			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
+			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
 
         session.getTransaction().commit();
         session.close();
         
         //Add contact information to person 
         contactInformationDao.addContactInformation(testLandline, 
-        testMobileNum, testEmail, savedPersonId);
+        testMobileNum, testEmail, savedPersonId1);
 
         // Check the newly created contactInformation
         ContactInformation contactInformation = contactInformationDao.selectContact(1);
@@ -103,15 +104,14 @@ public class ContactInformationDaoTest extends TestCase {
 
         session.beginTransaction();
 
-        int savedPersonId = (Integer) session.save(
-            new Person(testGwa, testZipcode, testName, testAddress, 
-            testDate, testIsCurrentlyEmployed)
-        );
+		int savedPersonId1 = (Integer) session.save(
+			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
+			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
 
         session.getTransaction().commit();
         session.close();
 
-        contactInformationDao.addContactInformation(testLandline, testMobileNum, testEmail, savedPersonId);
+        contactInformationDao.addContactInformation(testLandline, testMobileNum, testEmail, savedPersonId1);
 
         int testSelectedContactId = 1;
         String testUpdateLandline = "2000";
@@ -136,16 +136,15 @@ public class ContactInformationDaoTest extends TestCase {
 
         session.beginTransaction();
 
-        int savedPersonId = (Integer) session.save(
-            new Person(testGwa, testZipcode, testName, testAddress, 
-            testDate, testIsCurrentlyEmployed)
-        );
+		int savedPersonId1 = (Integer) session.save(
+			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
+			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
 
         session.getTransaction().commit();
         session.close();
 
 
-        contactInformationDao.addContactInformation(testLandline, testMobileNum, testEmail, savedPersonId);
+        contactInformationDao.addContactInformation(testLandline, testMobileNum, testEmail, savedPersonId1);
 
         int testSelectedContactId = 2;
         String testUpdateLandline = "2000";
@@ -176,15 +175,14 @@ public class ContactInformationDaoTest extends TestCase {
 
         session.beginTransaction();
 
-        int savedPersonId = (Integer) session.save(
-            new Person(testGwa, testZipcode, testName, testAddress, 
-            testDate, testIsCurrentlyEmployed)
-        );
+		int savedPersonId1 = (Integer) session.save(
+			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
+			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
 
         session.getTransaction().commit();
         session.close();
 
-        contactInformationDao.addContactInformation(testLandline, testMobileNum, testEmail,savedPersonId);
+        contactInformationDao.addContactInformation(testLandline, testMobileNum, testEmail,savedPersonId1);
         int testSelectedContactId = 1;
 
         //Delete the obj
@@ -195,8 +193,8 @@ public class ContactInformationDaoTest extends TestCase {
     @Test
     public void test_delete_contact_information_with_nonexistent_id_fail() {
         //Add Person obj first
-        personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
-        testIsCurrentlyEmployed);
+        personDao.addPerson(testAddress, testGwa, testZipcode, testDate, testIsCurrentlyEmployed, 
+        testFirstName, testMiddleName, testLastName, testSuffix, testTitle);
 
         int testSelectedContactId = 2;
 

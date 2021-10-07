@@ -33,14 +33,14 @@ public class ContactInformationTest extends TestCase {
 
         List<Role> testRoles = new ArrayList<Role>();
         Set<ContactInformation> testContact = new HashSet<ContactInformation>();
-		this.person1 = new Person(1.25, "322", "King John Doe Doo Jr.", "Doobi Manila", dateToday, 
-        true, testContact, testRoles);
+		this.person1 = new Person(1.25, "322", "John", "Doe", "Doo", "Jr.", "The Third", 
+        "Doobi Manila", dateToday, true);
 
-        this.person2 = new Person(1.25, "122", "King Scooby Doo Doobo", "Sne Makati", exampleDate, 
-        true, testContact, testRoles);
+        this.person2 = new Person(5, "322", "Scooby", "Doobo", "Doo", "Sr.", 
+        "Dog", "Makati", dateToday, true);
         
-        this.jolibee = new Person(3, "52", "Bida Ang Saya", "Brasil Brazil", exampleDate, 
-        true, testContact, testRoles);
+        this.jolibee =  new Person(3, "52", "Bida", "Ang", "Saya", "Bumblee", "Bee", 
+        "Brasil Brazil", exampleDate, true);
 	}
 
     @Test
@@ -51,7 +51,7 @@ public class ContactInformationTest extends TestCase {
         assertTrue(contactInformation1.getLandline() == "1111");
         assertTrue(contactInformation1.getMobileNumber() == "2222-3333");
         assertTrue(contactInformation1.getEmail() == "hotdigitydog@gmail.com");
-        assertTrue(contactInformation1.getPerson().getName() == "King John Doe Doo Jr.");
+        assertTrue(contactInformation1.getPerson().getFirstName() == "John");
     }
 
     @Test 
@@ -67,6 +67,6 @@ public class ContactInformationTest extends TestCase {
         assertTrue(contactInformation.getLandline() == "9999");
         assertTrue(contactInformation.getMobileNumber() == "8-7000");
         assertTrue(contactInformation.getEmail() == "writeus@ph.mcd.com");
-        assertTrue(contactInformation.getPerson().getName() == "Bida Ang Saya");
+        assertTrue(contactInformation.getPerson().getFirstName()== "Bida");
     }
 }

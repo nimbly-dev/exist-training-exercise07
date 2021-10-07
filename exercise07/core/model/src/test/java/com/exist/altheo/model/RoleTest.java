@@ -32,12 +32,11 @@ public class RoleTest extends TestCase{
 
         List<Role> testRoles = new ArrayList<Role>();
         Set<ContactInformation> testContact = new HashSet<ContactInformation>();
-		this.person1 = new Person(1.25, "322", "John Doe Doo Jr.", "Doobi Manila", 
-        dateToday, true, testContact, testRoles);
+		this.person1 = new Person(1.25, "322", "John", "Doe", "Doo", "Jr.", "The Third", 
+        "Doobi Manila", dateToday, true);
 
-        this.person2 = 
-        new Person(5, "322", "Scooby Doobo Doo Sr.", "Sne Makati", 
-        dateToday, true, testContact, testRoles);
+        this.person2 = new Person(5, "322", "Scooby", "Doobo", "Doo", "Sr.", 
+        "Dog", "Makati", dateToday, true);
 	}
 
     @Test
@@ -54,7 +53,6 @@ public class RoleTest extends TestCase{
 
        assertTrue(hacker.getRoleName() == "Hecker");
        assertTrue(hacker.getPersons().size() == 1);
-    //    assertTrue(hacker.getPersons().get(0).getName() == "John Doe Doo Jr.");
     }
 
     @Test
@@ -78,7 +76,7 @@ public class RoleTest extends TestCase{
 
         assertTrue(hacker.getRoleName() == "Hacker");
         assertTrue(hacker.getPersons().size() == 2);
-        assertTrue(hacker.getPersons().get(1).getName() == "Scooby Doobo Doo Sr.");
+        assertTrue(hacker.getPersons().get(1).getFirstName() == "Scooby");
     }
 
 }
