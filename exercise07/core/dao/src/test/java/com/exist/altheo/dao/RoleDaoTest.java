@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThrows;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import com.exist.altheo.connection.DBConnection;
@@ -13,6 +14,7 @@ import com.exist.altheo.model.Role;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,8 +49,60 @@ public class RoleDaoTest extends TestCase {
 
     }
 
+	@Test
+	public void test_add_role_success(){
+		String testInput = "Admin";
+
+		//ID of 1
+		roleDao.addNewRole(testInput);
+
+		Role selectRole = roleDao.selectRole(1);
+
+		assertEquals(selectRole.getRoleName(), testInput);
+	}
+
+	@Test
+	public void test_add_role_duplicate_fail(){
+		roleDao.addNewRole("Admin");
+
+		ConstraintViolationException exception = assertThrows(ConstraintViolationException.class, 
+		()->roleDao.addNewRole("Admin"));
+
+		assertTrue(exception.getMessage() != null);//Check if there is an exception mssg
+	}
+
+	@Test
+	public void test_assign_role_to_person_test(){
+		roleDao.addNewRole("Admin");//ID OF 1
+
+		//Create a person test obj
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+
+		int savedPersonId1 = (Integer) session.save(
+			new Person( testGwa, testZipcode, testName, 
+						testAddress, testDate, 
+						testIsCurrentlyEmployed));
+		session.getTransaction().commit();
+		session.close();
+
+		//Create a new Role
+		roleDao.assignRoleToPerson(savedPersonId1, "Admin");
+
+		//Get the person
+		Session session2 = sessionFactory.openSession();
+		session2.beginTransaction();
+		
+		Person getPerson = session2.get(Person.class, savedPersonId1);
+	
+		assertEquals(getPerson.getRoles().get(0).getRoleName(), "Admin");
+
+		session2.getTransaction().commit();
+		session2.close();
+	}
+
     @Test
-    public void test_add_role_success() {
+    public void test_add_role_and_assign_to_person_success() {
 		Session session = sessionFactory.openSession();
 
 		session.beginTransaction();
@@ -61,14 +115,14 @@ public class RoleDaoTest extends TestCase {
 		session.getTransaction().commit();
 		session.close();
 
-		roleDao.addRole("Mamba", savedPersonId1);		
+		roleDao.addRoleAndAssignToPerson("Mamba", savedPersonId1);		
     }
 
 	@Test
-    public void test_add_role_invalid_assigned_person_id_fail() {
+    public void test_add_role_and_assign_to_invalid_assigned_person_id_fail() {
 		
 		PersistenceException exception = assertThrows(PersistenceException.class, 
-			()->roleDao.addRole("Hotdog", 2));
+			()->roleDao.addRoleAndAssignToPerson("Hotdog", 2));
 
 		assertTrue(exception.getMessage() != null);//Check if there is an exception mssg
 	
@@ -90,12 +144,12 @@ public class RoleDaoTest extends TestCase {
 		session.close();
 
 		//Secondly, create a role named Admin with id of 1
-		roleDao.addRole("Admin",savedPersonId1);
+		roleDao.addRoleAndAssignToPerson("Admin",savedPersonId1);
 		int selectedRoleId = 1;
 		String input= "Hecker";
 
 		//Call the method
-		boolean isUpdated = roleDao.updateRole(selectedRoleId, input);
+		roleDao.updateRole(selectedRoleId, input);
 
 		//Check if there is a role name hecker
 		String hsql = "FROM Role R WHERE R.roleName = 'Hecker'";
@@ -107,7 +161,6 @@ public class RoleDaoTest extends TestCase {
 
 		List<Role> results = query.list();
 
-		assertTrue(isUpdated == true);
 		assertEquals(results.get(0).getRoleName(), input);
 
 		session_2.close();
@@ -129,14 +182,15 @@ public class RoleDaoTest extends TestCase {
 		session.close();
 
 		//Secondly, create a role named Admin with id of 1
-		roleDao.addRole("Admin",savedPersonId1);
+		roleDao.addRoleAndAssignToPerson("Admin",savedPersonId1);
 		int selectedRoleId = 5;
 		String input= "Hecker";
 
-		//Call the method
-		boolean isUpdated = roleDao.updateRole(selectedRoleId, input);
 
-		assertTrue(isUpdated == false);
+		NoResultException exception = assertThrows(NoResultException.class, 
+        ()->roleDao.updateRole(selectedRoleId, input));
+
+		assertEquals(exception.getMessage(), "Role id " + selectedRoleId + " does not exist");
 	}
 
     @Test
@@ -154,8 +208,8 @@ public class RoleDaoTest extends TestCase {
 		session.close();
 
 		//Firstly, create a the roles and assign them to person
-		roleDao.addRole("Admin", savedPersonId1);
-		roleDao.addRole("Hecker", savedPersonId1);
+		roleDao.addRoleAndAssignToPerson("Admin", savedPersonId1);
+		roleDao.addRoleAndAssignToPerson("Hecker", savedPersonId1);
 		
 		List<Role> listOfRoles = roleDao.getListsOfRoles();
 		
@@ -166,9 +220,10 @@ public class RoleDaoTest extends TestCase {
 
 	@Test
 	public void test_select_role_empty(){	
-		List<Role> listOfRoles = roleDao.getListsOfRoles();
-		
-		assertTrue(listOfRoles.size() == 0);
+		NoResultException exception = assertThrows(NoResultException.class, 
+        ()->roleDao.getListsOfRoles());
+
+		assertEquals(exception.getMessage(), "No roles found on database");
 	}
 
 	@Test
@@ -186,21 +241,20 @@ public class RoleDaoTest extends TestCase {
 		session.close();
 
 		//Firstly, create a the roles
-		roleDao.addRole("Admin", savedPersonId1);
-		roleDao.addRole("Hecker", savedPersonId1);
+		roleDao.addRoleAndAssignToPerson("Admin", savedPersonId1);
+		roleDao.addRoleAndAssignToPerson("Hecker", savedPersonId1);
 
 		int selectedId = 1; //Delete Admin
 
-		boolean isDeleted = roleDao.deleteRole(selectedId);
+		roleDao.deleteRole(selectedId);
 
-		assertTrue(isDeleted == true);
 		//Check if list length is equal to 1
 		List<Role> listOfRoles = roleDao.getListsOfRoles();
 		assertTrue(listOfRoles.size() == 1);
 	}
 
 	@Test
-	public void test_delete_role_with_invalid_input_fail() {
+	public void test_delete_role_with_nonexistent_id_input_fail() {
 		//Add Person Obj first
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
@@ -214,13 +268,15 @@ public class RoleDaoTest extends TestCase {
 		session.close();
 
 		//Firstly, create a the roles
-		roleDao.addRole("Admin", savedPersonId1);
-		roleDao.addRole("Hecker", savedPersonId1);
+		roleDao.addRoleAndAssignToPerson("Admin", savedPersonId1);
+		roleDao.addRoleAndAssignToPerson("Hecker", savedPersonId1);
 		int selectedId = 5; //Delete Admin
 
-		boolean isDeleted = roleDao.deleteRole(selectedId);
+		NoResultException exception = assertThrows(NoResultException.class, 
+        ()->roleDao.deleteRole(selectedId));
 
-		assertTrue(isDeleted == false);
+		assertEquals(exception.getMessage(), "Role id " + selectedId + " does not exist");
+		
 	}
 
 }

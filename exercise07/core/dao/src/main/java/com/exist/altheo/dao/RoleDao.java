@@ -2,13 +2,16 @@ package com.exist.altheo.dao;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import com.exist.altheo.connection.DBConnection;
+import com.exist.altheo.model.Person;
 import com.exist.altheo.model.Role;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 
 public class RoleDao {
@@ -18,8 +21,33 @@ public class RoleDao {
         this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
     }
 
+    public void addNewRole(String input) throws ConstraintViolationException{
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        session.save(new Role(input));
+        session.getTransaction().commit();
+        session.close();
+    }
+
     @SuppressWarnings("unchecked")
-    public void addRole(String input, int selectedPersonId) throws PersistenceException{
+    public void assignRoleToPerson(int selectedPersonId, String roleName){
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        String nativeQueryAssignPerson = "UPDATE Role SET person_id =:personId where role_name =:roleName";
+        Query<Role> query = session.createSQLQuery(nativeQueryAssignPerson);
+        query.setParameter("personId", selectedPersonId);
+        query.setParameter("roleName", roleName);
+
+        query.executeUpdate();
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void addRoleAndAssignToPerson(String input, int selectedPersonId) 
+        throws PersistenceException{
         Session session = sessionFactory.openSession();
 
 		session.beginTransaction();
@@ -52,7 +80,7 @@ public class RoleDao {
     }
 
     @SuppressWarnings("unchecked")
-    public boolean updateRole(int selectedRoleId ,String input){
+    public void updateRole(int selectedRoleId ,String input)throws NoResultException{
         Session session = sessionFactory.openSession();
 
         //Setting the update statement
@@ -70,25 +98,27 @@ public class RoleDao {
 
         session.close();
         if(result <= 0){
-            return false;
-        }else{
-            return true;
+            throw new NoResultException("Role id " + selectedRoleId + " does not exist");
         }
     }
 
     @SuppressWarnings("unchecked")
-    public List<Role> getListsOfRoles(){
+    public List<Role> getListsOfRoles()throws NoResultException{
         Session session = sessionFactory.openSession();
 
         session.beginTransaction();
 		List<Role> result = session.createQuery( "from Role" ).list();
         session.getTransaction().commit();
         session.close();
-        return result;
+        if(result.size() == 0){
+            throw new NoResultException("No roles found on database");
+        }else{
+            return result;
+        }
     }
 
     @SuppressWarnings("unchecked")
-    public boolean deleteRole(int selectedId)
+    public void deleteRole(int selectedId) throws NoResultException
     {
         Session session = sessionFactory.openSession();
 
@@ -104,52 +134,23 @@ public class RoleDao {
         session.close();
 
         if(result <= 0){
-            return false;
-        }else{
-            return true;
+            throw new NoResultException("Role id " + selectedId + " does not exist");
         }
     }
 
-    // @SuppressWarnings("unchecked")
-    // public boolean setPersonToRole(int selectedContactId,int personId ,String input) {
-    //     Session session = sessionFactory.openSession();
-
-    //     //Setting the update statement
-    //     String hsql = "UPDATE Role set "
-    //     +"roleName= :roleName ,"
-    //     +"personId= :personId"
-    //     +"where contactId= :contactId";
-
-    //     Query<Role> query = session.createQuery(hsql);
-    //     query.setParameter("contactId", selectedContactId);
-    //     query.setParameter("roleName", input);
-    //     query.setParameter("personId", personId);
-
-    //     //Begin updating
-    //     session.beginTransaction();
-    //     int result = query.executeUpdate();
-
-    //     session.getTransaction().commit();
-
-    //     session.close();
-    //     if(result <= 0){
-    //         return false;
-    //     }else{
-    //         return true;
-    //     }   
-    // }
-
-
     //Helper method to select a specific contact
-    @SuppressWarnings("unchecked")
-    public List<Role> selectRole(int selectedRoleId) {
+    public Role selectRole(int selectedRoleId) throws NoResultException {
         Session session = sessionFactory.openSession();
-        String hsql_get_person = "FROM Role R WHERE R.roleId = "+selectedRoleId;
         
-        List<Role> results = session.createQuery(hsql_get_person).list();
-
+        Role role = session.get(Role.class, selectedRoleId);
+    
         session.close();
-        return results;
+
+        if(role == null){
+            throw new NoResultException("Role id " + selectedRoleId + " does not exist");
+        }else{
+            return role;
+        }
     }
     
 

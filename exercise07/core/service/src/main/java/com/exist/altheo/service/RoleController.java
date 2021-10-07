@@ -26,7 +26,7 @@ public class RoleController {
             System.out.println("Input is invalid");
             return false;
         }else{
-            roleDao.addRole(input,assignedPersonId);
+            roleDao.addRoleAndAssignToPerson(input,assignedPersonId);
             return true;
         }
     }

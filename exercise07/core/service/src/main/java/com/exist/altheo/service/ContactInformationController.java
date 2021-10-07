@@ -14,7 +14,7 @@ public class ContactInformationController {
     }
     
     public void addContactInformation(String inputLandline, String inputMobileNumber, 
-    String inputEmail){
+    String inputEmail, int selectedPersonId){
         if(StringUtils.isEmpty(inputLandline) ||  StringUtils.isEmpty(inputMobileNumber)
             || StringUtils.isEmpty(inputEmail)){
             System.out.println("Inputs must not be empty");
@@ -27,13 +27,12 @@ public class ContactInformationController {
         }
         else{
             contactInformationDao.addContactInformation(inputLandline, 
-            inputMobileNumber, inputEmail);
+            inputMobileNumber, inputEmail,selectedPersonId);
         }
     }
 
-    //TODO - IF UPDATE FAIL, PRINT SAYING UPDATE FAILED
     public void updateContactInformation(String inputLandline, String inputMobileNumber, 
-    String inputEmail){
+    String inputEmail, int updateSelectedContactId){
         if(StringUtils.isEmpty(inputLandline) ||  StringUtils.isEmpty(inputMobileNumber)
         || StringUtils.isEmpty(inputEmail)){
         System.out.println("Inputs must not be empty");
@@ -45,12 +44,11 @@ public class ContactInformationController {
             System.out.println("Input is invalid");
         }
         else{
-            contactInformationDao.addContactInformation(inputLandline, 
+            contactInformationDao.updateContactInformation(updateSelectedContactId, inputLandline, 
             inputMobileNumber, inputEmail);
         }
     }
     
-    //TODO - IF DELETE FAIL, PRINT SAYING DELETE FAILED
     public void deleteContactInformation(){
         int selectedIndex = Reader.readInt("Enter roleId you wish to delete ");
         contactInformationDao.deleteContact(selectedIndex);
@@ -69,7 +67,8 @@ public class ContactInformationController {
                     String inputLandline = Reader.readString("Enter landline");
                     String inputMobileNumber = Reader.readString("Enter landline");
                     String inputEmail = Reader.readString("Enter landline");
-                    addContactInformation(inputLandline, inputMobileNumber, inputEmail);
+                    int inputSelectedPersonId = Reader.readInt("Enter selected person id ");
+                    addContactInformation(inputLandline, inputMobileNumber, inputEmail,inputSelectedPersonId);
                     break;
                 case "D":
                     deleteContactInformation();
@@ -78,8 +77,9 @@ public class ContactInformationController {
                     String updateInputLandline = Reader.readString("Enter landline");
                     String updateInputMobileNumber = Reader.readString("Enter landline");
                     String updateInputEmail = Reader.readString("Enter landline");
+                    int updateSelectedContactId = Reader.readInt("Enter selected person id ");
                     updateContactInformation(updateInputLandline, updateInputMobileNumber, 
-                    updateInputEmail);
+                    updateInputEmail, updateSelectedContactId);
                     break;
                 case "V":
                     Display.displayContactInformationInterfaceCommands();

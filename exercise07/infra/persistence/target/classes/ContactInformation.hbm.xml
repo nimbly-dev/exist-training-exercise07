@@ -17,7 +17,7 @@
             <column name="CONTACT_ID"></column>
             <generator class="increment"></generator>
         </id>
-        <many-to-one name="person" class="Person" cascade="all" >
+        <many-to-one name="person" class="Person" fetch="select">
             <column name="PERSON_ID" not-null="false"></column>
         </many-to-one> 
         

@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.NoResultException;
+
 import com.exist.altheo.connection.DBConnection;
 import com.exist.altheo.model.ContactInformation;
 import com.exist.altheo.model.Person;
@@ -20,18 +22,16 @@ public class PersonDao {
         this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
     }
 
+    //TODO REFACTOR TO ADD Person main values only
     public void addPerson(
         String name, String address, double gwa, String zipCode,
-        Date dateHired, boolean isCurrentlyEmployed, 
-        Set<ContactInformation> contactInformations, List<Role> roles
+        Date dateHired, boolean isCurrentlyEmployed
     ) {
         Person person = 
         // new Person(gwa, zipCode, name, address, dateHired, 
         // isCurrentlyEmployed, contactInformations, roles);
         new Person(gwa, zipCode, name, address, dateHired, 
         isCurrentlyEmployed);
-
-        person.setRoles(roles);
 
         Session session = sessionFactory.openSession();
 
@@ -42,17 +42,20 @@ public class PersonDao {
         session.close();
     }
 
-
     //Helper method to select a specific contact
-    @SuppressWarnings("unchecked")
-    public List<Person> selectPerson(int selectedPersonId) {
+    public Person selectPerson(int selectedPersonId) throws NoResultException{
         Session session = sessionFactory.openSession();
-        String hsql_get_person = "FROM Person P WHERE P.personId = "+selectedPersonId;
-
-        List<Person> results = session.createQuery(hsql_get_person).list();
-
+        session.beginTransaction();
+        Person person = session.get(Person.class, selectedPersonId);
+    
+        session.getTransaction().commit();
         session.close();
-        return results;
+
+        if(person == null){
+            throw new NoResultException("Person id " + selectedPersonId + " does not exist");
+        }else{
+            return person;
+        }
     }
 
     
@@ -91,15 +94,32 @@ public class PersonDao {
 
         session.close();
         if(result <= 0){
-            return false;
+            throw new NoResultException("Person id " + selectedPersonId + " does not exist");
         }else{
             return true;
         }
     }
 
-    //TODO
-    public void deletePerson(){
+    @SuppressWarnings("unchecked")
+    public boolean deletePerson(int selectedPersonId)throws NoResultException{
+        Session session = sessionFactory.openSession();
 
+        String hsql = "DELETE from Person where personId=:id";
+
+        Query<Role> query = session.createQuery(hsql);
+        query.setParameter("id", selectedPersonId);
+
+        session.beginTransaction();
+        int result = query.executeUpdate();
+
+        session.getTransaction().commit();
+        session.close();
+
+        if(result <= 0){
+            throw new NoResultException("Person id " + selectedPersonId + " does not exist");
+        }else{
+            return true;
+        }
     }
 
     //TODO

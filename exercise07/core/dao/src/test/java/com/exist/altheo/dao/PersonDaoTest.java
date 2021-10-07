@@ -1,13 +1,16 @@
 package com.exist.altheo.dao;
 
+import static org.junit.Assert.assertThrows;
+
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.persistence.NoResultException;
 
 import com.exist.altheo.connection.DBConnection;
 import com.exist.altheo.model.ContactInformation;
@@ -75,40 +78,46 @@ public class PersonDaoTest extends TestCase {
 		session.close();
 
         //Get the person obj on database
-        List<Person> result = personDao.selectPerson(1);
+        Person result = personDao.selectPerson(1);
 
         //Create role obj
         List<Person> persons = new ArrayList<Person>();
-        persons.add(result.get(0));
-        roleDao.addRole("Hecker", savedPersonId1);
+        persons.add(result);
+        roleDao.addRoleAndAssignToPerson("Hecker", savedPersonId1);
 
         //Create contact information obj
-        contactInformationDao.addContactInformation( "1111", "2222-3333", "gmail@gmail.com", result.get(0));
+        contactInformationDao.addContactInformation( "1111", "2222-3333", "gmail@gmail.com",savedPersonId1);
 
-        assertTrue(result.get(0) != null);
-        assertEquals(result.get(0).getName(), testName);
+        assertTrue(result != null);
+        assertEquals(result.getName(), testName);
     }
 
     @Test
     public void test_select_person_success(){
+        RoleDao roleDao = new RoleDao();
+
         //Create person with id of 1
         personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
-        testIsCurrentlyEmployed, testContactInformations, testRoles);
+        testIsCurrentlyEmployed);
+
+        roleDao.addNewRole("Admin");
+        roleDao.assignRoleToPerson(1, "Admin");
 
         //Get the person obj on database
-        List<Person> result = personDao.selectPerson(1);
+        Person result = personDao.selectPerson(1);
 
         Session session = sessionFactory.openSession();
+        session.beginTransaction();
 
-        assertTrue(result.get(0) != null);
-        assertEquals(result.get(0).getName(), testName);
-        assertEquals(result.get(0).getAddress(), testAddress);
-        assertEquals(result.get(0).getGwa(), testGwa);
-        assertEquals(result.get(0).getZipCode(), testZipcode);
-        assertEquals(ft.format(result.get(0).getDateHired()), ft.format(testDate));
-        assertEquals(result.get(0).getIsCurrentlyEmployed(), testIsCurrentlyEmployed);
-        assertEquals(result.get(0).getContactInformations(), testContactInformations);
-        assertEquals(result.get(0).getRoles(), testRoles);
+        assertTrue(result != null);
+        assertEquals(result.getName(), testName);
+        assertEquals(result.getAddress(), testAddress);
+        assertEquals(result.getGwa(), testGwa);
+        assertEquals(result.getZipCode(), testZipcode);
+        assertEquals(ft.format(result.getDateHired()), ft.format(testDate));
+        assertEquals(result.getIsCurrentlyEmployed(), testIsCurrentlyEmployed);
+        assertEquals(result.getRoles().get(0).getRoleName(), "Admin");
+
 
         session.close();
         // assertEquals(expected, actual);
@@ -118,7 +127,7 @@ public class PersonDaoTest extends TestCase {
     public void test_update_person_success(){
         //Create person with id of 1
         personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
-        testIsCurrentlyEmployed, testContactInformations, testRoles);
+        testIsCurrentlyEmployed);
 
         String inputUpdateName = "Scooby Doobi Doo";
         String inputUpdateAddress = "Hallo Jo";
@@ -127,30 +136,86 @@ public class PersonDaoTest extends TestCase {
         Date inputUpdateDate = new Date();
         boolean testIsCurrentlyEmployed = false;
 
-        personDao.updatePerson(inputUpdateGwa, inputUpdateZipCode, inputUpdateName, inputUpdateAddress, 
-        inputUpdateDate, testIsCurrentlyEmployed, 1);
+        boolean isUpdated = personDao.updatePerson(inputUpdateGwa, inputUpdateZipCode, inputUpdateName, 
+        inputUpdateAddress, inputUpdateDate, testIsCurrentlyEmployed, 1);
 
+		Person results = personDao.selectPerson(1);
+
+		assertTrue(isUpdated == true);
+		assertEquals(results.getName(), inputUpdateName);
+		assertEquals(results.getAddress(), inputUpdateAddress);
+        assertEquals(results.getGwa(), inputUpdateGwa);
+        assertEquals(results.getZipCode(), inputUpdateZipCode);
+        assertEquals(results.getIsCurrentlyEmployed(), testIsCurrentlyEmployed);
     }
 
-    @Test //TODO
+    @Test 
     public void test_update_person_input_nonexistent_id_fail(){
+        //Create person with id of 1
+        personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
+        testIsCurrentlyEmployed);
 
+        String inputUpdateName = "Scooby Doobi Doo";
+        String inputUpdateAddress = "Hallo Jo";
+        double inputUpdateGwa = 5;
+        String inputUpdateZipCode = "255";
+        Date inputUpdateDate = new Date();
+        boolean inputUpdateIsCurrentlyEmployed = false;
+        int inputUpdateId = 10;
+
+        NoResultException exception = assertThrows(NoResultException.class, 
+        ()->personDao.updatePerson(inputUpdateGwa, inputUpdateZipCode, inputUpdateName, 
+        inputUpdateAddress, inputUpdateDate, inputUpdateIsCurrentlyEmployed, inputUpdateId));
+
+        Person results = personDao.selectPerson(1);
+
+        assertEquals(exception.getMessage(), "Person id " + inputUpdateId + " does not exist");
+        assertEquals(results.getName(), testName);
+		assertEquals(results.getAddress(), testAddress);
+        assertEquals(results.getGwa(), testGwa);
+        assertEquals(results.getZipCode(), testZipcode);
+        assertEquals(results.getIsCurrentlyEmployed(), testIsCurrentlyEmployed);
     }
 
     @Test //TODO
     public void test_delete_person_success(){
+        //Create person with id of 1
+        personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
+        testIsCurrentlyEmployed);
 
+        boolean didDelete = personDao.deletePerson(1);
+
+        assertTrue(didDelete == true);
     }
 
     @Test //TODO
     public void test_delete_person_input_nonexistent_id_fail(){
+        //Create person with id of 1
+        personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
+        testIsCurrentlyEmployed);
 
+        //Get the created person on db
+        Person results = personDao.selectPerson(1);
+        int nonExistentPersonId = 5;
+
+        NoResultException exception = assertThrows(NoResultException.class, 
+        ()->personDao.deletePerson(nonExistentPersonId));
+
+        assertEquals(exception.getMessage(), "Person id " + nonExistentPersonId + " does not exist");
+        assertTrue(results != null);
     }
 
 
     @Test //TODO
     public void test_select_nonexistent_personId_fail(){
+        //Create person with id of 1
+        personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
+        testIsCurrentlyEmployed);
 
+        NoResultException exception = assertThrows(NoResultException.class, 
+        ()->personDao.selectPerson(5));
+
+        System.out.println(exception.getMessage() != null);
     }
 
     @Test //TODO

@@ -17,10 +17,10 @@
             <column name="ROLE_ID"></column>
             <generator class="identity"/>
         </id>
-        <property name="roleName" column="role_name" type="string"/>
+        <property name="roleName" column="role_name" type="string" unique="true"/>
 
         <bag name="persons" table="PERSON" 
-         lazy="true" fetch="select" cascade="all"  inverse="false"> 
+         lazy="false" fetch="select" cascade="all"  inverse="false"> 
             <key column="ROLE_ID" not-null="false" ></key>
             <many-to-many entity-name="com.exist.altheo.model.Person">
                 <column name="PERSON_ID" not-null="false" ></column>

@@ -1,10 +1,14 @@
 package com.exist.altheo.dao;
 
+import static org.junit.Assert.assertThrows;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.persistence.NoResultException;
 
 import com.exist.altheo.connection.DBConnection;
 import com.exist.altheo.model.ContactInformation;
@@ -66,44 +70,48 @@ public class ContactInformationDaoTest extends TestCase {
     
     @Test
     @SuppressWarnings("unchecked")
-    public void test_add_contact_information_success() {
-        String hsql = "FROM ContactInformation C WHERE C.email = '"+testEmail+"'";
+    public void test_add_contact_information_to_person_success() {
+        //Add a person obj first
+        Session session = sessionFactory.openSession();
 
-        //Add Person Obj first
-        personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
-        testIsCurrentlyEmployed, testContactInformations, testRoles);
+        session.beginTransaction();
 
+        int savedPersonId = (Integer) session.save(
+            new Person(testGwa, testZipcode, testName, testAddress, 
+            testDate, testIsCurrentlyEmployed)
+        );
 
+        session.getTransaction().commit();
+        session.close();
+        
         //Add contact information to person 
-        //With id of 1
-        List<Person> result = personDao.selectPerson(1);
         contactInformationDao.addContactInformation(testLandline, 
-        testMobileNum, testEmail, result.get(0));
+        testMobileNum, testEmail, savedPersonId);
 
-        //Main Testcase
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
+        // Check the newly created contactInformation
+        ContactInformation contactInformation = contactInformationDao.selectContact(1);
 
-		Query<ContactInformation> query = session.createQuery(hsql);
-
-		List<ContactInformation> results = query.list();
-
-		assertEquals(results.get(0).getLandline(), testLandline);
-        assertEquals(results.get(0).getMobileNumber(), testMobileNum);
-        assertEquals(results.get(0).getEmail(), testEmail);
-		        
+		assertEquals(contactInformation.getLandline(), testLandline);
+        assertEquals(contactInformation.getMobileNumber(), testMobileNum);
+        assertEquals(contactInformation.getEmail(), testEmail);
     }
 
     @Test
     public void test_update_contact_information_success() {
-        //Add Person obj first
-        personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
-        testIsCurrentlyEmployed, testContactInformations, testRoles);
-       
-        List<Person> result = personDao.selectPerson(1);
-    
+        //Add a person obj first
+        Session session = sessionFactory.openSession();
 
-        contactInformationDao.addContactInformation(testLandline, testMobileNum, testEmail,result.get(0));
+        session.beginTransaction();
+
+        int savedPersonId = (Integer) session.save(
+            new Person(testGwa, testZipcode, testName, testAddress, 
+            testDate, testIsCurrentlyEmployed)
+        );
+
+        session.getTransaction().commit();
+        session.close();
+
+        contactInformationDao.addContactInformation(testLandline, testMobileNum, testEmail, savedPersonId);
 
         int testSelectedContactId = 1;
         String testUpdateLandline = "2000";
@@ -114,66 +122,88 @@ public class ContactInformationDaoTest extends TestCase {
             testSelectedContactId, testUpdateLandline, testUpdateMobileNum,
             testUpdateEmail);
 
-        List<ContactInformation> contact = contactInformationDao.selectContact(1);
+        ContactInformation contact = contactInformationDao.selectContact(1);
 
-        assertEquals(contact.get(0).getLandline(), testUpdateLandline);
-        assertEquals(contact.get(0).getMobileNumber(), testUpdateMobileNum);
-        assertEquals(contact.get(0).getEmail(), testUpdateEmail);
+        assertEquals(contact.getLandline(), testUpdateLandline);
+        assertEquals(contact.getMobileNumber(), testUpdateMobileNum);
+        assertEquals(contact.getEmail(), testUpdateEmail);
     }
 
     @Test
-    public void test_update_contact_information_with_non_existent_contact_obj_fail() {
-        //Add Person obj first
-        personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
-        testIsCurrentlyEmployed, testContactInformations, testRoles);
+    public void test_update_contact_information_with_non_existent_contact_obj_fail() {      
+        //Add a person obj first
+        Session session = sessionFactory.openSession();
 
-        List<Person> result = personDao.selectPerson(1);
-      
-        contactInformationDao.addContactInformation(testLandline, testMobileNum, testEmail,result.get(0));
+        session.beginTransaction();
+
+        int savedPersonId = (Integer) session.save(
+            new Person(testGwa, testZipcode, testName, testAddress, 
+            testDate, testIsCurrentlyEmployed)
+        );
+
+        session.getTransaction().commit();
+        session.close();
+
+
+        contactInformationDao.addContactInformation(testLandline, testMobileNum, testEmail, savedPersonId);
 
         int testSelectedContactId = 2;
         String testUpdateLandline = "2000";
         String testUpdateMobileNum = "8-7000";
         String testUpdateEmail = "feedback@jfc.com.ph";
 
-       contactInformationDao.updateContactInformation(
-            testSelectedContactId, testUpdateLandline, testUpdateMobileNum,
-            testUpdateEmail);
+        //Delete the obj
+        NoResultException exception = assertThrows(NoResultException.class, 
+        ()-> 
+        contactInformationDao.updateContactInformation(
+             testSelectedContactId, testUpdateLandline, testUpdateMobileNum,
+             testUpdateEmail));
 
-        List<ContactInformation> contact = contactInformationDao.selectContact(1);
+        assertEquals(exception.getMessage(), "Role id " + testSelectedContactId + " does not exist");
+
+        ContactInformation contact = contactInformationDao.selectContact(1);
 
         //Checks if values did not changed
-        assertEquals(contact.get(0).getLandline(), testLandline);
-        assertEquals(contact.get(0).getMobileNumber(), testMobileNum);
-        assertEquals(contact.get(0).getEmail(), testEmail);
+        assertEquals(contact.getLandline(), testLandline);
+        assertEquals(contact.getMobileNumber(), testMobileNum);
+        assertEquals(contact.getEmail(), testEmail);
     }
 
     @Test
     public void test_delete_contact_information_success() {
-        //Add Person obj first
-        personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
-        testIsCurrentlyEmployed, testContactInformations, testRoles);
+        //Add a person obj first
+        Session session = sessionFactory.openSession();
 
-        //Add a contact obj 
-        List<Person> result = personDao.selectPerson(1);
-        contactInformationDao.addContactInformation(testLandline, testMobileNum, testEmail,result.get(0));
+        session.beginTransaction();
+
+        int savedPersonId = (Integer) session.save(
+            new Person(testGwa, testZipcode, testName, testAddress, 
+            testDate, testIsCurrentlyEmployed)
+        );
+
+        session.getTransaction().commit();
+        session.close();
+
+        contactInformationDao.addContactInformation(testLandline, testMobileNum, testEmail,savedPersonId);
         int testSelectedContactId = 1;
 
         //Delete the obj
-        boolean didDelete = contactInformationDao.deleteContact(testSelectedContactId);
-        assertTrue(didDelete == true);
+        contactInformationDao.deleteContact(testSelectedContactId);
+        
     }
 
     @Test
     public void test_delete_contact_information_with_nonexistent_id_fail() {
         //Add Person obj first
         personDao.addPerson(testName, testAddress, testGwa, testZipcode, testDate, 
-        testIsCurrentlyEmployed, testContactInformations, testRoles);
+        testIsCurrentlyEmployed);
 
         int testSelectedContactId = 2;
 
         //Delete the obj
-        boolean didDelete = contactInformationDao.deleteContact(testSelectedContactId);
-        assertTrue(didDelete == false);
+        NoResultException exception = assertThrows(NoResultException.class, 
+        ()-> contactInformationDao.deleteContact(testSelectedContactId));
+
+        assertEquals(exception.getMessage(), "Role id " + testSelectedContactId + " does not exist");
     }
 }

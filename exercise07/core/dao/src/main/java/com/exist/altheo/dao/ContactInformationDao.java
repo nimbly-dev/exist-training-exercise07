@@ -2,6 +2,8 @@ package com.exist.altheo.dao;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import com.exist.altheo.connection.DBConnection;
 import com.exist.altheo.model.ContactInformation;
 import com.exist.altheo.model.Person;
@@ -17,39 +19,19 @@ public class ContactInformationDao {
         this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
     }
 
+    @SuppressWarnings("unchecked")
     public void addContactInformation(
-        String landline, String mobileNumber, String email
+        String landline, String mobileNumber, String email, int personSelectId
     ) {
         Session session = sessionFactory.openSession();
-
-        ContactInformation contactInformation = new ContactInformation();
-
-        contactInformation.setLandline(landline);
-        contactInformation.setMobileNumber(mobileNumber);
-        contactInformation.setEmail(email);
-
         session.beginTransaction();
-        session.save(contactInformation);
 
-        session.getTransaction().commit();
-        session.close();
-    }
+        int getContactId = (Integer) session.save(new ContactInformation(landline, mobileNumber, email));
 
-    public void addContactInformation(
-        String landline, String mobileNumber, String email, Person person
-    ) {
-        Session session = sessionFactory.openSession();
+        ContactInformation contactInformation = session.get(ContactInformation.class, getContactId);
+        contactInformation.setPerson(session.get(Person.class, personSelectId));
 
-        ContactInformation contactInformation = new ContactInformation();
-
-        contactInformation.setLandline(landline);
-        contactInformation.setMobileNumber(mobileNumber);
-        contactInformation.setEmail(email);
-        // contactInformation.setPerson(per);
-        contactInformation.setPerson(person);
-
-        session.beginTransaction();
-        session.save(contactInformation);
+        session.update(contactInformation);
 
         session.getTransaction().commit();
         session.close();
@@ -62,32 +44,36 @@ public class ContactInformationDao {
     ) {
         Session session = sessionFactory.openSession();
 
-          //Setting the update statement
-          String hsql = "UPDATE ContactInformation set "
-          +"landline= :landline ,"
-          +"mobileNumber= :mobileNumber,"
-          +"email= :email "
-          +"where contactId= :contactId";
+        //Setting the update statement
+        String hsql = "UPDATE ContactInformation set "
+        +"landline= :landline ,"
+        +"mobileNumber= :mobileNumber,"
+        +"email= :email "
+        +"where contactId= :contactId";
 
-          Query<ContactInformation> query = session.createQuery(hsql);
-          query.setParameter("landline", inputlandline);
-          query.setParameter("mobileNumber", inputMobileNumber);
-          query.setParameter("email", inputEmail);
-          query.setParameter("contactId", selectedContactId);
- 
+        Query<ContactInformation> query = session.createQuery(hsql);
+        query.setParameter("landline", inputlandline);
+        query.setParameter("mobileNumber", inputMobileNumber);
+        query.setParameter("email", inputEmail);
+        query.setParameter("contactId", selectedContactId);
+
         //Begin updating
         session.beginTransaction();
-        query.executeUpdate();
+        int result = query.executeUpdate();
 
         session.getTransaction().commit();
 
         session.close();
+
+        if(result <= 0){
+            throw new NoResultException("Role id " + selectedContactId + " does not exist");
+        }
     }
 
     @SuppressWarnings("unchecked")
-    public boolean deleteContact(
+    public void deleteContact(
         int selectedContactId
-    ){
+    )throws NoResultException{
         Session session = sessionFactory.openSession();
 
         String hsql = "DELETE from ContactInformation where contactId=:id";
@@ -102,21 +88,22 @@ public class ContactInformationDao {
         session.close();
 
         if(result <= 0){
-            return false;
-        }else{
-            return true;
+            throw new NoResultException("Role id " + selectedContactId + " does not exist");
         }
     }
 
     //Helper method to select a specific contact
-    @SuppressWarnings("unchecked")
-    public List<ContactInformation> selectContact(int selectedContact) {
+    public ContactInformation selectContact(int selectedContactId) {
         Session session = sessionFactory.openSession();
-        String hsql_get_person = "FROM ContactInformation C WHERE C.contactId = "+selectedContact;
-
-        List<ContactInformation> results = session.createQuery(hsql_get_person).list();
-
+        session.beginTransaction();
+        ContactInformation contactInformation = session.get(ContactInformation.class, selectedContactId);
+    
         session.close();
-        return results;
+
+        if(contactInformation == null){
+            throw new NoResultException("Role id " + selectedContactId + " does not exist");
+        }else{
+            return contactInformation;
+        }
     }
 }
