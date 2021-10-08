@@ -33,11 +33,6 @@ public class ReaderTest
         return new TestSuite( ReaderTest.class );
     }
 
-    @org.junit.jupiter.api.Test
-    public void test_input_date() {
-        Date newDate = Reader.readDate("Enter a new date: ");
 
-        System.out.println(newDate);
-    }
 
 }

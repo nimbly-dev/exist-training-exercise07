@@ -25,6 +25,16 @@ public class Display {
         System.out.println("[U] update a specified person information  ");
         System.out.println("[R] assign a role to specified person information  ");
         System.out.println("[C] assign a contact to specified person information  ");
+        System.out.println("[V] view the commands ");
         System.out.println("[X] exit the Contact Information Interface ");
+    }
+
+    public static void displayListPersonInterfaceCommands(){
+        System.out.println("Below are the List Persons Interface Functionality commands ");
+        System.out.println("[BY_GWA] - print persons by gwa");
+        System.out.println("[BY_DATE_HIRED] - print persons by gwa");
+        System.out.println("[BY_LASTNAME] - print persons by gwa");
+        System.out.println("[V] - view the commands");
+        System.out.println("[X] - exit the List Person Interface");
     }
 }

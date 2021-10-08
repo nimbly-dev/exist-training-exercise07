@@ -20,13 +20,18 @@ public class ContactInformationDao {
     @SuppressWarnings("unchecked")
     public void addContactInformation(
         String landline, String mobileNumber, String email, int personSelectId
-    ) {
+    ) throws NoResultException{
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
         int getContactId = (Integer) session.save(new ContactInformation(landline, mobileNumber, email));
 
         ContactInformation contactInformation = session.get(ContactInformation.class, getContactId);
+
+        if(contactInformation == null)
+            throw new NoResultException("person id " + personSelectId + " does not exist");
+        
+
         contactInformation.setPerson(session.get(Person.class, personSelectId));
 
         session.update(contactInformation);

@@ -82,4 +82,16 @@ public class Reader {
 			return readLocalDate(message);
 		}
 	}
+
+	public static boolean readBoolean(String message) {
+		String choice = Reader.readString(message+" [YES|NO]");
+		
+		if(choice.toUpperCase() == "YES")
+			return true;
+		else if(choice.toUpperCase() == "NO")
+			return false;
+		else
+			System.out.println("Please enter [YES|NO] only ");
+			return readBoolean(message);
+	}
 }
