@@ -36,10 +36,8 @@ public class PersonController {
         String inputSuffix, String inputTitle, double inputGwa, String inputAddress, 
         String inputZipCode, LocalDate inputDateHired, boolean inputisCurrentlyEmployed
     ){
-        if(StringUtils.isBlank(inputFirstName) || StringUtils.isBlank(inputMiddleName) 
-           || StringUtils.isBlank(inputLastName) || StringUtils.isBlank(inputSuffix) 
-           || StringUtils.isBlank(inputTitle) || StringUtils.isBlank(inputZipCode)
-           || StringUtils.isBlank(inputAddress))
+        if(StringUtils.isBlank(inputFirstName) || StringUtils.isBlank(inputLastName)  
+           || StringUtils.isBlank(inputZipCode) || StringUtils.isBlank(inputAddress))
         {
             System.out.println("Input is blank, please fill out the fields");
         }
@@ -62,9 +60,8 @@ public class PersonController {
         String inputZipCode, LocalDate inputDateHired, boolean inputisCurrentlyEmployed,
         int selectedPersonId
     ){
-        if(StringUtils.isBlank(inputFirstName) || StringUtils.isBlank(inputMiddleName) 
-        || StringUtils.isBlank(inputLastName) || StringUtils.isBlank(inputSuffix) 
-        || StringUtils.isBlank(inputTitle) || StringUtils.isBlank(inputZipCode)
+        if(StringUtils.isBlank(inputFirstName) || StringUtils.isBlank(inputLastName) 
+        || StringUtils.isBlank(inputZipCode)
         || StringUtils.isBlank(inputAddress)){
             System.out.println("Input is blank, please fill out the fields");
         }
@@ -166,9 +163,9 @@ public class PersonController {
         boolean isEndPersonUserInterface = false;
 
         Display.displayPersonInterfaceCommands();
-        String command = Reader.readString("Enter command: ");
 
         do {
+            String command = Reader.readString("Enter command: ");
             switch (command.toUpperCase()) {
                 case "A":
                     String inputFirstName = Reader.readString("Enter first name");
@@ -180,6 +177,7 @@ public class PersonController {
                     String inputAddress = Reader.readString("Enter address");
                     String inputZipCode = Reader.readString("Enter zipcode");
                     boolean inputisCurrentlyEmployed = Reader.readBoolean("Currently Employed");
+                    System.out.println("Enter what date that you are hired: ");
                     LocalDate inputDateHired = Reader.readLocalDate("Enter date hired ");
 
                     addPerson(inputFirstName, inputMiddleName, inputLastName, inputSuffix, inputTitle, 
@@ -195,6 +193,7 @@ public class PersonController {
                     String updateInputAddress = Reader.readString("Enter address");
                     String updateInputZipCode = Reader.readString("Enter zipcode");
                     boolean updateInputisCurrentlyEmployed = Reader.readBoolean("Currently Employed");
+                    System.out.println("Enter what date that you are hired: ");
                     LocalDate updateInputDateHired = Reader.readLocalDate("Enter date hired ");
 
                     int updateSelectedPersonId = Reader.readInt("Enter selected person id ");
@@ -276,6 +275,20 @@ public class PersonController {
             System.out.println("GWA: "+p.getGwa());
             System.out.println("Currently Employed: "+p.getIsCurrentlyEmployed());
             System.out.println("Date Hired: "+p.getDateHired());
+            System.out.println("Roles: ");
+            p.getRoles().stream().forEach((r)->{
+                System.out.println("==========");
+                System.out.println("Role id: " + r.getRoleId());
+                System.out.println("Role name: " + r.getRoleName());
+            });
+            System.out.println("Contact: ");
+            p.getContactInformations().stream().forEach((c)->{
+                System.out.println("==========");
+                System.out.println("Contact id: " + c.getContactId());
+                System.out.println("Landline: " + c.getLandline());
+                System.out.println("Mobile Number: " + c.getMobileNumber());
+                System.out.println("Contact id: " + c.getContactId());
+            });
         });
     }
 }

@@ -18,5 +18,10 @@
       <artifactId>service</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.exist.altheo</groupId>
+      <artifactId>utility</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 </project>

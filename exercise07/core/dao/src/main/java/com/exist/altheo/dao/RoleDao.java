@@ -55,8 +55,6 @@ public class RoleDao {
 		session.beginTransaction();
 
 		int savedRoleId = (Integer) session.save(new Role(input));
-	
-		System.out.println("ROLEID : "+savedRoleId);
 
 		//Update the newly created role to reference the person
 		// String hsql_role = "UPDATE Role set person.persons.personId= :personId where roleId= :roleId";

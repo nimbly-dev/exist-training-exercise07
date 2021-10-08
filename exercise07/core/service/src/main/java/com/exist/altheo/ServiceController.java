@@ -18,12 +18,12 @@ public class ServiceController {
     }
 
     public void serviceUserInterface() {
-        String choice = Reader.readString("Enter command");
         boolean isEndServiceUserInterface = false;
 
         Display.displayServiceUserInterfaceCommands();
         
         do {
+            String choice = Reader.readString("Enter command");
             switch (choice.toUpperCase()) {
                 case "P":
                     personController.personInterface();

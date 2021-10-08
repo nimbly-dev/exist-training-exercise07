@@ -33,7 +33,7 @@
         <property name="isCurrentlyEmployed" column="is_currently_employed" type="boolean"/>
         
         <set name="contactInformations" table="CONTACT_INFORMATION"
-            inverse="true" fetch="select" cascade="all" lazy="true">
+            inverse="true" fetch="select" cascade="all" lazy="false">
             <key column="CONTACT_ID" not-null="false"/>
             <one-to-many class="ContactInformation"/>
         </set>

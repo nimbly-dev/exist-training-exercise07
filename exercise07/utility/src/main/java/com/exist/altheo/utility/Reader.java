@@ -83,9 +83,9 @@ public class Reader {
 	public static boolean readBoolean(String message) {
 		String choice = Reader.readString(message+" [YES|NO]");
 		
-		if(choice.toUpperCase() == "YES")
+		if(choice.equals("YES"))
 			return true;
-		else if(choice.toUpperCase() == "NO")
+		else if(choice.equals("NO"))
 			return false;
 		else
 			System.out.println("Please enter [YES|NO] only ");

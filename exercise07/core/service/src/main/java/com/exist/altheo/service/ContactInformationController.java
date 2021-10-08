@@ -59,9 +59,9 @@ public class ContactInformationController {
         System.out.println("You are now in the Contact Information Functionality Interface");
         boolean isEndRoleUserInterface = false;
         
-        String command = Reader.readString("Enter command: ");
-
+        
         do {
+            String command = Reader.readString("Enter command: ");
             switch (command.toUpperCase()) {
                 case "A":
                     String inputLandline = Reader.readString("Enter landline");

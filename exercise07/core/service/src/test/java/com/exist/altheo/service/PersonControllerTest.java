@@ -2,6 +2,7 @@ package com.exist.altheo.service;
 
 import java.time.LocalDate;
 
+import com.exist.altheo.dao.ContactInformationDao;
 import com.exist.altheo.dao.PersonDao;
 import com.exist.altheo.dao.RoleDao;
 
@@ -12,6 +13,7 @@ import junit.framework.TestCase;
 
 public class PersonControllerTest extends TestCase {
 
+    private ContactInformationDao contactInformationDao;
     private PersonDao personDao;
     private RoleDao roleDao;
     private PersonController personController;
@@ -22,6 +24,7 @@ public class PersonControllerTest extends TestCase {
         this.personDao = new PersonDao();
         this.roleDao = new RoleDao();
         this.personController = new PersonController();
+        this.contactInformationDao = new ContactInformationDao();
 	}
     
     @Test
@@ -34,10 +37,14 @@ public class PersonControllerTest extends TestCase {
         personDao.addPerson("Manila City",1 , "555", LocalDate.of(2020, 2, 12), false, 
         "Simba", "", "Zimba", "", "The Lion King");
 
+        contactInformationDao.addContactInformation("2222", "8-7000", "jolibee@delivery.ph", 1);
+
         roleDao.addRoleAndAssignToPerson("Admin", 1);
         roleDao.addRoleAndAssignToPerson("Hecker", 1);
 
         roleDao.addRoleAndAssignToPerson("Admin", 2);
+
+        contactInformationDao.addContactInformation("(02) 86236", "96", "mcdo@delivery.ph", 2);
 
         personController.printPersonsByGwa();
     }

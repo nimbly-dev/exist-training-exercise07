@@ -73,9 +73,9 @@ public class RoleController {
         System.out.println("You are now in the Role Functionality Interface");
         boolean isEndRoleUserInterface = false;
         
-        String command = Reader.readString("Enter command: ");
 
         do {
+            String command = Reader.readString("Enter command: ");
             switch (command.toUpperCase()) {
                 case "A":
                     String inputAdd = Reader.readString("Enter rolename ");
