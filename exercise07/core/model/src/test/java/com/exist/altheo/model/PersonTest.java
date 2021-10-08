@@ -20,8 +20,8 @@ public class PersonTest extends TestCase {
     private Person person2;
 
     private ZoneId defaultZoneId;
-    private Date dateToday;
-    private Date exampleDate;
+    private LocalDate dateToday;
+    private LocalDate exampleDate;
 
     List<Role> testRoles;
     Set<ContactInformation> testContact;
@@ -31,8 +31,8 @@ public class PersonTest extends TestCase {
 	protected void setUp() throws Exception {
         new SimpleDateFormat ("yyyy-MM-dd");
         this.defaultZoneId = ZoneId.systemDefault();
-        this.dateToday = new Date();
-        this.exampleDate = Date.from(LocalDate.of(2012, 12, 31).atStartOfDay(defaultZoneId).toInstant());
+        this.dateToday = LocalDate.now();
+        this.exampleDate = LocalDate.of(2021, 1, 1);
 
         this.testRoles = new ArrayList<Role>();
         this.testContact = new HashSet<>();

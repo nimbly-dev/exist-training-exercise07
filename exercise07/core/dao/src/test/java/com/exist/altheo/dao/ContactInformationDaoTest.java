@@ -2,6 +2,7 @@ package com.exist.altheo.dao;
 
 import static org.junit.Assert.assertThrows;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -35,7 +36,7 @@ public class ContactInformationDaoTest extends TestCase {
     private double testGwa;
     private String testZipcode;
     private String testAddress;
-    private Date testDate;
+    private LocalDate testDate;
     private boolean testIsCurrentlyEmployed;
     //Data testfields for contact
     private String testLandline;
@@ -58,7 +59,7 @@ public class ContactInformationDaoTest extends TestCase {
         this.testGwa = 1.25;
         this.testZipcode = "Doo1";
         this.testAddress = "Winterfell, The North, Westeros";
-        this.testDate = new Date();
+        this.testDate = LocalDate.now();
         this.testIsCurrentlyEmployed = true;
 
         new HashSet<ContactInformation>(0);

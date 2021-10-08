@@ -1,6 +1,7 @@
 package com.exist.altheo.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -22,7 +23,7 @@ public class Person implements Serializable{
     //TODO - CHANGE TO ENUM
     String address;
 
-    Date dateHired;
+    LocalDate dateHired;
     boolean isCurrentlyEmployed;
     Set<ContactInformation> contactInformations = new HashSet<ContactInformation>(0);
     List<Role> roles;
@@ -34,7 +35,7 @@ public class Person implements Serializable{
     
 
     public Person(double gwa, String zipCode, String firstName, String middleName, String lastName, String suffix,
-            String title, String address, Date dateHired, boolean isCurrentlyEmployed) {
+            String title, String address, LocalDate dateHired, boolean isCurrentlyEmployed) {
         this.gwa = gwa;
         this.zipCode = zipCode;
         this.firstName = firstName;
@@ -81,11 +82,11 @@ public class Person implements Serializable{
         this.address = address;
     }
 
-    public Date getDateHired() {
+    public LocalDate getDateHired() {
         return dateHired;
     }
 
-    public void setDateHired(Date dateHired) {
+    public void setDateHired(LocalDate dateHired) {
         this.dateHired = dateHired;
     }
 
@@ -156,7 +157,5 @@ public class Person implements Serializable{
     public void setCurrentlyEmployed(boolean isCurrentlyEmployed) {
         this.isCurrentlyEmployed = isCurrentlyEmployed;
     }
-    
-   
     
 }

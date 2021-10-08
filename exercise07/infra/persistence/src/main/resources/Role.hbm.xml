@@ -17,7 +17,7 @@
             <column name="ROLE_ID"></column>
             <generator class="identity"/>
         </id>
-        <property name="roleName" column="role_name" type="string" unique="true"/>
+        <property name="roleName" column="role_name" type="string"/>
 
         <bag name="persons" table="PERSON" 
          lazy="false" fetch="select" cascade="all"  inverse="false"> 

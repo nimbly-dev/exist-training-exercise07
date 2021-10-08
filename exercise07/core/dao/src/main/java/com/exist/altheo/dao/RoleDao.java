@@ -29,12 +29,13 @@ public class RoleDao {
         session.close();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") //TODO - BUG, OVERRIDES person_id if it currently points to another column
     public void assignRoleToPerson(int selectedPersonId, String roleName){
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-
         
+        // int personId = session.save(new Person());
+
         String nativeQueryAssignPerson = "UPDATE Role SET person_id =:personId where role_name =:roleName";
         Query<Role> query = session.createSQLQuery(nativeQueryAssignPerson);
         query.setParameter("personId", selectedPersonId);

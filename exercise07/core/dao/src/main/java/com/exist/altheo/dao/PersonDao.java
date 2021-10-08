@@ -1,5 +1,6 @@
 package com.exist.altheo.dao;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class PersonDao {
 
     public void addPerson(
         String address, double gwa, String zipCode,
-        Date dateHired, boolean isCurrentlyEmployed, String firstName,
+        LocalDate dateHired, boolean isCurrentlyEmployed, String firstName,
         String middleName, String lastName, String suffix, String title
     ) {
         Person person =new Person(gwa, zipCode, firstName, middleName, lastName, suffix, title, 
@@ -57,7 +58,7 @@ public class PersonDao {
     // @SuppressWarnings("unchecked")
     public void updatePerson(
         String address, double gwa, String zipCode,
-        Date dateHired, boolean isCurrentlyEmployed, String firstName,
+        LocalDate dateHired, boolean isCurrentlyEmployed, String firstName,
         String middleName, String lastName, String suffix, String title,
         int selectedPersonId
     ){

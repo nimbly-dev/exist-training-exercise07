@@ -29,7 +29,7 @@
         <property name="zipCode" column="zip_code" type="string"></property>
         <property name="gwa" column="gwa" type="double"></property>
 
-        <property name="dateHired" column="date_hired" type="date"/>
+        <property name="dateHired" column="date_hired" type="LocalDate"/>
         <property name="isCurrentlyEmployed" column="is_currently_employed" type="boolean"/>
         
         <set name="contactInformations" table="CONTACT_INFORMATION"

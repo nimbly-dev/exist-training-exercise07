@@ -1,5 +1,10 @@
 package com.exist.altheo;
 
+
+import java.util.Date;
+
+import com.exist.altheo.utility.Reader;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -7,7 +12,7 @@ import junit.framework.TestSuite;
 /**
  * Unit test for simple App.
  */
-public class ServiceTest 
+public class ReaderTest 
     extends TestCase
 {
     /**
@@ -15,7 +20,7 @@ public class ServiceTest
      *
      * @param testName name of the test case
      */
-    public ServiceTest( String testName )
+    public ReaderTest( String testName )
     {
         super( testName );
     }
@@ -25,14 +30,14 @@ public class ServiceTest
      */
     public static Test suite()
     {
-        return new TestSuite( ServiceTest.class );
+        return new TestSuite( ReaderTest.class );
     }
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
+    @org.junit.jupiter.api.Test
+    public void test_input_date() {
+        Date newDate = Reader.readDate("Enter a new date: ");
+
+        System.out.println(newDate);
     }
+
 }

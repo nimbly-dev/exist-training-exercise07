@@ -2,6 +2,11 @@ package com.exist.altheo.utility;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -62,5 +67,19 @@ public class Reader {
 		catch(Exception e) {
 		}
 		return input;
+	}
+
+	public static LocalDate readLocalDate(String message){
+		int day = Reader.readInt("Enter day ");
+		int month = Reader.readInt("Enter month ");
+		int year = Reader.readInt("Enter year ");
+
+		try{
+			LocalDate date = LocalDate.of(year, month, day);
+			return date;
+		}catch(DateTimeException e){
+			System.out.println("Invalid date please try again ");
+			return readLocalDate(message);
+		}
 	}
 }

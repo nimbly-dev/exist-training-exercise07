@@ -1,4 +1,5 @@
 package com.exist.altheo.model;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -17,7 +18,7 @@ public class RoleTest extends TestCase{
     
     // private SimpleDateFormat ft;
     // private ZoneId defaultZoneId;
-    private Date dateToday;
+    private LocalDate dateToday;
     // private Date exampleDate;
 
     // private List<Person> persons;
@@ -27,7 +28,7 @@ public class RoleTest extends TestCase{
 	protected void setUp() throws Exception {
         // this.ft = new SimpleDateFormat ("yyyy-MM-dd");
         // this.defaultZoneId = ZoneId.systemDefault();
-        this.dateToday = new Date();
+        this.dateToday = LocalDate.now();
         // this.exampleDate = Date.from(LocalDate.of(2012, 12, 31).atStartOfDay(defaultZoneId).toInstant());
 
         List<Role> testRoles = new ArrayList<Role>();

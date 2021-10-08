@@ -3,6 +3,7 @@ package com.exist.altheo.dao;
 import static org.junit.Assert.assertThrows;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,7 +36,7 @@ public class PersonDaoTest extends TestCase {
 	private double testGwa;
 	private String testZipcode;
 	private String testAddress;
-	private Date testDate;
+	private LocalDate testDate;
 	private boolean testIsCurrentlyEmployed;
     
     private SimpleDateFormat ft;
@@ -58,7 +59,7 @@ public class PersonDaoTest extends TestCase {
 		this.testGwa = 1.25;
 		this.testZipcode = "Doo1";
 		this.testAddress = "Winterfell, The North, Westeros";
-		this.testDate = new Date();
+		this.testDate = LocalDate.now();
 		this.testIsCurrentlyEmployed = true;
 
     }
@@ -118,7 +119,7 @@ public class PersonDaoTest extends TestCase {
         assertEquals(result.getAddress(), testAddress);
         assertEquals(result.getGwa(), testGwa);
         assertEquals(result.getZipCode(), testZipcode);
-        assertEquals(ft.format(result.getDateHired()), ft.format(testDate));
+        assertEquals(result.getDateHired(), testDate);
         assertEquals(result.getIsCurrentlyEmployed(), testIsCurrentlyEmployed);
         assertEquals(result.getRoles().get(0).getRoleName(), "Admin");
 
@@ -142,7 +143,7 @@ public class PersonDaoTest extends TestCase {
         String inputUpdateAddress = "Hallo Jo";
         double inputUpdateGwa = 5;
         String inputUpdateZipCode = "255";
-        Date inputUpdateDate = new Date();
+        LocalDate inputUpdateDate = LocalDate.now();
         boolean testIsCurrentlyEmployed = false;
 
         personDao.updatePerson(inputUpdateAddress, inputUpdateGwa, inputUpdateZipCode, 
@@ -179,7 +180,7 @@ public class PersonDaoTest extends TestCase {
         String inputUpdateAddress = "Hallo Jo";
         double inputUpdateGwa = 5;
         String inputUpdateZipCode = "255";
-        Date inputUpdateDate = new Date();
+        LocalDate inputUpdateDate = LocalDate.of(2021, 1, 2);
         boolean testIsCurrentlyEmployed = false;
         int inputUpdateId = 10;
 

@@ -20,16 +20,16 @@ public class ContactInformationTest extends TestCase {
     
     // private SimpleDateFormat ft;
     private ZoneId defaultZoneId;
-    private Date dateToday;
-    private Date exampleDate;
+    private LocalDate dateToday;
+    private LocalDate exampleDate;
     
 	@Override
 	@BeforeEach
 	protected void setUp() throws Exception {
         // this.ft = new SimpleDateFormat ("yyyy-MM-dd");
         this.defaultZoneId = ZoneId.systemDefault();
-        this.dateToday = new Date();
-        this.exampleDate = Date.from(LocalDate.of(2012, 12, 31).atStartOfDay(defaultZoneId).toInstant());
+        this.dateToday = LocalDate.now();
+        this.exampleDate = LocalDate.of(2012, 1, 1);
 
         List<Role> testRoles = new ArrayList<Role>();
         Set<ContactInformation> testContact = new HashSet<ContactInformation>();
