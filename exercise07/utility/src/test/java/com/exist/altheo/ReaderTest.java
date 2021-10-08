@@ -1,10 +1,6 @@
 package com.exist.altheo;
 
 
-import java.util.Date;
-
-import com.exist.altheo.utility.Reader;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

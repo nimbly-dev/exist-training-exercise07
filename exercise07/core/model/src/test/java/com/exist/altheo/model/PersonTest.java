@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,7 +18,6 @@ public class PersonTest extends TestCase {
 
     private Person person2;
 
-    private ZoneId defaultZoneId;
     private LocalDate dateToday;
     private LocalDate exampleDate;
 
@@ -30,7 +28,7 @@ public class PersonTest extends TestCase {
 	@BeforeEach
 	protected void setUp() throws Exception {
         new SimpleDateFormat ("yyyy-MM-dd");
-        this.defaultZoneId = ZoneId.systemDefault();
+        ZoneId.systemDefault();
         this.dateToday = LocalDate.now();
         this.exampleDate = LocalDate.of(2021, 1, 1);
 

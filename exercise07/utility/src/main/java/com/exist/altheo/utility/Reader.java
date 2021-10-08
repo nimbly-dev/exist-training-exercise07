@@ -2,11 +2,8 @@ package com.exist.altheo.utility;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 

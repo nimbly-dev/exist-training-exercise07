@@ -3,7 +3,6 @@ package com.exist.altheo.dao;
 import static org.junit.Assert.assertThrows;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -15,7 +14,6 @@ import com.exist.altheo.model.Role;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;

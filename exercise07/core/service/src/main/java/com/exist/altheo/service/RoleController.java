@@ -2,6 +2,8 @@ package com.exist.altheo.service;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import com.exist.altheo.dao.RoleDao;
 import com.exist.altheo.model.Role;
 import com.exist.altheo.utility.Reader;
@@ -31,27 +33,30 @@ public class RoleController {
         }
     }
 
-    //TODO - IF DELETE FAIL, PRINT SAYING DELETE FAILED
     public void deleteRole() {
         int selectedIndex = Reader.readInt("Enter roleId you wish to delete ");
-        roleDao.deleteRole(selectedIndex);
+        try{
+            roleDao.deleteRole(selectedIndex);
+        }catch(NoResultException nre){
+            System.out.println(nre.getMessage());
+        }
     }
 
-    //TODO - IF UPDATE FAIL, PRINT SAYING UPDATE FAILED
-    public boolean updateRole(String input) {
+    public void updateRole(String input) {
         int selectedIndex = Reader.readInt("Enter roleId you wish to update");
 
         //Returns true if valid otherwise returns false
         if(StringUtils.isEmpty(input)){
             System.out.println("Input is blank, please try again");
-            return false;
         }
         else if(!StringUtils.isAsciiPrintable(input)){
             System.out.println("Input is invalid");
-            return false;
         }else{
-            roleDao.updateRole(selectedIndex, input);
-            return true;
+            try{
+                roleDao.updateRole(selectedIndex, input);
+            }catch(NoResultException nre){
+                System.out.println(nre.getMessage());
+            }
         }
     }
 

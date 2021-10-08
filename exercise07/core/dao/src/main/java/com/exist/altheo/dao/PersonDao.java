@@ -1,7 +1,6 @@
 package com.exist.altheo.dao;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -54,8 +53,6 @@ public class PersonDao {
         }
     }
 
-    //TODO - REPLACE HSQL STATEMENT AND USE session.update()
-    // @SuppressWarnings("unchecked")
     public void updatePerson(
         String address, double gwa, String zipCode,
         LocalDate dateHired, boolean isCurrentlyEmployed, String firstName,
@@ -81,36 +78,10 @@ public class PersonDao {
         person.setGwa(gwa);
         person.setDateHired(dateHired);
 
-
-        //Setting the update statement
-        // String hsql = "UPDATE Person"+ 
-        // " set gwa= : gwa ," + 
-        // "zipCode= : zipCode ," + 
-        // "name= : name ," + 
-        // "address= : address ," + 
-        // "dateHired= : dateHired ," + 
-        // "isCurrentlyEmployed= : isCurrentlyEmployed " + 
-        // "where personId= :personId";
-
-        // Query<Role> query = session.createQuery(hsql);
-        // query.setParameter("gwa", inputGwa);
-        // query.setParameter("zipCode", inputZipCode);
-        // query.setParameter("name", inputName);
-        // query.setParameter("address", inputAddress);
-        // query.setParameter("dateHired", inputDateHired);
-        // query.setParameter("isCurrentlyEmployed", inputIsCurrentlyEmployed);
-        // query.setParameter("personId", selectedPersonId);
-
-        
-        // int result = query.executeUpdate();
         session.update(person);
         session.getTransaction().commit();
         session.close();
-        // if(result <= 0){
-        //     throw new NoResultException("Person id " + selectedPersonId + " does not exist");
-        // }else{
-        //     return true;
-        // }
+ 
     }
 
     @SuppressWarnings("unchecked")

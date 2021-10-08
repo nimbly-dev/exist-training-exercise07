@@ -1,10 +1,7 @@
 package com.exist.altheo.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,9 +28,7 @@ public class RoleTest extends TestCase{
         this.dateToday = LocalDate.now();
         // this.exampleDate = Date.from(LocalDate.of(2012, 12, 31).atStartOfDay(defaultZoneId).toInstant());
 
-        List<Role> testRoles = new ArrayList<Role>();
-        Set<ContactInformation> testContact = new HashSet<ContactInformation>();
-		this.person1 = new Person(1.25, "322", "John", "Doe", "Doo", "Jr.", "The Third", 
+        this.person1 = new Person(1.25, "322", "John", "Doe", "Doo", "Jr.", "The Third", 
         "Doobi Manila", dateToday, true);
 
         this.person2 = new Person(5, "322", "Scooby", "Doobo", "Doo", "Sr.", 

@@ -2,11 +2,6 @@ package com.exist.altheo.model;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,23 +13,19 @@ public class ContactInformationTest extends TestCase {
     private Person person2;
     private Person jolibee;
     
-    // private SimpleDateFormat ft;
-    private ZoneId defaultZoneId;
     private LocalDate dateToday;
     private LocalDate exampleDate;
     
 	@Override
 	@BeforeEach
 	protected void setUp() throws Exception {
-        // this.ft = new SimpleDateFormat ("yyyy-MM-dd");
-        this.defaultZoneId = ZoneId.systemDefault();
+        ZoneId.systemDefault();
         this.dateToday = LocalDate.now();
         this.exampleDate = LocalDate.of(2012, 1, 1);
 
-        List<Role> testRoles = new ArrayList<Role>();
-        Set<ContactInformation> testContact = new HashSet<ContactInformation>();
-		this.person1 = new Person(1.25, "322", "John", "Doe", "Doo", "Jr.", "The Third", 
-        "Doobi Manila", dateToday, true);
+        // Set<ContactInformation> testContact = new HashSet<ContactInformation>();
+		// this.person1 = new Person(1.25, "322", "John", "Doe", "Doo", "Jr.", "The Third", 
+        // "Doobi Manila", dateToday, true);
 
         this.person2 = new Person(5, "322", "Scooby", "Doobo", "Doo", "Sr.", 
         "Dog", "Makati", dateToday, true);

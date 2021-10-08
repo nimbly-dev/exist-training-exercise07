@@ -4,7 +4,6 @@ import static org.junit.Assert.assertThrows;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 
 import javax.persistence.NoResultException;
@@ -72,7 +71,6 @@ public class ContactInformationDaoTest extends TestCase {
     }
     
     @Test
-    @SuppressWarnings("unchecked")
     public void test_add_contact_information_to_person_success() {
         //Add a person obj first
         Session session = sessionFactory.openSession();

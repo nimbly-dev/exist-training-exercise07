@@ -2,11 +2,8 @@ package com.exist.altheo.dao;
 
 import static org.junit.Assert.assertThrows;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -39,7 +36,7 @@ public class PersonDaoTest extends TestCase {
 	private LocalDate testDate;
 	private boolean testIsCurrentlyEmployed;
     
-    private SimpleDateFormat ft;
+   
     @Override
     @BeforeEach
     protected void setUp() throws Exception {
@@ -47,8 +44,6 @@ public class PersonDaoTest extends TestCase {
         this.contactInformationDao = new ContactInformationDao();
         this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
 		this.personDao = new PersonDao();
-        this.ft = new SimpleDateFormat ("yyyy-MM-dd");
-        ZoneId.systemDefault();
 
 		//Sets test values for test person obj
         this.testFirstName = "John";

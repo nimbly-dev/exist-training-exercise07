@@ -1,7 +1,6 @@
 package com.exist.altheo.service;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import com.exist.altheo.dao.PersonDao;
 import com.exist.altheo.dao.RoleDao;

@@ -37,4 +37,13 @@ public class Display {
         System.out.println("[V] - view the commands");
         System.out.println("[X] - exit the List Person Interface");
     }
+
+    public static void displayServiceUserInterfaceCommands(){
+        System.out.println("Below are the Service Interface Functionality commands ");
+        System.out.println("[P] - open person interface");
+        System.out.println("[R] - open role interface");
+        System.out.println("[C] - open contact information interface");
+        System.out.println("[V] - view the commands");
+        System.out.println("[X] - exit the programm");
+    }
 }

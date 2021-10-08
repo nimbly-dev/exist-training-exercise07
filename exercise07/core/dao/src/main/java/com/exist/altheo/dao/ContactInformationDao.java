@@ -17,7 +17,7 @@ public class ContactInformationDao {
         this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
     }
 
-    @SuppressWarnings("unchecked")
+   
     public void addContactInformation(
         String landline, String mobileNumber, String email, int personSelectId
     ) throws NoResultException{
