@@ -15,7 +15,11 @@ import com.exist.altheo.model.Role;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.junit.After;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
 import junit.framework.TestCase;
@@ -37,7 +41,7 @@ public class RoleDaoTest extends TestCase {
 	private boolean testIsCurrentlyEmployed;
     
     @Override
-    @BeforeEach
+    @BeforeAll
     protected void setUp() throws Exception {
         this.roleDao = new RoleDao();
         this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
@@ -55,6 +59,15 @@ public class RoleDaoTest extends TestCase {
 		this.testIsCurrentlyEmployed = true;
     }
 
+	
+    @Override
+    @AfterEach
+	protected void tearDown() throws Exception {
+		if ( sessionFactory != null ) {
+			sessionFactory.close();
+		}
+	}
+
 	@Test
 	public void test_add_role_success(){
 		String testInput = "Admin";
@@ -67,15 +80,6 @@ public class RoleDaoTest extends TestCase {
 		assertEquals(selectRole.getRoleName(), testInput);
 	}
 
-	// @Test
-	// public void test_add_role_duplicate_fail(){
-	// 	roleDao.addNewRole("Admin");
-
-	// 	ConstraintViolationException exception = assertThrows(ConstraintViolationException.class, 
-	// 	()->roleDao.addNewRole("Admin"));
-
-	// 	assertTrue(exception.getMessage() != null);//Check if there is an exception mssg
-	// }
 
 	@Test
 	public void test_assign_role_to_person_test(){
@@ -197,7 +201,7 @@ public class RoleDaoTest extends TestCase {
 		assertEquals(exception.getMessage(), "Role id " + selectedRoleId + " does not exist");
 	}
 
-    @Test
+    @Test //TODO - FIX BUG, STUCK ON EXECUTING TEST CASE UPON BULK TEST EXECUTION
 	public void test_select_role(){
 		//Add Person Obj first
 		Session session = sessionFactory.openSession();
@@ -207,7 +211,7 @@ public class RoleDaoTest extends TestCase {
 			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
 			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
 
-		session.getTransaction().commit();
+	
 		session.close();
 
 		//Firstly, create a the roles and assign them to person

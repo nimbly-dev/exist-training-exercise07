@@ -1,5 +1,7 @@
 package com.exist.altheo;
 
+import com.exist.altheo.service.ContactInformationControllerTest;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -25,14 +27,10 @@ public class ServiceControllerTest
      */
     public static Test suite()
     {
-        return new TestSuite( ServiceControllerTest.class );
+        TestSuite suite = new TestSuite();
+        suite.addTestSuite(ContactInformationControllerTest.class);
+        return suite;
     }
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
-    }
+
 }

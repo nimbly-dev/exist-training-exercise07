@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
+import javax.xml.bind.ValidationException;
 
 import com.exist.altheo.dao.ContactInformationDao;
 import com.exist.altheo.dao.PersonDao;
@@ -31,21 +33,21 @@ public class PersonController {
         this.contactInformationDao = new ContactInformationDao();
     }
     
-    public void addPerson(
+    public void addPersonController(
         String inputFirstName, String inputMiddleName, String inputLastName, 
         String inputSuffix, String inputTitle, double inputGwa, String inputAddress, 
         String inputZipCode, LocalDate inputDateHired, boolean inputisCurrentlyEmployed
-    ){
+    ) throws ValidationException {
         if(StringUtils.isBlank(inputFirstName) || StringUtils.isBlank(inputLastName)  
            || StringUtils.isBlank(inputZipCode) || StringUtils.isBlank(inputAddress))
         {
-            System.out.println("Input is blank, please fill out the fields");
+            throw new ValidationException("Input is blank, please fill out the fields"); 
         }
         else if(!StringUtils.isAsciiPrintable(inputFirstName) || !StringUtils.isAsciiPrintable(inputMiddleName) 
              || !StringUtils.isAsciiPrintable(inputLastName) || !StringUtils.isAsciiPrintable(inputSuffix) 
              || !StringUtils.isAsciiPrintable(inputTitle) || !StringUtils.isAsciiPrintable(inputZipCode)
              || !StringUtils.isAsciiPrintable(inputAddress)){
-            System.out.println("Input characters are not supported ");
+            throw new ValidationException("Input characters are not supported "); 
         }
         else{
             personDao.addPerson(inputAddress, inputGwa, inputZipCode, inputDateHired, inputisCurrentlyEmployed, 
@@ -54,81 +56,71 @@ public class PersonController {
         }
     }
 
-    public void updatePerson(
+    public void updatePersonController(
         String inputFirstName, String inputMiddleName, String inputLastName, 
         String inputSuffix, String inputTitle, double inputGwa, String inputAddress, 
         String inputZipCode, LocalDate inputDateHired, boolean inputisCurrentlyEmployed,
         int selectedPersonId
-    ){
+    ) throws ValidationException , NoResultException
+    {
         if(StringUtils.isBlank(inputFirstName) || StringUtils.isBlank(inputLastName) 
         || StringUtils.isBlank(inputZipCode)
         || StringUtils.isBlank(inputAddress)){
-            System.out.println("Input is blank, please fill out the fields");
+            throw new ValidationException("Input is blank, please fill out the fields"); 
         }
         else if(!StringUtils.isAsciiPrintable(inputFirstName) || !StringUtils.isAsciiPrintable(inputMiddleName) 
         || !StringUtils.isAsciiPrintable(inputLastName) || !StringUtils.isAsciiPrintable(inputSuffix) 
         || !StringUtils.isAsciiPrintable(inputTitle) || !StringUtils.isAsciiPrintable(inputZipCode)
         || !StringUtils.isAsciiPrintable(inputAddress)){
-            System.out.println("Input characters are not supported ");
+            throw new ValidationException("Input characters are not supported "); 
         }
         else{
-            try{
-                personDao.updatePerson(inputAddress, inputGwa, inputZipCode, inputDateHired, inputisCurrentlyEmployed, 
-                inputFirstName, inputMiddleName, inputLastName, inputSuffix, inputTitle, selectedPersonId);
-            }catch(NoResultException nre){
-                System.out.println(nre.getMessage());
-            }
+            
+            personDao.updatePerson(inputAddress, inputGwa, inputZipCode, inputDateHired, inputisCurrentlyEmployed, 
+            inputFirstName, inputMiddleName, inputLastName, inputSuffix, inputTitle, selectedPersonId);
+           
             System.out.println("Person updated added");
         }
     }
     
-    public void deletePerson(int selectedPersonId){
-        try{
-            personDao.selectPerson(selectedPersonId);
-        }catch(NoResultException nre){
-           System.out.println(nre.getMessage());
-        } 
+    public void deletePersonController(int selectedPersonId) throws NoResultException{
+         personDao.deletePerson(selectedPersonId);
     }
 
-    public void assignRoleToPerson(String roleName, int selectedPersonId){
+    public void assignRoleToPersonController(String roleName, int selectedPersonId)
+    throws ValidationException, PersistenceException{ //MODIFY ERROR MSSG OF PERSISTENCE EXCEPTION
         if(StringUtils.isBlank(roleName)){
-            System.out.println("Input is blank, please fill out the fields");
+            throw new ValidationException("Input is blank, please fill out the fields"); 
         }
         else if(!StringUtils.isAsciiPrintable(roleName)){
-            System.out.println("Input characters are not supported ");
+            throw new ValidationException("Input characters are not supported "); 
         }else{
-            try{
-                roleDao.assignRoleToPerson(selectedPersonId, roleName);
-            }catch(NoResultException nre){
-                System.out.println(nre.getMessage());
-            }
+            roleDao.addRoleAndAssignToPerson(roleName, selectedPersonId);
+            System.out.println("Successfuly added role to person");
         }
     }
 
-    public void assignContactInfoToPerson(
+    public void assignContactInfoToPersonController(
         String inputLandline, String inputMobileNumber, String inputEmail,
         int personSelectId
-    ){
+    ) throws ValidationException, NoResultException{
         if(StringUtils.isBlank(inputLandline) || StringUtils.isBlank(inputMobileNumber)
           || StringUtils.isBlank(inputEmail)){
-            System.out.println("Input is blank, please fill out the fields");
+            throw new ValidationException("Input is blank, please fill out the fields"); 
         }
         else if(!StringUtils.isAsciiPrintable(inputLandline) || 
                 !StringUtils.isAsciiPrintable(inputMobileNumber) ||
                 !StringUtils.isAsciiPrintable(inputEmail)){
-            System.out.println("Input characters are not supported ");
+            throw new ValidationException("Input characters are not supported "); 
         }
         else{
-            try{
-                contactInformationDao.addContactInformation(inputLandline, inputMobileNumber, 
-                inputEmail, personSelectId);
-            }catch(NoResultException nre){
-                System.out.println(nre.getMessage());
-            }
+            contactInformationDao.addContactInformation(inputLandline, inputMobileNumber, 
+            inputEmail, personSelectId);
+            System.out.println("Successfuly added contact to person");
         }
     }
 
-    public void listAllPerson(){
+    public void listAllPersonInterface(){
         System.out.println("You are on Person List Functionality Interface");
         boolean isEndListAllPersonInterface = false;
 
@@ -180,8 +172,12 @@ public class PersonController {
                     System.out.println("Enter what date that you are hired: ");
                     LocalDate inputDateHired = Reader.readLocalDate("Enter date hired ");
 
-                    addPerson(inputFirstName, inputMiddleName, inputLastName, inputSuffix, inputTitle, 
-                    inputGwa, inputAddress, inputZipCode, inputDateHired, inputisCurrentlyEmployed);
+                    try {
+                        addPersonController(inputFirstName, inputMiddleName, inputLastName, inputSuffix, inputTitle, 
+                        inputGwa, inputAddress, inputZipCode, inputDateHired, inputisCurrentlyEmployed);
+                    } catch (ValidationException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "U":
                     String updateInputFirstName = Reader.readString("Enter first name");
@@ -198,32 +194,48 @@ public class PersonController {
 
                     int updateSelectedPersonId = Reader.readInt("Enter selected person id ");
 
-                    updatePerson(updateInputFirstName, updateInputMiddleName, updateInputLastName, 
-                    updateInputSuffix, updateInputTitle, updateInputGwa, updateInputAddress, 
-                    updateInputZipCode, updateInputDateHired, updateInputisCurrentlyEmployed, 
-                    updateSelectedPersonId);
+                    try {
+                        updatePersonController(updateInputFirstName, updateInputMiddleName, updateInputLastName, 
+                        updateInputSuffix, updateInputTitle, updateInputGwa, updateInputAddress, 
+                        updateInputZipCode, updateInputDateHired, updateInputisCurrentlyEmployed, 
+                        updateSelectedPersonId);
+                    } catch (NoResultException | ValidationException e) {
+                        System.out.println(e.getMessage());
+                    }
 
                     break;
                 case "D":
                     int deleteSelectedPersonId = 
-                        Reader.readInt("Enter person id of the person data that you wish to delete");
-                    deletePerson(deleteSelectedPersonId);
+                    Reader.readInt("Enter person id of the person data that you wish to delete");
+                    try {
+                        deletePersonController(deleteSelectedPersonId);
+                    } catch (NoResultException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "L":
-                    listAllPerson();
+                    listAllPersonInterface();
                     break;
                 case "ADD_ROLE":
                     String roleName = Reader.readString("Enter new rolename ");
                     int selectedPersonIdForRole = Reader.readInt("Enter selected person id");
-                    assignRoleToPerson(roleName, selectedPersonIdForRole);
+                    try {
+                        assignRoleToPersonController(roleName, selectedPersonIdForRole);
+                    } catch (PersistenceException | ValidationException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "ADD_CONTACT":
                     String inputLandline = Reader.readString("Enter landline ");
                     String inputMobileNumber = Reader.readString("Enter landline ");
                     String inputEmail = Reader.readString("Enter landline ");
                     int selectedPersonIdForContact = Reader.readInt("Enter selected person id");
-                    assignContactInfoToPerson(inputLandline, inputMobileNumber, 
-                    inputEmail, selectedPersonIdForContact);
+                    try {
+                        assignContactInfoToPersonController(inputLandline, inputMobileNumber, 
+                        inputEmail, selectedPersonIdForContact);
+                    } catch (NoResultException | ValidationException e) {
+                       System.out.println(e.getMessage());
+                    }
                     break;
                 case "V":
                     Display.displayPersonInterfaceCommands();

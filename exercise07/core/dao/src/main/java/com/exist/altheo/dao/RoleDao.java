@@ -6,6 +6,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import com.exist.altheo.connection.DBConnection;
+import com.exist.altheo.model.Person;
 import com.exist.altheo.model.Role;
 
 import org.hibernate.Session;
@@ -49,7 +50,7 @@ public class RoleDao {
 
     @SuppressWarnings("unchecked") //TODO - CONVERT THIS TO USE session instead of native sql
     public void addRoleAndAssignToPerson(String input, int selectedPersonId) 
-        throws PersistenceException{
+        throws PersistenceException, ConstraintViolationException{
         Session session = sessionFactory.openSession();
 
 		session.beginTransaction();
@@ -112,6 +113,7 @@ public class RoleDao {
         }
     }
 
+    @SuppressWarnings("unchecked") //TODO - Bug, person obj reference on a specified role must be deleted also
     public void deleteRole(int selectedId) throws NoResultException
     {
         Session session = sessionFactory.openSession();
@@ -121,6 +123,22 @@ public class RoleDao {
 
         if(role == null)
             throw new NoResultException("Role id " + selectedId + " does not exist");
+
+        //Unreferenced or delete the role on the person obj
+        //First get the foreign key personId from the specified role
+        String native_query_find_fk = "SELECT person_id FROM Role WHERE role_id =:roleId";
+        Query<Integer> query_role = session.createSQLQuery(native_query_find_fk);
+        query_role.setParameter("roleId", selectedId);
+        //Place the personId on a variable
+        List<Integer> personId = query_role.list();
+
+        //Now use the personId to Unreferenced or delete the role on the person obj
+        Person person = session.get(Person.class, personId.get(0));
+        //Delete the role on the person obj roles list
+        // person.getRoles().removeIf(r-> r.getRoleId() == selectedId);
+        person.getRoles().remove(0);
+
+        session.update(person);
 
         session.delete(session.get(Role.class, selectedId));
 

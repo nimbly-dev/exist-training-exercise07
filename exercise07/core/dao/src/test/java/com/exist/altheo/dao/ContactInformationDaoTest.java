@@ -3,20 +3,19 @@ package com.exist.altheo.dao;
 import static org.junit.Assert.assertThrows;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
 
 import javax.persistence.NoResultException;
 
 import com.exist.altheo.connection.DBConnection;
 import com.exist.altheo.model.ContactInformation;
 import com.exist.altheo.model.Person;
-import com.exist.altheo.model.Role;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 
 import junit.framework.TestCase;
 
@@ -43,7 +42,7 @@ public class ContactInformationDaoTest extends TestCase {
     private String testEmail;
 
     @Override
-    @BeforeEach
+    @BeforeAll
     protected void setUp() throws Exception {
         this.contactInformationDao = new ContactInformationDao();
         this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
@@ -61,16 +60,22 @@ public class ContactInformationDaoTest extends TestCase {
         this.testDate = LocalDate.now();
         this.testIsCurrentlyEmployed = true;
 
-        new HashSet<ContactInformation>(0);
-        new ArrayList<Role>();
         
         //Sets test values for test contact obj
         this.testLandline = "1111";
         this.testMobileNum = "2222-3333";
         this.testEmail = "gmail@gmailing.com";
     }
+
+    @Override
+    @AfterEach
+	protected void tearDown() throws Exception {
+		if ( sessionFactory != null ) {
+			sessionFactory.close();
+		}
+	}
     
-    @Test
+    @Test //TODO - FIX BUG, STUCK ON EXECUTING TEST CASE UPON BULK TEST EXECUTION
     public void test_add_contact_information_to_person_success() {
         //Add a person obj first
         Session session = sessionFactory.openSession();
@@ -157,7 +162,7 @@ public class ContactInformationDaoTest extends TestCase {
              testSelectedContactId, testUpdateLandline, testUpdateMobileNum,
              testUpdateEmail));
 
-        assertEquals(exception.getMessage(), "Role id " + testSelectedContactId + " does not exist");
+        assertEquals(exception.getMessage(), "Person id " + testSelectedContactId + " does not exist");
 
         ContactInformation contact = contactInformationDao.selectContact(1);
 
@@ -201,6 +206,6 @@ public class ContactInformationDaoTest extends TestCase {
         NoResultException exception = assertThrows(NoResultException.class, 
         ()-> contactInformationDao.deleteContact(testSelectedContactId));
 
-        assertEquals(exception.getMessage(), "Role id " + testSelectedContactId + " does not exist");
+        assertEquals(exception.getMessage(), "person id " + testSelectedContactId + " does not exist");
     }
 }

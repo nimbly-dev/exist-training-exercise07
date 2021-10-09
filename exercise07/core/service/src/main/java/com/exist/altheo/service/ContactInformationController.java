@@ -1,5 +1,8 @@
 package com.exist.altheo.service;
 
+import javax.persistence.NoResultException;
+import javax.xml.bind.ValidationException;
+
 import com.exist.altheo.dao.ContactInformationDao;
 import com.exist.altheo.utility.Reader;
 import com.exist.altheo.view.Display;
@@ -14,16 +17,17 @@ public class ContactInformationController {
     }
     
     public void addContactInformation(String inputLandline, String inputMobileNumber, 
-    String inputEmail, int selectedPersonId){
+    String inputEmail, int selectedPersonId) throws ValidationException, NoResultException
+    {
         if(StringUtils.isEmpty(inputLandline) ||  StringUtils.isEmpty(inputMobileNumber)
             || StringUtils.isEmpty(inputEmail)){
-            System.out.println("Inputs must not be empty");
+            throw new ValidationException("Inputs must not be empty");
         }
         else if(!StringUtils.isAsciiPrintable(inputLandline) || 
                 !StringUtils.isAsciiPrintable(inputMobileNumber) ||
                 !StringUtils.isAsciiPrintable(inputEmail))
         {
-            System.out.println("Input is invalid");
+            throw new ValidationException("Inputs must be ascii characters");
         }
         else{
             contactInformationDao.addContactInformation(inputLandline, 
@@ -32,16 +36,16 @@ public class ContactInformationController {
     }
 
     public void updateContactInformation(String inputLandline, String inputMobileNumber, 
-    String inputEmail, int updateSelectedContactId){
+    String inputEmail, int updateSelectedContactId) throws ValidationException, NoResultException{
         if(StringUtils.isEmpty(inputLandline) ||  StringUtils.isEmpty(inputMobileNumber)
         || StringUtils.isEmpty(inputEmail)){
-        System.out.println("Inputs must not be empty");
+             throw new ValidationException("Inputs must not be empty");
         }
         else if(!StringUtils.isAsciiPrintable(inputLandline) || 
                 !StringUtils.isAsciiPrintable(inputMobileNumber) ||
                 !StringUtils.isAsciiPrintable(inputEmail))
         {
-            System.out.println("Input is invalid");
+            throw new ValidationException("Inputs must be ascii characters");
         }
         else{
             contactInformationDao.updateContactInformation(updateSelectedContactId, inputLandline, 
@@ -49,8 +53,7 @@ public class ContactInformationController {
         }
     }
     
-    public void deleteContactInformation(){
-        int selectedIndex = Reader.readInt("Enter roleId you wish to delete ");
+    public void deleteContactInformation(int selectedIndex) throws NoResultException{
         contactInformationDao.deleteContact(selectedIndex);
     }
 
@@ -68,18 +71,36 @@ public class ContactInformationController {
                     String inputMobileNumber = Reader.readString("Enter landline");
                     String inputEmail = Reader.readString("Enter landline");
                     int inputSelectedPersonId = Reader.readInt("Enter selected person id ");
-                    addContactInformation(inputLandline, inputMobileNumber, inputEmail,inputSelectedPersonId);
+                    try {
+                        addContactInformation(inputLandline, inputMobileNumber, 
+                        inputEmail,inputSelectedPersonId);
+                    } catch (ValidationException e) {
+                        System.out.println(e.getMessage());
+                    } catch (NoResultException nre){
+                        System.out.println(nre.getMessage());
+                    }
                     break;
                 case "D":
-                    deleteContactInformation();
+                    try{
+                        int selectedIndex = Reader.readInt("Enter roleId you wish to delete ");
+                        deleteContactInformation(selectedIndex);
+                    }catch(NoResultException nre){
+                        System.out.println(nre.getMessage());
+                    }
                     break;
                 case "U":
                     String updateInputLandline = Reader.readString("Enter landline");
                     String updateInputMobileNumber = Reader.readString("Enter landline");
                     String updateInputEmail = Reader.readString("Enter landline");
                     int updateSelectedContactId = Reader.readInt("Enter selected person id ");
-                    updateContactInformation(updateInputLandline, updateInputMobileNumber, 
-                    updateInputEmail, updateSelectedContactId);
+                    try {
+                        updateContactInformation(updateInputLandline, updateInputMobileNumber, 
+                        updateInputEmail, updateSelectedContactId);
+                    } catch (ValidationException e) {
+                        System.out.println(e.getMessage());
+                    } catch (NoResultException nre){
+                        System.out.println(nre.getMessage());
+                    }
                     break;
                 case "V":
                     Display.displayContactInformationInterfaceCommands();

@@ -84,26 +84,26 @@ public class PersonDao {
  
     }
 
-    @SuppressWarnings("unchecked")
-    public boolean deletePerson(int selectedPersonId)throws NoResultException{
+    public void deletePerson(int selectedPersonId)throws NoResultException{
         Session session = sessionFactory.openSession();
-
-        String hsql = "DELETE from Person where personId=:id";
-
-        Query<Role> query = session.createQuery(hsql);
-        query.setParameter("id", selectedPersonId);
-
+        // String hsql = "DELETE from Person where personId=:id";
         session.beginTransaction();
-        int result = query.executeUpdate();
+
+        Person person = session.get(Person.class, selectedPersonId);
+
+        if(person == null)
+            throw new NoResultException("Person id " + selectedPersonId + " does not exist");
+
+        session.delete(person);
+
+        // Query<Role> query = session.createQuery(hsql);
+        // query.setParameter("id", selectedPersonId);
+
+        // int result = query.executeUpdate();
 
         session.getTransaction().commit();
         session.close();
 
-        if(result <= 0){
-            throw new NoResultException("Person id " + selectedPersonId + " does not exist");
-        }else{
-            return true;
-        }
     }
 
     @SuppressWarnings("unchecked")

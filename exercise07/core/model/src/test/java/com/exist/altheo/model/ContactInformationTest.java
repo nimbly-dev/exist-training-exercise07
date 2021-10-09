@@ -37,12 +37,12 @@ public class ContactInformationTest extends TestCase {
     @Test
     public void test_contact_information_getters() {
         ContactInformation contactInformation1 = new ContactInformation(
-            "1111", "2222-3333", "hotdigitydog@gmail.com", person1);
+            "1111", "2222-3333", "hotdigitydog@gmail.com", person2);
 
         assertTrue(contactInformation1.getLandline() == "1111");
         assertTrue(contactInformation1.getMobileNumber() == "2222-3333");
         assertTrue(contactInformation1.getEmail() == "hotdigitydog@gmail.com");
-        assertTrue(contactInformation1.getPerson().getFirstName() == "John");
+        assertTrue(contactInformation1.getPerson().getFirstName() == "Scooby");
     }
 
     @Test 

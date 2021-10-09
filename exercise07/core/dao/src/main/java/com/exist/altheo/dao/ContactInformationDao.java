@@ -25,10 +25,10 @@ public class ContactInformationDao {
         session.beginTransaction();
 
         int getContactId = (Integer) session.save(new ContactInformation(landline, mobileNumber, email));
-
+      
         ContactInformation contactInformation = session.get(ContactInformation.class, getContactId);
 
-        if(contactInformation == null)
+        if(session.get(Person.class, personSelectId) == null)
             throw new NoResultException("person id " + personSelectId + " does not exist");
         
 
@@ -43,7 +43,7 @@ public class ContactInformationDao {
     public void updateContactInformation(
         int selectedContactId, String inputlandline, String inputMobileNumber,
         String inputEmail
-    ) {
+    ) throws NoResultException{
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         //Setting the update statement
@@ -51,7 +51,7 @@ public class ContactInformationDao {
         ContactInformation contactInformation = session.get(ContactInformation.class, selectedContactId);
 
         if(contactInformation == null)
-            throw new NoResultException("Role id " + selectedContactId + " does not exist");
+            throw new NoResultException("Person id " + selectedContactId + " does not exist");
 
         contactInformation.setLandline(inputlandline);
         contactInformation.setMobileNumber(inputMobileNumber);
@@ -74,7 +74,7 @@ public class ContactInformationDao {
         ContactInformation contactInformation = session.get(ContactInformation.class, selectedContactId);
 
         if(contactInformation == null)
-            throw new NoResultException("Role id " + selectedContactId + " does not exist");
+            throw new NoResultException("person id " + selectedContactId + " does not exist");
 
         session.delete(contactInformation);
         session.getTransaction().commit();
