@@ -125,9 +125,9 @@ public class PersonController {
         boolean isEndListAllPersonInterface = false;
 
         Display.displayListPersonInterfaceCommands();
-        String command = Reader.readString("Enter command: ");
 
         do {
+            String command = Reader.readString("Enter command: ");
             switch (command.toUpperCase()) {
                 case "BY_GWA":
                     printPersonsByGwa();

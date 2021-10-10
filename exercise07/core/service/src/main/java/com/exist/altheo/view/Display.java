@@ -24,8 +24,8 @@ public class Display {
         System.out.println("[D] delete a specified person information ");
         System.out.println("[U] update a specified person information  ");
         System.out.println("[L] list all persons  ");
-        System.out.println("[R] assign a role to specified person information  ");
-        System.out.println("[C] assign a contact to specified person information  ");
+        System.out.println("[ADD_ROLE] assign a role to specified person information  ");
+        System.out.println("[ADD_CONTACT] assign a contact to specified person information  ");
         System.out.println("[V] view the commands ");
         System.out.println("[X] exit the Contact Information Interface ");
     }

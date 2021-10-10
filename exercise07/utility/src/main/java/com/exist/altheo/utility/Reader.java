@@ -58,7 +58,7 @@ public class Reader {
 	public static double readDouble(String message) {
 		double input= 0.00;
 		try {
-			System.out.print(message + " ");
+			System.out.print(message + ": ");
 			input= Double.parseDouble(getReader().readLine());
 		}
 		catch(Exception e) {
