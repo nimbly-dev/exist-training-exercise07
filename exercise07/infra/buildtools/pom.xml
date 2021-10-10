@@ -12,4 +12,113 @@
   <version>1.0-SNAPSHOT</version>
   <name>buildtools</name>
   <url>http://maven.apache.org</url>
+  <properties>
+    <!-- app target -->
+    <build.directory.app>../../app/target</build.directory.app>
+    <!-- app classes -->
+    <classes.directory.app>../../app/target/classes</classes.directory.app>
+    <!-- app sources directory-->
+    <sources.directory.app>../../app/src/main/java</sources.directory.app>
+
+    <!-- core target -->
+    <build.directory.dao>../../core/dao/target</build.directory.dao>
+    <build.directory.model>../../core/model/target</build.directory.model>
+    <build.directory.service>../../core/service/target</build.directory.service>
+    <!-- core classes -->
+    <classes.directory.dao>../../core/dao/target/classes</classes.directory.dao>
+    <classes.directory.model>../../core/model/target/classes</classes.directory.model>
+    <classes.directory.service>../../core/service/target/classes</classes.directory.service>
+    <!-- cor e sources directory -->
+    <sources.directory.dao>../../core/dao/src/main/java</sources.directory.dao>
+    <sources.directory.model>../../core/model/src/main/java</sources.directory.model>
+    <sources.directory.service>../../core/service/src/main/java</sources.directory.service>
+
+    <!-- infra target -->
+    <build.directory.persistence>../../infra/persistence/target</build.directory.persistence>
+    <!-- infra classses -->
+    <classes.directory.persistence>../../infra/persistence/target/classes</classes.directory.persistence>
+    <!-- infra sources directory -->
+    <sources.directory.persistence>../../infra/persistence/src/main/java</sources.directory.persistence>
+
+  </properties>
+
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.0.0</version>
+    
+        <executions>
+          <execution>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+              <!-- Execute an ant task within maven -->
+                <echo message="Generating JaCoCo Reports" />
+                <taskdef name="report" classname="org.jacoco.ant.ReportTask">
+                  <classpath path="${basedir}/target/jacoco-jars/org.jacoco.ant.jar" />
+                </taskdef>
+                <mkdir dir="${basedir}/target/coverage-report" />
+                <report>
+                  <executiondata>
+                    <fileset dir="${build.directory.app}">
+                      <include name="jacoco.exec" />
+                    </fileset>
+                    <fileset dir="${build.directory.dao}">
+                      <include name="jacoco.exec" />
+                    </fileset>
+                    <fileset dir="${build.directory.model}">
+                      <include name="jacoco.exec" />
+                    </fileset>
+                    <fileset dir="${build.directory.service}">
+                      <include name="jacoco.exec" />
+                    </fileset>
+                    <fileset dir="${build.directory.persistence}">
+                      <include name="jacoco.exec" />
+                    </fileset>
+                  </executiondata>
+                  <structure name="JaCoCo-Multi Project">
+                    <group name="JaCoCo-Multi">
+                      <classfiles>
+                        <fileset dir="${classes.directory.app}" />
+                        <fileset dir="${classes.directory.dao}" />
+                        <fileset dir="${classes.directory.model}" />
+                        <fileset dir="${classes.directory.service}" />
+                        <fileset dir="${classes.directory.persistence}" />
+                      </classfiles>
+                      <sourcefiles encoding="UTF-8">
+                        <fileset dir="${sources.directory.app}" />
+                        <fileset dir="${sources.directory.dao}"></fileset>
+                        <fileset dir="${sources.directory.model}" />
+                        <fileset dir="${sources.directory.service}"></fileset>
+                        <fileset dir="${sources.directory.persistence}"></fileset>
+                      </sourcefiles>
+                    </group>
+                  </structure>
+                  <html destdir="${basedir}/target/coverage-report/html" />
+                  <xml destfile="${basedir}/target/coverage-report/coverage-report.xml" />
+                  <csv destfile="${basedir}/target/coverage-report/coverage-report.csv" />
+                </report>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+
+        <dependencies>
+          <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>org.jacoco.ant</artifactId>
+            <version>${jacoco-maven-plugin.version}</version>
+          </dependency>
+        </dependencies>
+        
+      </plugin>
+    </plugins>
+    
+  </build>
 </project>
