@@ -7,11 +7,9 @@ import javax.persistence.NoResultException;
 
 import com.exist.altheo.connection.DBConnection;
 import com.exist.altheo.model.Person;
-import com.exist.altheo.model.Role;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 
 public class PersonDao {
     private SessionFactory sessionFactory;
@@ -42,7 +40,9 @@ public class PersonDao {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         Person person = session.get(Person.class, selectedPersonId);
-    
+    	// String hsql_eager_select_query = "SELECT p FROM Person p inner join p.roles where p.personId=1";
+        // Person person = (Person) session.createQuery(hsql_eager_select_query).getSingleResult();
+
         session.getTransaction().commit();
         session.close();
 

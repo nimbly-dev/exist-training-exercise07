@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import junit.framework.TestCase;
 
 public class ContactInformationTest extends TestCase {
-    private Person person1;
+    // private Person person1;
     private Person person2;
     private Person jolibee;
     

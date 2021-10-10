@@ -45,7 +45,6 @@ public class ContactInformationControllerTest extends TestCase {
         } catch (ValidationException e) {
             e.printStackTrace();
         }
-
     }
 
     @Test

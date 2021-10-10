@@ -41,14 +41,10 @@ public class RoleTest extends TestCase{
        persons.add(this.person1);
 
        Role admin = new Role("Admin");
-       Role hacker = new Role("Hecker", persons);
-
         // System.out.println(persons.size());
 
        assertTrue(admin.getRoleName() == "Admin");
 
-       assertTrue(hacker.getRoleName() == "Hecker");
-       assertTrue(hacker.getPersons().size() == 1);
     }
 
     @Test
@@ -61,18 +57,11 @@ public class RoleTest extends TestCase{
         newPersonList.add(person2);
  
         Role admin = new Role("Admin");
-        Role hacker = new Role("Hecker", persons);
 
         admin.setRoleName("Super Admin");
 
-        hacker.setRoleName("Hacker");
-        hacker.setPersons(newPersonList);
-
         assertTrue(admin.getRoleName() == "Super Admin");
-
-        assertTrue(hacker.getRoleName() == "Hacker");
-        assertTrue(hacker.getPersons().size() == 2);
-        assertTrue(hacker.getPersons().get(1).getFirstName() == "Scooby");
+ 
     }
 
 }

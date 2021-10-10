@@ -32,11 +32,9 @@ public class PersonControllerTest extends TestCase {
         this.personController = new PersonController();
         this.contactInformationDao = new ContactInformationDao();
 	}
-    
-    @Test
-    public void test_print_person_list_by_gwa(){
-        
 
+    @Test
+    public void test_print_person_list(){
         personDao.addPerson("Manila City", 5, "555", LocalDate.now(), false, 
         "John", "Doo", "Doe", "", "The Third");
 
@@ -49,6 +47,29 @@ public class PersonControllerTest extends TestCase {
         roleDao.addRoleAndAssignToPerson("Hecker", 1);
 
         roleDao.addRoleAndAssignToPerson("Admin", 2);
+        roleDao.addRoleAndAssignToPerson("Mamba", 2);
+
+        contactInformationDao.addContactInformation("(02) 86236", "96", "mcdo@delivery.ph", 2);
+
+        personController.printPerson(personDao.getListPerson());
+    }
+    
+    @Test
+    public void test_print_person_list_by_gwa(){
+        
+        personDao.addPerson("Manila City", 5, "555", LocalDate.now(), false, 
+        "John", "Doo", "Doe", "", "The Third");
+
+        personDao.addPerson("Manila City",1 , "555", LocalDate.of(2020, 2, 12), false, 
+        "Simba", "", "Zimba", "", "The Lion King");
+
+        contactInformationDao.addContactInformation("2222", "8-7000", "jolibee@delivery.ph", 1);
+
+        roleDao.addRoleAndAssignToPerson("Admin", 1);
+        roleDao.addRoleAndAssignToPerson("Hecker", 1);
+
+        roleDao.addRoleAndAssignToPerson("Admin", 2);
+        roleDao.addRoleAndAssignToPerson("Mamba", 2);
 
         contactInformationDao.addContactInformation("(02) 86236", "96", "mcdo@delivery.ph", 2);
 

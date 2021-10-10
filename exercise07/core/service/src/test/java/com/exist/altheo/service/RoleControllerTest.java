@@ -9,7 +9,6 @@ import javax.xml.bind.ValidationException;
 
 import com.exist.altheo.dao.PersonDao;
 import com.exist.altheo.dao.RoleDao;
-import com.exist.altheo.model.Person;
 
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +38,7 @@ public class RoleControllerTest extends TestCase {
         roleDao.addRoleAndAssignToPerson("For Honor", 1);
         roleDao.addRoleAndAssignToPerson("Hecker", 1);
 
-        roleController.listAllRoles();
+        roleController.listAllRolesController();
     }
 
     @Test 
@@ -58,7 +57,7 @@ public class RoleControllerTest extends TestCase {
         "Altheo", "Colico", "Saquilayan", "", ""); //ID of 1
 
         ValidationException exception = assertThrows(ValidationException.class, 
-        ()->roleController.addNewRole("", 1));
+        ()->roleController.addNewRoleController("", 1));
 
         assertEquals(exception.getMessage(), "Input must not be blank");
     }
@@ -69,7 +68,7 @@ public class RoleControllerTest extends TestCase {
         "Altheo", "Colico", "Saquilayan", "", ""); //ID of 1
 
         ValidationException exception = assertThrows(ValidationException.class, 
-        ()->roleController.addNewRole("手田水口火竹口竹火竹", 1));
+        ()->roleController.addNewRoleController("手田水口火竹口竹火竹", 1));
 
         assertEquals(exception.getMessage(), "Input must be a ascii char");
     }
@@ -79,7 +78,7 @@ public class RoleControllerTest extends TestCase {
         roleDao.addRoleAndAssignToPerson("Admin", 1); //ID OF 1
 
         try {
-            roleController.updateRole("Hecker",1);
+            roleController.updateRoleController("Hecker",1);
         } catch (ValidationException e) {
             e.printStackTrace();
         }
@@ -88,7 +87,7 @@ public class RoleControllerTest extends TestCase {
     @Test 
     public void test_update_role_controller_with_blank_input_fail(){
         ValidationException exception = assertThrows(ValidationException.class, 
-        ()->roleController.updateRole("", 1));
+        ()->roleController.updateRoleController("", 1));
 
         assertEquals(exception.getMessage(), "Input must not be blank");
     }
@@ -96,7 +95,7 @@ public class RoleControllerTest extends TestCase {
     @Test 
     public void test_update_role_controller_with_nonascii_input_fail(){
         ValidationException exception = assertThrows(ValidationException.class, 
-        ()->roleController.updateRole("手田水口火竹口竹火竹", 1));
+        ()->roleController.updateRoleController("手田水口火竹口竹火竹", 1));
 
         assertEquals(exception.getMessage(), "Input must be a ascii char");
     }
@@ -104,7 +103,7 @@ public class RoleControllerTest extends TestCase {
     @Test 
     public void test_update_role_controller_with_nonexistent_role_id_fail(){
         NoResultException exception = assertThrows(NoResultException.class, 
-        ()->roleController.updateRole("Hecker", 5));
+        ()->roleController.updateRoleController("Hecker", 5));
 
         assertEquals(exception.getMessage(), "Role id " + 5 + " does not exist");
     }
@@ -116,13 +115,13 @@ public class RoleControllerTest extends TestCase {
 
         roleDao.addRoleAndAssignToPerson("Lobm", 1); //ROLE ID OF 1
 
-        roleController.deleteRole(1);
+        roleController.deleteRoleController(1);
     }
 
     @Test //TODO
     public void test_delete_role_controller_with_nonexistent_role_id_fail(){
         NoResultException exception = assertThrows(NoResultException.class, 
-        ()->roleController.deleteRole(5));
+        ()->roleController.deleteRoleController(5));
 
         assertEquals(exception.getMessage(), "Role id " + 5 + " does not exist");
     }

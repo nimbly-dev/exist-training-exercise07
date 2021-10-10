@@ -2,6 +2,7 @@ package com.exist.altheo.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,7 +12,6 @@ public class Person implements Serializable{
     double gwa;
 
     String zipCode;
-
     String firstName;
     String middleName;
     String lastName;
@@ -25,13 +25,11 @@ public class Person implements Serializable{
     LocalDate dateHired;
     boolean isCurrentlyEmployed;
     Set<ContactInformation> contactInformations = new HashSet<ContactInformation>(0);
-    List<Role> roles;
+    List<Role> roles = new ArrayList<Role>();
 
     public Person(){
 
     }
-
-    
 
     public Person(double gwa, String zipCode, String firstName, String middleName, String lastName, String suffix,
             String title, String address, LocalDate dateHired, boolean isCurrentlyEmployed) {

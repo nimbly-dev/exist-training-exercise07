@@ -13,7 +13,6 @@ import com.exist.altheo.model.Person;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -147,7 +146,6 @@ public class ContactInformationDaoTest extends TestCase {
         session.getTransaction().commit();
         session.close();
 
-
         contactInformationDao.addContactInformation(testLandline, testMobileNum, testEmail, savedPersonId1);
 
         int testSelectedContactId = 2;
@@ -196,10 +194,6 @@ public class ContactInformationDaoTest extends TestCase {
 
     @Test
     public void test_delete_contact_information_with_nonexistent_id_fail() {
-        //Add Person obj first
-        personDao.addPerson(testAddress, testGwa, testZipcode, testDate, testIsCurrentlyEmployed, 
-        testFirstName, testMiddleName, testLastName, testSuffix, testTitle);
-
         int testSelectedContactId = 2;
 
         //Delete the obj

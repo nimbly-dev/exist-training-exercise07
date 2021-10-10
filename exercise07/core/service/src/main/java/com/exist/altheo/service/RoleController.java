@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 import javax.xml.bind.ValidationException;
-import javax.xml.catalog.Catalog;
 
 import com.exist.altheo.dao.RoleDao;
 import com.exist.altheo.model.Role;
@@ -21,7 +20,7 @@ public class RoleController {
         roleDao = new RoleDao();
     }
 
-    public void addNewRole(String input,int assignedPersonId)
+    public void addNewRoleController(String input,int assignedPersonId)
         throws ValidationException
     {
         //Returns true if valid otherwise returns false
@@ -35,11 +34,11 @@ public class RoleController {
         }
     }
 
-    public void deleteRole(int selectedRoleIdToDelete) throws NoResultException{
+    public void deleteRoleController(int selectedRoleIdToDelete) throws NoResultException{
         roleDao.deleteRole(selectedRoleIdToDelete);
     }
 
-    public void updateRole(String input, int selectedRoleIdToUpdate) throws ValidationException{ 
+    public void updateRoleController(String input, int selectedRoleIdToUpdate) throws ValidationException{ 
 
         //Returns true if valid otherwise returns false
         if(StringUtils.isEmpty(input)){
@@ -52,7 +51,7 @@ public class RoleController {
         }
     }
 
-    public void listAllRoles(){
+    public void listAllRolesController(){
         List<Role> rolesList= roleDao.getListsOfRoles();
         
         rolesList.stream().forEach((role)->{
@@ -76,7 +75,7 @@ public class RoleController {
                     String inputAdd = Reader.readString("Enter rolename ");
                     int assignedPersonId = Reader.readInt("Enter assigned person id ");
                     try {
-                        addNewRole(inputAdd,assignedPersonId);
+                        addNewRoleController(inputAdd,assignedPersonId);
                     } catch (ValidationException e) {
                        System.out.println(e.getMessage());
                     } catch(ConstraintViolationException e){ 
@@ -86,7 +85,7 @@ public class RoleController {
                 case "D":
                     int selectedRoleIdToDelete = Reader.readInt("Enter roleId you wish to delete ");
                     try {
-                        deleteRole(selectedRoleIdToDelete);
+                        deleteRoleController(selectedRoleIdToDelete);
                     } catch (NoResultException nre) {
                         System.out.println(nre.getMessage());
                     }
@@ -95,7 +94,7 @@ public class RoleController {
                     String inputUpdate = Reader.readString("Enter rolename ");
                     int selectedRoleIdToUpdate = Reader.readInt("Enter roleId you wish to update");
                     try {
-                        updateRole(inputUpdate,selectedRoleIdToUpdate);
+                        updateRoleController(inputUpdate,selectedRoleIdToUpdate);
                     } catch (NoResultException nre) {
                         System.out.println(nre.getMessage());
                     } catch (ValidationException ve) {
@@ -103,7 +102,7 @@ public class RoleController {
                     }
                     break;
                 case "L":
-                    listAllRoles();
+                    listAllRolesController();
                     break;
                 case "V":
                     Display.displayRoleInterfaceCommands();
