@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ContactInformation.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">JaCoCo-Multi Project</a> &gt; <a href="../index.html" class="el_bundle">JaCoCo-Multi</a> &gt; <a href="index.source.html" class="el_package">com.exist.altheo.model</a> &gt; <span class="el_source">ContactInformation.java</span></div><h1>ContactInformation.java</h1><pre class="source lang-java linenums">package com.exist.altheo.model;
+
+public class ContactInformation {
+    int contactId;
+    int personId;
+    String landline;
+    String mobileNumber;
+    String email;
+
+    Person person;
+
+<span class="nc" id="L12">    public ContactInformation(){ }</span>
+
+
+<span class="nc" id="L15">    public ContactInformation(String landline, String mobileNumber, String email) {</span>
+<span class="nc" id="L16">        this.landline = landline;</span>
+<span class="nc" id="L17">        this.mobileNumber = mobileNumber;</span>
+<span class="nc" id="L18">        this.email = email;</span>
+<span class="nc" id="L19">    }</span>
+
+<span class="nc" id="L21">    public ContactInformation(String landline, String mobileNumber, String email, Person person) {</span>
+<span class="nc" id="L22">        this.landline = landline;</span>
+<span class="nc" id="L23">        this.mobileNumber = mobileNumber;</span>
+<span class="nc" id="L24">        this.email = email;</span>
+<span class="nc" id="L25">        this.person = person;</span>
+<span class="nc" id="L26">    }</span>
+
+
+
+    public int getContactId() {
+<span class="nc" id="L31">        return contactId;</span>
+    }
+
+    public void setContactId(int contactId) {
+<span class="nc" id="L35">        this.contactId = contactId;</span>
+<span class="nc" id="L36">    }</span>
+
+    public String getLandline() {
+<span class="nc" id="L39">        return landline;</span>
+    }
+
+    public void setLandline(String landline) {
+<span class="nc" id="L43">        this.landline = landline;</span>
+<span class="nc" id="L44">    }</span>
+
+    public String getMobileNumber() {
+<span class="nc" id="L47">        return mobileNumber;</span>
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+<span class="nc" id="L51">        this.mobileNumber = mobileNumber;</span>
+<span class="nc" id="L52">    }</span>
+
+    public String getEmail() {
+<span class="nc" id="L55">        return email;</span>
+    }
+
+    public void setEmail(String email) {
+<span class="nc" id="L59">        this.email = email;</span>
+<span class="nc" id="L60">    }</span>
+
+    public Person getPerson() {
+<span class="nc" id="L63">        return person;</span>
+    }
+
+    public void setPerson(Person person) {
+<span class="nc" id="L67">        this.person = person;</span>
+<span class="nc" id="L68">    }</span>
+
+    public int getPersonId() {
+<span class="nc" id="L71">        return personId;</span>
+    }
+
+    public void setPersonId(int personId) {
+<span class="nc" id="L75">        this.personId = personId;</span>
+<span class="nc" id="L76">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>RoleDao.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">JaCoCo-Multi Project</a> &gt; <a href="../index.html" class="el_bundle">JaCoCo-Multi</a> &gt; <a href="index.source.html" class="el_package">com.exist.altheo.dao</a> &gt; <span class="el_source">RoleDao.java</span></div><h1>RoleDao.java</h1><pre class="source lang-java linenums">package com.exist.altheo.dao;
+
+import java.util.List;
+
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
+
+import com.exist.altheo.connection.DBConnection;
+import com.exist.altheo.model.Person;
+import com.exist.altheo.model.Role;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.query.Query;
+
+public class RoleDao {
+    private SessionFactory sessionFactory;
+
+<span class="nc" id="L20">    public RoleDao(){</span>
+<span class="nc" id="L21">        this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);</span>
+<span class="nc" id="L22">    }</span>
+
+    public void addNewRole(String input) throws ConstraintViolationException{
+<span class="nc" id="L25">        Session session = sessionFactory.openSession();</span>
+<span class="nc" id="L26">        session.beginTransaction();</span>
+
+<span class="nc" id="L28">        session.save(new Role(input));</span>
+<span class="nc" id="L29">        session.getTransaction().commit();</span>
+<span class="nc" id="L30">        session.close();</span>
+<span class="nc" id="L31">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;) //TODO - BUG, OVERRIDES person_id if it currently points to another column
+    public void assignRoleToPerson(int selectedPersonId, String roleName){
+<span class="nc" id="L35">        Session session = sessionFactory.openSession();</span>
+<span class="nc" id="L36">        session.beginTransaction();</span>
+        
+        // int personId = session.save(new Person());
+
+<span class="nc" id="L40">        String nativeQueryAssignPerson = &quot;UPDATE Role SET person_id =:personId where role_name =:roleName&quot;;</span>
+<span class="nc" id="L41">        Query&lt;Role&gt; query = session.createSQLQuery(nativeQueryAssignPerson);</span>
+<span class="nc" id="L42">        query.setParameter(&quot;personId&quot;, selectedPersonId);</span>
+<span class="nc" id="L43">        query.setParameter(&quot;roleName&quot;, roleName);</span>
+
+<span class="nc" id="L45">        query.executeUpdate();</span>
+        
+<span class="nc" id="L47">        session.getTransaction().commit();</span>
+<span class="nc" id="L48">        session.close();</span>
+<span class="nc" id="L49">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;) //TODO - CONVERT THIS TO USE session instead of native sql
+    public void addRoleAndAssignToPerson(String inputRoleName, int selectedPersonId) 
+        throws PersistenceException, ConstraintViolationException{
+<span class="nc" id="L54">        Session session = sessionFactory.openSession();</span>
+
+<span class="nc" id="L56">		session.beginTransaction();</span>
+
+<span class="nc" id="L58">		int savedRoleId = (Integer) session.save(new Role(inputRoleName));</span>
+
+		// Update the newly created role to reference the person
+<span class="nc" id="L61">		String native_query_role = &quot;UPDATE Role SET person_id =:personId where role_id =:roleId&quot;;</span>
+
+<span class="nc" id="L63">		Query&lt;Role&gt; query_role = session.createSQLQuery(native_query_role);</span>
+<span class="nc" id="L64">        query_role.setParameter(&quot;roleId&quot;, savedRoleId);</span>
+<span class="nc" id="L65">        query_role.setParameter(&quot;personId&quot;, selectedPersonId);</span>
+<span class="nc" id="L66">		query_role.executeUpdate();</span>
+
+		//Update the newly created person to reference the role
+		// String hsql_person = &quot;UPDATE PERSON set roles.role.roleId= :roleId where personId= :personId&quot;;
+<span class="nc" id="L70">		String native_query_person = &quot;UPDATE Person SET role_id =:roleId where person_id =:personId&quot;;</span>
+
+<span class="nc" id="L72">		Query&lt;Role&gt; query_person = session.createSQLQuery(native_query_person);</span>
+<span class="nc" id="L73">        query_person.setParameter(&quot;roleId&quot;, savedRoleId);</span>
+<span class="nc" id="L74">        query_person.setParameter(&quot;personId&quot;, selectedPersonId);</span>
+<span class="nc" id="L75">		query_person.executeUpdate();</span>
+
+<span class="nc" id="L77">        session.getTransaction().commit();</span>
+<span class="nc" id="L78">        session.close();</span>
+<span class="nc" id="L79">    }</span>
+
+    public void updateRole(int selectedRoleId ,String input)throws NoResultException{
+<span class="nc" id="L82">        Session session = sessionFactory.openSession();</span>
+<span class="nc" id="L83">        session.beginTransaction();</span>
+
+<span class="nc" id="L85">        Role role = session.get(Role.class, selectedRoleId);</span>
+
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        if(role == null)</span>
+<span class="nc" id="L88">            throw new NoResultException(&quot;Role id &quot; + selectedRoleId + &quot; does not exist&quot;);</span>
+        
+<span class="nc" id="L90">        role.setRoleName(input);</span>
+<span class="nc" id="L91">        session.update(role);</span>
+
+<span class="nc" id="L93">        session.getTransaction().commit();</span>
+<span class="nc" id="L94">        session.close();</span>
+ 
+<span class="nc" id="L96">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public List&lt;Role&gt; getListsOfRoles()throws NoResultException{
+<span class="nc" id="L100">        Session session = sessionFactory.openSession();</span>
+
+<span class="nc" id="L102">        session.beginTransaction();</span>
+<span class="nc" id="L103">		List&lt;Role&gt; result = session.createQuery( &quot;from Role&quot; ).list();</span>
+<span class="nc" id="L104">        session.getTransaction().commit();</span>
+<span class="nc" id="L105">        session.close();</span>
+
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if(result.size() == 0){</span>
+<span class="nc" id="L108">            throw new NoResultException(&quot;No roles found on database&quot;);</span>
+        }else{
+<span class="nc" id="L110">            return result;</span>
+        }
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;) //TODO - replace native sql to use hibernate
+    public void deleteRole(int selectedId) throws NoResultException
+    {
+    
+<span class="nc" id="L118">        Session session = sessionFactory.openSession();</span>
+        
+<span class="nc" id="L120">        session.beginTransaction();</span>
+
+<span class="nc" id="L122">        Role role = session.get(Role.class, selectedId);</span>
+
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        if(role == null)</span>
+<span class="nc" id="L125">            throw new NoResultException(&quot;Role id &quot; + selectedId + &quot; does not exist&quot;);</span>
+
+        // Unreferenced or delete the role on the person obj
+        //Delete person_id from role
+<span class="nc" id="L129">        String native_query_role_delete_p_id = &quot;UPDATE Role SET person_id = null WHERE role_id=&quot;+selectedId;</span>
+<span class="nc" id="L130">        Query&lt;Integer&gt; query_del_person_id = session.createSQLQuery(native_query_role_delete_p_id);</span>
+<span class="nc" id="L131">        query_del_person_id.executeUpdate();</span>
+
+        //Delete role_id from person 
+<span class="nc" id="L134">        String native_query_person_delete_r_id = &quot;UPDATE Person SET role_id = null WHERE role_id=&quot;</span>
+<span class="nc" id="L135">            +selectedId;</span>
+<span class="nc" id="L136">        Query&lt;Integer&gt; query_del_role_id = session.createSQLQuery(native_query_person_delete_r_id);</span>
+<span class="nc" id="L137">        query_del_role_id.executeUpdate();</span>
+
+        //Safely delete the role with the fk remove from both columns
+<span class="nc" id="L140">        session.delete(role);</span>
+     
+<span class="nc" id="L142">        session.getTransaction().commit();</span>
+<span class="nc" id="L143">        session.close();</span>
+<span class="nc" id="L144">    }</span>
+
+    //Helper method to select a specific contact
+    public Role selectRole(int selectedRoleId) throws NoResultException {
+<span class="nc" id="L148">        Session session = sessionFactory.openSession();</span>
+        
+<span class="nc" id="L150">        Role role = session.get(Role.class, selectedRoleId);</span>
+    
+<span class="nc" id="L152">        session.close();</span>
+
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if(role == null){</span>
+<span class="nc" id="L155">            throw new NoResultException(&quot;Role id &quot; + selectedRoleId + &quot; does not exist&quot;);</span>
+        }else{
+<span class="nc" id="L157">            return role;</span>
+        }
+    }
+    
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

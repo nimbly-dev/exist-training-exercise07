@@ -6,7 +6,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import com.exist.altheo.connection.DBConnection;
-import com.exist.altheo.model.Person;
 import com.exist.altheo.model.Role;
 
 import org.hibernate.Session;
@@ -78,7 +77,7 @@ public class RoleDao {
         session.close();
     }
 
-    public void updateRole(int selectedRoleId ,String input)throws NoResultException{
+    public void updateRole(int selectedRoleId ,String input) throws NoResultException{
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
@@ -88,7 +87,7 @@ public class RoleDao {
             throw new NoResultException("Role id " + selectedRoleId + " does not exist");
         
         role.setRoleName(input);
-        session.update(role);
+        session.persist(role);
 
         session.getTransaction().commit();
         session.close();
@@ -114,7 +113,6 @@ public class RoleDao {
     @SuppressWarnings("unchecked") //TODO - replace native sql to use hibernate
     public void deleteRole(int selectedId) throws NoResultException
     {
-    
         Session session = sessionFactory.openSession();
         
         session.beginTransaction();

@@ -16,8 +16,6 @@ import junit.framework.TestCase;
 
 public class PersonTest extends TestCase {
 
-    private Person person2;
-
     private LocalDate dateToday;
     private LocalDate exampleDate;
 
@@ -42,7 +40,7 @@ public class PersonTest extends TestCase {
         this.testRoles.add(hackerRole);
 
         ContactInformation contactInformation = new ContactInformation(
-            "4444", "5555", "feedback@jfc.com.ph", person2);
+            "4444", "5555", "feedback@jfc.com.ph");
 
         this.testContact.add(contactInformation);            
 
@@ -53,7 +51,7 @@ public class PersonTest extends TestCase {
     public void test_person_getters() {
 
         Person person = new Person(1.25, "322", "John", "Doe", "Doo", "Jr.", "The Third", 
-        "Doobi Manila", dateToday, true);
+        "Doobi Manila", dateToday, exampleDate,true);
 
         person.setRoles(testRoles);
 
@@ -71,7 +69,7 @@ public class PersonTest extends TestCase {
         assertTrue(person.getAddress() == "Doobi Manila");
 
 
-        assertEquals(person.getDateHired(), dateToday);
+        assertEquals(person.getDateHired(), exampleDate);
 
         assertTrue(person.getIsCurrentlyEmployed() == true);
         assertTrue(person.getContactInformations() != null);
@@ -83,7 +81,7 @@ public class PersonTest extends TestCase {
 
         Person person =  
         new Person(1.25, "322", "John", "Doe", "Doo", "Jr.", "The Third", 
-        "Doobi Manila", dateToday, true);
+        "Doobi Manila", dateToday, exampleDate,true);
 
         List<Role> roles1 = new ArrayList<Role>();
 
@@ -94,7 +92,7 @@ public class PersonTest extends TestCase {
         Set<ContactInformation> testContact1 =  new HashSet<>();
 
         ContactInformation contactInformation = new ContactInformation(
-            "4444", "8-7000", "rcbcstocktransfer@rcbc.com", person2);
+            "4444", "8-7000", "rcbcstocktransfer@rcbc.com");
 
         testContact1.add(contactInformation);
         

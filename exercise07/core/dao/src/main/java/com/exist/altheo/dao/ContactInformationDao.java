@@ -57,6 +57,7 @@ public class ContactInformationDao {
         contactInformation.setMobileNumber(inputMobileNumber);
         contactInformation.setEmail(inputEmail);
 
+        session.persist(contactInformation);
 
         session.getTransaction().commit();
 

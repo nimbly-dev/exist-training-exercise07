@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ContactInformationController.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">JaCoCo-Multi Project</a> &gt; <a href="../index.html" class="el_bundle">JaCoCo-Multi</a> &gt; <a href="index.source.html" class="el_package">com.exist.altheo.service</a> &gt; <span class="el_source">ContactInformationController.java</span></div><h1>ContactInformationController.java</h1><pre class="source lang-java linenums">package com.exist.altheo.service;
+
+import javax.persistence.NoResultException;
+import javax.xml.bind.ValidationException;
+
+import com.exist.altheo.dao.ContactInformationDao;
+import com.exist.altheo.utility.Reader;
+import com.exist.altheo.view.Display;
+
+import org.apache.commons.lang3.StringUtils;
+
+public class ContactInformationController {
+    private ContactInformationDao contactInformationDao;
+
+<span class="nc" id="L15">    public ContactInformationController(){</span>
+<span class="nc" id="L16">        this.contactInformationDao = new ContactInformationDao();</span>
+<span class="nc" id="L17">    }</span>
+    
+    public void addContactInformation(String inputLandline, String inputMobileNumber, 
+    String inputEmail, int selectedPersonId) throws ValidationException, NoResultException
+    {
+<span class="nc bnc" id="L22" title="All 4 branches missed.">        if(StringUtils.isEmpty(inputLandline) ||  StringUtils.isEmpty(inputMobileNumber)</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">            || StringUtils.isEmpty(inputEmail)){</span>
+<span class="nc" id="L24">            throw new ValidationException(&quot;Inputs must not be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        else if(!StringUtils.isAsciiPrintable(inputLandline) || </span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">                !StringUtils.isAsciiPrintable(inputMobileNumber) ||</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">                !StringUtils.isAsciiPrintable(inputEmail))</span>
+        {
+<span class="nc" id="L30">            throw new ValidationException(&quot;Inputs must be ascii characters&quot;);</span>
+        }
+        else{
+<span class="nc" id="L33">            contactInformationDao.addContactInformation(inputLandline, </span>
+<span class="nc" id="L34">            inputMobileNumber, inputEmail,selectedPersonId);</span>
+        }
+<span class="nc" id="L36">    }</span>
+
+    public void updateContactInformation(String inputLandline, String inputMobileNumber, 
+    String inputEmail, int updateSelectedContactId) throws ValidationException, NoResultException{
+<span class="nc bnc" id="L40" title="All 4 branches missed.">        if(StringUtils.isEmpty(inputLandline) ||  StringUtils.isEmpty(inputMobileNumber)</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">        || StringUtils.isEmpty(inputEmail)){</span>
+<span class="nc" id="L42">             throw new ValidationException(&quot;Inputs must not be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        else if(!StringUtils.isAsciiPrintable(inputLandline) || </span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">                !StringUtils.isAsciiPrintable(inputMobileNumber) ||</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">                !StringUtils.isAsciiPrintable(inputEmail))</span>
+        {
+<span class="nc" id="L48">            throw new ValidationException(&quot;Inputs must be ascii characters&quot;);</span>
+        }
+        else{
+<span class="nc" id="L51">            contactInformationDao.updateContactInformation(updateSelectedContactId, inputLandline, </span>
+<span class="nc" id="L52">            inputMobileNumber, inputEmail);</span>
+        }
+<span class="nc" id="L54">    }</span>
+    
+    public void deleteContactInformation(int selectedIndex) throws NoResultException{
+<span class="nc" id="L57">        contactInformationDao.deleteContact(selectedIndex);</span>
+<span class="nc" id="L58">    }</span>
+
+    //Contact information UI
+    public void contactInformationInterface(){
+<span class="nc" id="L62">        System.out.println(&quot;You are now in the Contact Information Functionality Interface&quot;);</span>
+<span class="nc" id="L63">        boolean isEndRoleUserInterface = false;</span>
+        
+        
+        do {
+<span class="nc" id="L67">            String command = Reader.readString(&quot;Enter command: &quot;);</span>
+<span class="nc bnc" id="L68" title="All 5 branches missed.">            switch (command.toUpperCase()) {</span>
+                case &quot;A&quot;:
+<span class="nc" id="L70">                    String inputLandline = Reader.readString(&quot;Enter landline&quot;);</span>
+<span class="nc" id="L71">                    String inputMobileNumber = Reader.readString(&quot;Enter landline&quot;);</span>
+<span class="nc" id="L72">                    String inputEmail = Reader.readString(&quot;Enter landline&quot;);</span>
+<span class="nc" id="L73">                    int inputSelectedPersonId = Reader.readInt(&quot;Enter selected person id &quot;);</span>
+                    try {
+<span class="nc" id="L75">                        addContactInformation(inputLandline, inputMobileNumber, </span>
+<span class="nc" id="L76">                        inputEmail,inputSelectedPersonId);</span>
+<span class="nc" id="L77">                    } catch (ValidationException e) {</span>
+<span class="nc" id="L78">                        System.out.println(e.getMessage());</span>
+<span class="nc" id="L79">                    } catch (NoResultException nre){</span>
+<span class="nc" id="L80">                        System.out.println(nre.getMessage());</span>
+                    }
+<span class="nc" id="L82">                    break;</span>
+                case &quot;D&quot;:
+                    try{
+<span class="nc" id="L85">                        int selectedIndex = Reader.readInt(&quot;Enter roleId you wish to delete &quot;);</span>
+<span class="nc" id="L86">                        deleteContactInformation(selectedIndex);</span>
+<span class="nc" id="L87">                    }catch(NoResultException nre){</span>
+<span class="nc" id="L88">                        System.out.println(nre.getMessage());</span>
+                    }
+<span class="nc" id="L90">                    break;</span>
+                case &quot;U&quot;:
+<span class="nc" id="L92">                    String updateInputLandline = Reader.readString(&quot;Enter landline&quot;);</span>
+<span class="nc" id="L93">                    String updateInputMobileNumber = Reader.readString(&quot;Enter landline&quot;);</span>
+<span class="nc" id="L94">                    String updateInputEmail = Reader.readString(&quot;Enter landline&quot;);</span>
+<span class="nc" id="L95">                    int updateSelectedContactId = Reader.readInt(&quot;Enter selected person id &quot;);</span>
+                    try {
+<span class="nc" id="L97">                        updateContactInformation(updateInputLandline, updateInputMobileNumber, </span>
+<span class="nc" id="L98">                        updateInputEmail, updateSelectedContactId);</span>
+<span class="nc" id="L99">                    } catch (ValidationException e) {</span>
+<span class="nc" id="L100">                        System.out.println(e.getMessage());</span>
+<span class="nc" id="L101">                    } catch (NoResultException nre){</span>
+<span class="nc" id="L102">                        System.out.println(nre.getMessage());</span>
+                    }
+<span class="nc" id="L104">                    break;</span>
+                case &quot;V&quot;:
+<span class="nc" id="L106">                    Display.displayContactInformationInterfaceCommands();</span>
+<span class="nc" id="L107">                    break;</span>
+                default:
+<span class="nc" id="L109">                    System.out.println(&quot;Wrong input, please put a valid input&quot;);</span>
+                    break;
+            }
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        } while (isEndRoleUserInterface);</span>
+<span class="nc" id="L113">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

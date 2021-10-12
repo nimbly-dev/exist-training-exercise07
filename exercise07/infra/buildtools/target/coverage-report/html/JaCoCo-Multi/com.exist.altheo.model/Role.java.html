@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>Role.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">JaCoCo-Multi Project</a> &gt; <a href="../index.html" class="el_bundle">JaCoCo-Multi</a> &gt; <a href="index.source.html" class="el_package">com.exist.altheo.model</a> &gt; <span class="el_source">Role.java</span></div><h1>Role.java</h1><pre class="source lang-java linenums">package com.exist.altheo.model;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Role implements Serializable{
+    int roleId;
+    String roleName;
+
+<span class="nc" id="L11">    List&lt;Person&gt; persons = new ArrayList&lt;Person&gt;();</span>
+
+<span class="nc" id="L13">    public Role(){</span>
+       
+<span class="nc" id="L15">    }</span>
+<span class="nc" id="L16">    public Role(String roleName){</span>
+<span class="nc" id="L17">        this.roleName = roleName;</span>
+<span class="nc" id="L18">    }</span>
+
+    public int getRoleId() {
+<span class="nc" id="L21">        return roleId;</span>
+    }
+    public void setRoleId(int roleId) {
+<span class="nc" id="L24">        this.roleId = roleId;</span>
+<span class="nc" id="L25">    }</span>
+    public String getRoleName() {
+<span class="nc" id="L27">        return roleName;</span>
+    }
+    public void setRoleName(String roleName) {
+<span class="nc" id="L30">        this.roleName = roleName;</span>
+<span class="nc" id="L31">    }</span>
+
+    public List&lt;Person&gt; getPersons() {
+<span class="nc" id="L34">        return persons;</span>
+    }
+
+    public void setPersons(List&lt;Person&gt; persons) {
+<span class="nc" id="L38">        this.persons = persons;</span>
+<span class="nc" id="L39">    }</span>
+
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

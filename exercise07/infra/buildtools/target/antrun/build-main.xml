@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="maven-antrun-" default="main">
+  <target name="main">
+    <echo message="Generating JaCoCo Reports" />
+    <taskdef classname="org.jacoco.ant.ReportTask" name="report">
+      <classpath path="C:\Users\nimbl\Desktop\java-ws\exercises-training\exist-training-exercise07\exercise07\infra\buildtools/target/jacoco-jars/org.jacoco.ant.jar" />
+    </taskdef>
+    <mkdir dir="C:\Users\nimbl\Desktop\java-ws\exercises-training\exist-training-exercise07\exercise07\infra\buildtools/target/coverage-report" />
+    <report>
+      <executiondata>
+        <fileset dir="../../app/target">
+          <include name="jacoco.exec" />
+        </fileset>
+        <fileset dir="../../core/dao/target">
+          <include name="jacoco.exec" />
+        </fileset>
+        <fileset dir="../../core/model/target">
+          <include name="jacoco.exec" />
+        </fileset>
+        <fileset dir="../../core/service/target">
+          <include name="jacoco.exec" />
+        </fileset>
+        <fileset dir="../../infra/persistence/target">
+          <include name="jacoco.exec" />
+        </fileset>
+      </executiondata>
+      <structure name="JaCoCo-Multi Project">
+        <group name="JaCoCo-Multi">
+          <classfiles>
+            <fileset dir="../../app/target/classes" />
+            <fileset dir="../../core/dao/target/classes" />
+            <fileset dir="../../core/model/target/classes" />
+            <fileset dir="../../core/service/target/classes" />
+            <fileset dir="../../infra/persistence/target/classes" />
+          </classfiles>
+          <sourcefiles encoding="UTF-8">
+            <fileset dir="../../app/src/main/java" />
+            <fileset dir="../../core/dao/src/main/java"></fileset>
+            <fileset dir="../../core/model/src/main/java" />
+            <fileset dir="../../core/service/src/main/java"></fileset>
+            <fileset dir="../../infra/persistence/src/main/java"></fileset>
+          </sourcefiles>
+        </group>
+      </structure>
+      <html destdir="C:\Users\nimbl\Desktop\java-ws\exercises-training\exist-training-exercise07\exercise07\infra\buildtools/target/coverage-report/html" />
+      <xml destfile="C:\Users\nimbl\Desktop\java-ws\exercises-training\exist-training-exercise07\exercise07\infra\buildtools/target/coverage-report/coverage-report.xml" />
+      <csv destfile="C:\Users\nimbl\Desktop\java-ws\exercises-training\exist-training-exercise07\exercise07\infra\buildtools/target/coverage-report/coverage-report.csv" />
+    </report>
+  </target>
+</project>

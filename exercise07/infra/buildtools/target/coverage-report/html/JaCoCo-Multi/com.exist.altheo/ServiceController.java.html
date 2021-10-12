@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ServiceController.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">JaCoCo-Multi Project</a> &gt; <a href="../index.html" class="el_bundle">JaCoCo-Multi</a> &gt; <a href="index.source.html" class="el_package">com.exist.altheo</a> &gt; <span class="el_source">ServiceController.java</span></div><h1>ServiceController.java</h1><pre class="source lang-java linenums">package com.exist.altheo;
+
+import com.exist.altheo.service.ContactInformationController;
+import com.exist.altheo.service.PersonController;
+import com.exist.altheo.service.RoleController;
+import com.exist.altheo.utility.Reader;
+import com.exist.altheo.view.Display;
+
+public class ServiceController {
+    private PersonController personController;
+    private ContactInformationController contactInformationController;
+    private RoleController roleController;
+
+<span class="nc" id="L14">    public ServiceController(){</span>
+<span class="nc" id="L15">        this.personController = new PersonController();</span>
+<span class="nc" id="L16">        this.contactInformationController = new ContactInformationController();</span>
+<span class="nc" id="L17">        this.roleController = new RoleController();</span>
+<span class="nc" id="L18">    }</span>
+
+    public void serviceUserInterface() {
+<span class="nc" id="L21">        boolean isEndServiceUserInterface = false;</span>
+
+<span class="nc" id="L23">        Display.displayServiceUserInterfaceCommands();</span>
+        
+        do {
+<span class="nc" id="L26">            String choice = Reader.readString(&quot;Enter command&quot;);</span>
+<span class="nc bnc" id="L27" title="All 6 branches missed.">            switch (choice.toUpperCase()) {</span>
+                case &quot;P&quot;:
+<span class="nc" id="L29">                    personController.personInterface();</span>
+<span class="nc" id="L30">                    break;</span>
+                case &quot;R&quot;:
+<span class="nc" id="L32">                    roleController.roleUserInterface();</span>
+<span class="nc" id="L33">                    break;</span>
+                case &quot;C&quot;:
+<span class="nc" id="L35">                    contactInformationController.contactInformationInterface();</span>
+<span class="nc" id="L36">                    break;</span>
+                case &quot;V&quot;:
+<span class="nc" id="L38">                    Display.displayServiceUserInterfaceCommands();</span>
+<span class="nc" id="L39">                    break;</span>
+                case &quot;X&quot;:
+<span class="nc" id="L41">                    isEndServiceUserInterface = true;</span>
+<span class="nc" id="L42">                    break;</span>
+                default:
+<span class="nc" id="L44">                    System.out.println(&quot;Wrong input, please only input commands shown&quot;);</span>
+<span class="nc" id="L45">                    Display.displayServiceUserInterfaceCommands();</span>
+                    break;
+            }
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        } while (isEndServiceUserInterface == false);</span>
+<span class="nc" id="L49">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

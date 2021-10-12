@@ -29,10 +29,10 @@ public class RoleTest extends TestCase{
         // this.exampleDate = Date.from(LocalDate.of(2012, 12, 31).atStartOfDay(defaultZoneId).toInstant());
 
         this.person1 = new Person(1.25, "322", "John", "Doe", "Doo", "Jr.", "The Third", 
-        "Doobi Manila", dateToday, true);
+        "Doobi Manila", dateToday,LocalDate.of(2012, 12, 1) ,true);
 
         this.person2 = new Person(5, "322", "Scooby", "Doobo", "Doo", "Sr.", 
-        "Dog", "Makati", dateToday, true);
+        "Dog", "Makati", dateToday, LocalDate.of(2012, 12, 1),true);
 	}
 
     @Test

@@ -12,6 +12,30 @@
 
 <hibernate-mapping>
 
+    <!--CREATE THE TABLE -->
+    <!-- <database-object>
+        <create>
+            CREATE TABLE PERSON (
+                PERSON_ID  serial not null,
+                first_name varchar(255),
+                middle_name varchar(255),
+                last_name varchar(255),
+                suffix varchar(255),
+                title varchar(255),
+                address varchar(255),
+                zip_code varchar(255),
+                gwa float8,
+                date_hired date,
+                birthdate date,
+                is_currently_employed boolean,
+                ROLE_ID int4,
+                primary key (PERSON_ID)        
+            )
+        </create>
+        <drop></drop>
+        <dialect-scope name="org.hibernate.dialect.PostgreSQL95Dialect" />
+    </database-object> -->
+
     <class name="com.exist.altheo.model.Role" table="ROLE" >
         <id name="roleId" type="int">
             <column name="ROLE_ID"></column>

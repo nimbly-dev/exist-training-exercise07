@@ -36,7 +36,8 @@ public class PersonController {
     public void addPersonController(
         String inputFirstName, String inputMiddleName, String inputLastName, 
         String inputSuffix, String inputTitle, double inputGwa, String inputAddress, 
-        String inputZipCode, LocalDate inputDateHired, boolean inputisCurrentlyEmployed
+        String inputZipCode, LocalDate inputDateHired, LocalDate inputBirthDay,
+        boolean inputisCurrentlyEmployed
     ) throws ValidationException {
         if(StringUtils.isBlank(inputFirstName) || StringUtils.isBlank(inputLastName)  
            || StringUtils.isBlank(inputZipCode) || StringUtils.isBlank(inputAddress))
@@ -50,8 +51,9 @@ public class PersonController {
             throw new ValidationException("Input characters are not supported "); 
         }
         else{
-            personDao.addPerson(inputAddress, inputGwa, inputZipCode, inputDateHired, inputisCurrentlyEmployed, 
-            inputFirstName, inputMiddleName, inputLastName, inputSuffix, inputTitle);
+            personDao.addPerson(inputAddress, inputGwa, inputZipCode, inputDateHired,inputBirthDay
+            ,inputisCurrentlyEmployed,  inputFirstName, inputMiddleName, inputLastName, inputSuffix,
+            inputTitle);
             System.out.println("Person succesfully added");
         }
     }
@@ -59,7 +61,7 @@ public class PersonController {
     public void updatePersonController(
         String inputFirstName, String inputMiddleName, String inputLastName, 
         String inputSuffix, String inputTitle, double inputGwa, String inputAddress, 
-        String inputZipCode, LocalDate inputDateHired, boolean inputisCurrentlyEmployed,
+        String inputZipCode, LocalDate inputDateHired,  LocalDate inputBirthdate,boolean inputisCurrentlyEmployed,
         int selectedPersonId
     ) throws ValidationException , NoResultException
     {
@@ -76,7 +78,8 @@ public class PersonController {
         }
         else{
             
-            personDao.updatePerson(inputAddress, inputGwa, inputZipCode, inputDateHired, inputisCurrentlyEmployed, 
+            personDao.updatePerson(inputAddress, inputGwa, inputZipCode, inputDateHired,inputBirthdate ,
+            inputisCurrentlyEmployed, 
             inputFirstName, inputMiddleName, inputLastName, inputSuffix, inputTitle, selectedPersonId);
            
             System.out.println("Person updated added");
@@ -171,10 +174,11 @@ public class PersonController {
                     boolean inputisCurrentlyEmployed = Reader.readBoolean("Currently Employed");
                     System.out.println("Enter what date that you are hired: ");
                     LocalDate inputDateHired = Reader.readLocalDate("Enter date hired ");
+                    LocalDate inputBirthDate = Reader.readLocalDate("Enter birthday ");
 
                     try {
                         addPersonController(inputFirstName, inputMiddleName, inputLastName, inputSuffix, inputTitle, 
-                        inputGwa, inputAddress, inputZipCode, inputDateHired, inputisCurrentlyEmployed);
+                        inputGwa, inputAddress, inputZipCode, inputDateHired,inputBirthDate ,inputisCurrentlyEmployed);
                     } catch (ValidationException e) {
                         System.out.println(e.getMessage());
                     }
@@ -191,14 +195,15 @@ public class PersonController {
                     boolean updateInputisCurrentlyEmployed = Reader.readBoolean("Currently Employed");
                     System.out.println("Enter what date that you are hired: ");
                     LocalDate updateInputDateHired = Reader.readLocalDate("Enter date hired ");
+                    LocalDate updateInputBirthDate = Reader.readLocalDate("Enter birthday ");
 
                     int updateSelectedPersonId = Reader.readInt("Enter selected person id ");
 
                     try {
                         updatePersonController(updateInputFirstName, updateInputMiddleName, updateInputLastName, 
                         updateInputSuffix, updateInputTitle, updateInputGwa, updateInputAddress, 
-                        updateInputZipCode, updateInputDateHired, updateInputisCurrentlyEmployed, 
-                        updateSelectedPersonId);
+                        updateInputZipCode, updateInputDateHired,updateInputBirthDate,
+                        updateInputisCurrentlyEmployed, updateSelectedPersonId);
                     } catch (NoResultException | ValidationException e) {
                         System.out.println(e.getMessage());
                     }

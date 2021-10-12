@@ -7,12 +7,15 @@ import java.time.LocalDate;
 import javax.persistence.NoResultException;
 import javax.xml.bind.ValidationException;
 
+import com.exist.altheo.connection.DBConnection;
 import com.exist.altheo.dao.ContactInformationDao;
 import com.exist.altheo.dao.PersonDao;
 import com.exist.altheo.model.ContactInformation;
 
+import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+
 
 import junit.framework.TestCase;
 
@@ -20,7 +23,8 @@ public class ContactInformationControllerTest extends TestCase {
     private ContactInformationController contactInformationController;
     private PersonDao personDao;
     private ContactInformationDao contactInformationDao;
-    
+    private SessionFactory sessionFactory;
+
     
     @Override
     @BeforeEach
@@ -33,12 +37,15 @@ public class ContactInformationControllerTest extends TestCase {
         // "Jr", "The Third", "Manila", LocalDate.of(2020, 1, 30), false);
         // this.person2 = new Person(1.5, "244", "Sponge", "bob", "Squarepants", 
         // "", "", "Bikini Bottom", LocalDate.of(2020, 1, 30), true);
+        this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
+		DBConnection.flushDbTables(sessionFactory);
+        DBConnection.executeStartingSQLScript(sessionFactory);
 	}
   
     @Test 
     public void test_add_contact_information_controller_success(){
-        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30), true, 
-        "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
+        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30), 
+        LocalDate.now(),true, "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
 
         try {
             contactInformationController.addContactInformation("8666", "7000", "spongebob@gmail.com", 1);
@@ -49,8 +56,8 @@ public class ContactInformationControllerTest extends TestCase {
 
     @Test
     public void test_add_contact_information_controller_nonexistent_person_id_fail() {
-        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30), true, 
-        "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
+        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30), LocalDate.now(),
+        true,   "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
 
         NoResultException exception = assertThrows(NoResultException.class, 
         ()->contactInformationController.addContactInformation("111", "111", "111@gmail.com", 15));
@@ -60,8 +67,8 @@ public class ContactInformationControllerTest extends TestCase {
 
     @Test 
     public void test_add_contact_information_controller_with_blank_input_fail(){
-        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30), true, 
-        "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
+        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30),  LocalDate.now(),
+        true, "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
 
        
 		ValidationException exception = assertThrows(ValidationException.class, 
@@ -73,8 +80,8 @@ public class ContactInformationControllerTest extends TestCase {
 
     @Test 
     public void test_add_contact_information_controller_with_nonascii_input_fail(){
-        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30), true, 
-        "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
+        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30), LocalDate.now(),
+        true, "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
 
        
 		ValidationException exception = assertThrows(ValidationException.class, 
@@ -86,8 +93,8 @@ public class ContactInformationControllerTest extends TestCase {
 
     @Test 
     public void test_update_contact_information_controller_success(){
-        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30), true, 
-        "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
+        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30), LocalDate.now(),
+        true, "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
 
         try {
             contactInformationController.addContactInformation("8666", "7000", "spongebob@gmail.com", 1);
@@ -111,8 +118,8 @@ public class ContactInformationControllerTest extends TestCase {
 
     @Test 
     public void test_update_contact_information_controller_with_blank_input_fail(){
-        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30), true, 
-        "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
+        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30), LocalDate.now(),
+        true, "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
 
         try {
             contactInformationController.addContactInformation("8666", "7000", "spongebob@gmail.com", 1);
@@ -128,8 +135,8 @@ public class ContactInformationControllerTest extends TestCase {
 
     @Test 
     public void test_update_contact_information_controller_with_nonascii_input_fail(){
-        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30), true, 
-        "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
+        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30),  LocalDate.now()
+        , true, "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
 
         try {
             contactInformationController.addContactInformation("8666", "7000", "spongebob@gmail.com", 1);
@@ -146,8 +153,8 @@ public class ContactInformationControllerTest extends TestCase {
 
     @Test //TODO - FIX BUG, STUCK ON EXECUTING TEST CASE UPON BULK TEST EXECUTION
     public void test_update_contact_information_controller_with_nonexistent_person_id_fail(){
-        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30), true, 
-        "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
+        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30),  LocalDate.now(),
+        true, "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
 
         try {
             contactInformationController.addContactInformation("8666", "7000", "spongebob@gmail.com", 1);
@@ -164,8 +171,8 @@ public class ContactInformationControllerTest extends TestCase {
 
     @Test 
     public void test_delete_contact_information_controller_success(){
-        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30), true, 
-        "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
+        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30),  LocalDate.now(), 
+        true, "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
 
         try{
             contactInformationController.deleteContactInformation(1);
@@ -177,8 +184,8 @@ public class ContactInformationControllerTest extends TestCase {
 
     @Test 
     public void test_delete_contact_information_controller_with_nonexistent_role_id_fail(){
-        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30), true, 
-        "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
+        personDao.addPerson("Bikini Bottom", 1.5, "244", LocalDate.of(2020, 1, 30),  LocalDate.now(),
+        true, "Sponge", "bob", "Squarepants", "", ""); //ID OF 1
 
         NoResultException exception = assertThrows(NoResultException.class, 
         ()->contactInformationController.deleteContactInformation(1));

@@ -80,7 +80,7 @@ public class Reader {
 		}
 	}
 
-	public static boolean readBoolean(String message) {
+	public static boolean readBoolean(String message) {// Currenlty Employed: [YES|NO]
 		String choice = Reader.readString(message+" [YES|NO]");
 		
 		if(choice.equals("YES"))

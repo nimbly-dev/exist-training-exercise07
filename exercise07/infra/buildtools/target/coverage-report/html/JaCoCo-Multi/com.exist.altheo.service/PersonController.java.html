@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>PersonController.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">JaCoCo-Multi Project</a> &gt; <a href="../index.html" class="el_bundle">JaCoCo-Multi</a> &gt; <a href="index.source.html" class="el_package">com.exist.altheo.service</a> &gt; <span class="el_source">PersonController.java</span></div><h1>PersonController.java</h1><pre class="source lang-java linenums">package com.exist.altheo.service;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
+import javax.xml.bind.ValidationException;
+
+import com.exist.altheo.dao.ContactInformationDao;
+import com.exist.altheo.dao.PersonDao;
+import com.exist.altheo.dao.RoleDao;
+import com.exist.altheo.helper.SortPersonByDateHired;
+import com.exist.altheo.helper.SortPersonByGwa;
+import com.exist.altheo.helper.SortPersonByLastName;
+import com.exist.altheo.model.Person;
+import com.exist.altheo.utility.Reader;
+import com.exist.altheo.view.Display;
+
+import org.apache.commons.lang3.StringUtils;
+
+
+public class PersonController {
+
+    private PersonDao personDao;
+    private ContactInformationDao contactInformationDao;
+    private RoleDao roleDao;
+
+<span class="nc" id="L30">    public PersonController(){</span>
+<span class="nc" id="L31">        this.personDao = new PersonDao();</span>
+<span class="nc" id="L32">        this.roleDao = new RoleDao();</span>
+<span class="nc" id="L33">        this.contactInformationDao = new ContactInformationDao();</span>
+<span class="nc" id="L34">    }</span>
+    
+    public void addPersonController(
+        String inputFirstName, String inputMiddleName, String inputLastName, 
+        String inputSuffix, String inputTitle, double inputGwa, String inputAddress, 
+        String inputZipCode, LocalDate inputDateHired, boolean inputisCurrentlyEmployed
+    ) throws ValidationException {
+<span class="nc bnc" id="L41" title="All 4 branches missed.">        if(StringUtils.isBlank(inputFirstName) || StringUtils.isBlank(inputLastName)  </span>
+<span class="nc bnc" id="L42" title="All 4 branches missed.">           || StringUtils.isBlank(inputZipCode) || StringUtils.isBlank(inputAddress))</span>
+        {
+<span class="nc" id="L44">            throw new ValidationException(&quot;Input is blank, please fill out the fields&quot;); </span>
+        }
+<span class="nc bnc" id="L46" title="All 4 branches missed.">        else if(!StringUtils.isAsciiPrintable(inputFirstName) || !StringUtils.isAsciiPrintable(inputMiddleName) </span>
+<span class="nc bnc" id="L47" title="All 4 branches missed.">             || !StringUtils.isAsciiPrintable(inputLastName) || !StringUtils.isAsciiPrintable(inputSuffix) </span>
+<span class="nc bnc" id="L48" title="All 4 branches missed.">             || !StringUtils.isAsciiPrintable(inputTitle) || !StringUtils.isAsciiPrintable(inputZipCode)</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">             || !StringUtils.isAsciiPrintable(inputAddress)){</span>
+<span class="nc" id="L50">            throw new ValidationException(&quot;Input characters are not supported &quot;); </span>
+        }
+        else{
+<span class="nc" id="L53">            personDao.addPerson(inputAddress, inputGwa, inputZipCode, inputDateHired, inputisCurrentlyEmployed, </span>
+<span class="nc" id="L54">            inputFirstName, inputMiddleName, inputLastName, inputSuffix, inputTitle);</span>
+<span class="nc" id="L55">            System.out.println(&quot;Person succesfully added&quot;);</span>
+        }
+<span class="nc" id="L57">    }</span>
+
+    public void updatePersonController(
+        String inputFirstName, String inputMiddleName, String inputLastName, 
+        String inputSuffix, String inputTitle, double inputGwa, String inputAddress, 
+        String inputZipCode, LocalDate inputDateHired, boolean inputisCurrentlyEmployed,
+        int selectedPersonId
+    ) throws ValidationException , NoResultException
+    {
+<span class="nc bnc" id="L66" title="All 4 branches missed.">        if(StringUtils.isBlank(inputFirstName) || StringUtils.isBlank(inputLastName) </span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        || StringUtils.isBlank(inputZipCode)</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        || StringUtils.isBlank(inputAddress)){</span>
+<span class="nc" id="L69">            throw new ValidationException(&quot;Input is blank, please fill out the fields&quot;); </span>
+        }
+<span class="nc bnc" id="L71" title="All 4 branches missed.">        else if(!StringUtils.isAsciiPrintable(inputFirstName) || !StringUtils.isAsciiPrintable(inputMiddleName) </span>
+<span class="nc bnc" id="L72" title="All 4 branches missed.">        || !StringUtils.isAsciiPrintable(inputLastName) || !StringUtils.isAsciiPrintable(inputSuffix) </span>
+<span class="nc bnc" id="L73" title="All 4 branches missed.">        || !StringUtils.isAsciiPrintable(inputTitle) || !StringUtils.isAsciiPrintable(inputZipCode)</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        || !StringUtils.isAsciiPrintable(inputAddress)){</span>
+<span class="nc" id="L75">            throw new ValidationException(&quot;Input characters are not supported &quot;); </span>
+        }
+        else{
+            
+<span class="nc" id="L79">            personDao.updatePerson(inputAddress, inputGwa, inputZipCode, inputDateHired, inputisCurrentlyEmployed, </span>
+<span class="nc" id="L80">            inputFirstName, inputMiddleName, inputLastName, inputSuffix, inputTitle, selectedPersonId);</span>
+           
+<span class="nc" id="L82">            System.out.println(&quot;Person updated added&quot;);</span>
+        }
+<span class="nc" id="L84">    }</span>
+    
+    public void deletePersonController(int selectedPersonId) throws NoResultException{
+<span class="nc" id="L87">         personDao.deletePerson(selectedPersonId);</span>
+<span class="nc" id="L88">    }</span>
+
+    public void assignRoleToPersonController(String roleName, int selectedPersonId)
+    throws ValidationException, PersistenceException{ //MODIFY ERROR MSSG OF PERSISTENCE EXCEPTION
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if(StringUtils.isBlank(roleName)){</span>
+<span class="nc" id="L93">            throw new ValidationException(&quot;Input is blank, please fill out the fields&quot;); </span>
+        }
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        else if(!StringUtils.isAsciiPrintable(roleName)){</span>
+<span class="nc" id="L96">            throw new ValidationException(&quot;Input characters are not supported &quot;); </span>
+        }else{
+<span class="nc" id="L98">            roleDao.addRoleAndAssignToPerson(roleName, selectedPersonId);</span>
+<span class="nc" id="L99">            System.out.println(&quot;Successfuly added role to person&quot;);</span>
+        }
+<span class="nc" id="L101">    }</span>
+
+    public void assignContactInfoToPersonController(
+        String inputLandline, String inputMobileNumber, String inputEmail,
+        int personSelectId
+    ) throws ValidationException, NoResultException{
+<span class="nc bnc" id="L107" title="All 4 branches missed.">        if(StringUtils.isBlank(inputLandline) || StringUtils.isBlank(inputMobileNumber)</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">          || StringUtils.isBlank(inputEmail)){</span>
+<span class="nc" id="L109">            throw new ValidationException(&quot;Input is blank, please fill out the fields&quot;); </span>
+        }
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        else if(!StringUtils.isAsciiPrintable(inputLandline) || </span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">                !StringUtils.isAsciiPrintable(inputMobileNumber) ||</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">                !StringUtils.isAsciiPrintable(inputEmail)){</span>
+<span class="nc" id="L114">            throw new ValidationException(&quot;Input characters are not supported &quot;); </span>
+        }
+        else{
+<span class="nc" id="L117">            contactInformationDao.addContactInformation(inputLandline, inputMobileNumber, </span>
+<span class="nc" id="L118">            inputEmail, personSelectId);</span>
+<span class="nc" id="L119">            System.out.println(&quot;Successfuly added contact to person&quot;);</span>
+        }
+<span class="nc" id="L121">    }</span>
+
+    public void listAllPersonInterface(){
+<span class="nc" id="L124">        System.out.println(&quot;You are on Person List Functionality Interface&quot;);</span>
+<span class="nc" id="L125">        boolean isEndListAllPersonInterface = false;</span>
+
+<span class="nc" id="L127">        Display.displayListPersonInterfaceCommands();</span>
+
+        do {
+<span class="nc" id="L130">            String command = Reader.readString(&quot;Enter command: &quot;);</span>
+<span class="nc bnc" id="L131" title="All 6 branches missed.">            switch (command.toUpperCase()) {</span>
+                case &quot;BY_GWA&quot;:
+<span class="nc" id="L133">                    printPersonsByGwa();</span>
+<span class="nc" id="L134">                    break;</span>
+                case &quot;BY_DATE_HIRED&quot;:
+<span class="nc" id="L136">                    printPersonsByDateHired();</span>
+<span class="nc" id="L137">                    break;</span>
+                case &quot;BY_LASTNAME&quot;:
+<span class="nc" id="L139">                    printPersonsByLastName();</span>
+<span class="nc" id="L140">                    break;</span>
+                case &quot;V&quot;:
+<span class="nc" id="L142">                    Display.displayListPersonInterfaceCommands();</span>
+<span class="nc" id="L143">                    break;</span>
+                case &quot;X&quot;:
+<span class="nc" id="L145">                    isEndListAllPersonInterface = true;</span>
+<span class="nc" id="L146">                    break;</span>
+                default:
+                    break;
+            }
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        } while (isEndListAllPersonInterface == false);</span>
+<span class="nc" id="L151">    }</span>
+
+    public void personInterface(){
+<span class="nc" id="L154">        System.out.println(&quot;You are now in the Person Functionality Interface&quot;);</span>
+<span class="nc" id="L155">        boolean isEndPersonUserInterface = false;</span>
+
+<span class="nc" id="L157">        Display.displayPersonInterfaceCommands();</span>
+
+        do {
+<span class="nc" id="L160">            String command = Reader.readString(&quot;Enter command: &quot;);</span>
+<span class="nc bnc" id="L161" title="All 9 branches missed.">            switch (command.toUpperCase()) {</span>
+                case &quot;A&quot;:
+<span class="nc" id="L163">                    String inputFirstName = Reader.readString(&quot;Enter first name&quot;);</span>
+<span class="nc" id="L164">                    String inputMiddleName = Reader.readString(&quot;Enter middle name&quot;);</span>
+<span class="nc" id="L165">                    String inputLastName = Reader.readString(&quot;Enter last name&quot;);</span>
+<span class="nc" id="L166">                    String inputSuffix = Reader.readString(&quot;Enter suffix name&quot;);</span>
+<span class="nc" id="L167">                    String inputTitle = Reader.readString(&quot;Enter title name&quot;);</span>
+<span class="nc" id="L168">                    double inputGwa = Reader.readDouble(&quot;Enter gwa&quot;);</span>
+<span class="nc" id="L169">                    String inputAddress = Reader.readString(&quot;Enter address&quot;);</span>
+<span class="nc" id="L170">                    String inputZipCode = Reader.readString(&quot;Enter zipcode&quot;);</span>
+<span class="nc" id="L171">                    boolean inputisCurrentlyEmployed = Reader.readBoolean(&quot;Currently Employed&quot;);</span>
+<span class="nc" id="L172">                    System.out.println(&quot;Enter what date that you are hired: &quot;);</span>
+<span class="nc" id="L173">                    LocalDate inputDateHired = Reader.readLocalDate(&quot;Enter date hired &quot;);</span>
+
+                    try {
+<span class="nc" id="L176">                        addPersonController(inputFirstName, inputMiddleName, inputLastName, inputSuffix, inputTitle, </span>
+<span class="nc" id="L177">                        inputGwa, inputAddress, inputZipCode, inputDateHired, inputisCurrentlyEmployed);</span>
+<span class="nc" id="L178">                    } catch (ValidationException e) {</span>
+<span class="nc" id="L179">                        System.out.println(e.getMessage());</span>
+                    }
+<span class="nc" id="L181">                    break;</span>
+                case &quot;U&quot;:
+<span class="nc" id="L183">                    String updateInputFirstName = Reader.readString(&quot;Enter first name&quot;);</span>
+<span class="nc" id="L184">                    String updateInputMiddleName = Reader.readString(&quot;Enter middle name&quot;);</span>
+<span class="nc" id="L185">                    String updateInputLastName = Reader.readString(&quot;Enter last name&quot;);</span>
+<span class="nc" id="L186">                    String updateInputSuffix = Reader.readString(&quot;Enter suffix name&quot;);</span>
+<span class="nc" id="L187">                    String updateInputTitle = Reader.readString(&quot;Enter title name&quot;);</span>
+<span class="nc" id="L188">                    double updateInputGwa = Reader.readDouble(&quot;Enter gwa&quot;);</span>
+<span class="nc" id="L189">                    String updateInputAddress = Reader.readString(&quot;Enter address&quot;);</span>
+<span class="nc" id="L190">                    String updateInputZipCode = Reader.readString(&quot;Enter zipcode&quot;);</span>
+<span class="nc" id="L191">                    boolean updateInputisCurrentlyEmployed = Reader.readBoolean(&quot;Currently Employed&quot;);</span>
+<span class="nc" id="L192">                    System.out.println(&quot;Enter what date that you are hired: &quot;);</span>
+<span class="nc" id="L193">                    LocalDate updateInputDateHired = Reader.readLocalDate(&quot;Enter date hired &quot;);</span>
+
+<span class="nc" id="L195">                    int updateSelectedPersonId = Reader.readInt(&quot;Enter selected person id &quot;);</span>
+
+                    try {
+<span class="nc" id="L198">                        updatePersonController(updateInputFirstName, updateInputMiddleName, updateInputLastName, </span>
+<span class="nc" id="L199">                        updateInputSuffix, updateInputTitle, updateInputGwa, updateInputAddress, </span>
+<span class="nc" id="L200">                        updateInputZipCode, updateInputDateHired, updateInputisCurrentlyEmployed, </span>
+<span class="nc" id="L201">                        updateSelectedPersonId);</span>
+<span class="nc" id="L202">                    } catch (NoResultException | ValidationException e) {</span>
+<span class="nc" id="L203">                        System.out.println(e.getMessage());</span>
+                    }
+
+<span class="nc" id="L206">                    break;</span>
+                case &quot;D&quot;:
+<span class="nc" id="L208">                    int deleteSelectedPersonId = </span>
+<span class="nc" id="L209">                    Reader.readInt(&quot;Enter person id of the person data that you wish to delete&quot;);</span>
+                    try {
+<span class="nc" id="L211">                        deletePersonController(deleteSelectedPersonId);</span>
+<span class="nc" id="L212">                    } catch (NoResultException e) {</span>
+<span class="nc" id="L213">                        System.out.println(e.getMessage());</span>
+                    }
+<span class="nc" id="L215">                    break;</span>
+                case &quot;L&quot;:
+<span class="nc" id="L217">                    listAllPersonInterface();</span>
+<span class="nc" id="L218">                    break;</span>
+                case &quot;ADD_ROLE&quot;:
+<span class="nc" id="L220">                    String roleName = Reader.readString(&quot;Enter new rolename &quot;);</span>
+<span class="nc" id="L221">                    int selectedPersonIdForRole = Reader.readInt(&quot;Enter selected person id&quot;);</span>
+                    try {
+<span class="nc" id="L223">                        assignRoleToPersonController(roleName, selectedPersonIdForRole);</span>
+<span class="nc" id="L224">                    } catch (PersistenceException | ValidationException e) {</span>
+<span class="nc" id="L225">                        System.out.println(e.getMessage());</span>
+                    }
+<span class="nc" id="L227">                    break;</span>
+                case &quot;ADD_CONTACT&quot;:
+<span class="nc" id="L229">                    String inputLandline = Reader.readString(&quot;Enter landline &quot;);</span>
+<span class="nc" id="L230">                    String inputMobileNumber = Reader.readString(&quot;Enter landline &quot;);</span>
+<span class="nc" id="L231">                    String inputEmail = Reader.readString(&quot;Enter landline &quot;);</span>
+<span class="nc" id="L232">                    int selectedPersonIdForContact = Reader.readInt(&quot;Enter selected person id&quot;);</span>
+                    try {
+<span class="nc" id="L234">                        assignContactInfoToPersonController(inputLandline, inputMobileNumber, </span>
+<span class="nc" id="L235">                        inputEmail, selectedPersonIdForContact);</span>
+<span class="nc" id="L236">                    } catch (NoResultException | ValidationException e) {</span>
+<span class="nc" id="L237">                       System.out.println(e.getMessage());</span>
+                    }
+<span class="nc" id="L239">                    break;</span>
+                case &quot;V&quot;:
+<span class="nc" id="L241">                    Display.displayPersonInterfaceCommands();</span>
+<span class="nc" id="L242">                    break;</span>
+                case &quot;X&quot;:
+<span class="nc" id="L244">                    isEndPersonUserInterface = true;</span>
+<span class="nc" id="L245">                    break;</span>
+                default:
+                    break;
+            }
+<span class="nc bnc" id="L249" title="All 2 branches missed.">        } while (isEndPersonUserInterface == false);</span>
+<span class="nc" id="L250">    }</span>
+
+    //Utility or Helper methods
+    public void printPersonsByDateHired(){
+<span class="nc" id="L254">        List&lt;Person&gt; persons = personDao.getListPerson();</span>
+
+<span class="nc" id="L256">        Collections.sort(persons, new SortPersonByDateHired());</span>
+
+<span class="nc" id="L258">        printPerson(persons);</span>
+<span class="nc" id="L259">    }</span>
+
+    public void printPersonsByGwa(){
+<span class="nc" id="L262">        List&lt;Person&gt; persons = personDao.getListPerson();</span>
+
+<span class="nc" id="L264">        Collections.sort(persons, new SortPersonByGwa());</span>
+
+<span class="nc" id="L266">        printPerson(persons);</span>
+<span class="nc" id="L267">    }</span>
+
+    public void printPersonsByLastName(){
+<span class="nc" id="L270">        List&lt;Person&gt; persons = personDao.getListPerson();</span>
+
+<span class="nc" id="L272">        Collections.sort(persons, new SortPersonByLastName());</span>
+
+<span class="nc" id="L274">        printPerson(persons);</span>
+<span class="nc" id="L275">    }</span>
+
+    public void printPerson(List&lt;Person&gt; persons){
+
+<span class="nc" id="L279">        persons.stream().forEach((p)-&gt;{</span>
+<span class="nc" id="L280">            System.out.println(&quot;=============================================&quot;);</span>
+<span class="nc" id="L281">            String fullName = p.getFirstName()+&quot; &quot;+p.getMiddleName()+ &quot; &quot; + p.getLastName()</span>
+<span class="nc" id="L282">            +p.getSuffix() + &quot; &quot; + p.getTitle();</span>
+<span class="nc" id="L283">            System.out.println(&quot;Name: &quot;+fullName);</span>
+<span class="nc" id="L284">            System.out.println(&quot;Person ID: &quot; +p.getPersonId());</span>
+<span class="nc" id="L285">            System.out.println(&quot;Address: &quot;+p.getAddress());</span>
+<span class="nc" id="L286">            System.out.println(&quot;Zipcode: &quot;+p.getZipCode());</span>
+<span class="nc" id="L287">            System.out.println(&quot;GWA: &quot;+p.getGwa());</span>
+<span class="nc" id="L288">            System.out.println(&quot;Currently Employed: &quot;+p.getIsCurrentlyEmployed());</span>
+<span class="nc" id="L289">            System.out.println(&quot;Date Hired: &quot;+p.getDateHired());</span>
+<span class="nc" id="L290">            System.out.println(&quot;Roles: &quot;);</span>
+<span class="nc" id="L291">            p.getRoles().stream().forEach((r)-&gt;{</span>
+<span class="nc" id="L292">                System.out.println(&quot;==========&quot;);</span>
+<span class="nc" id="L293">                System.out.println(&quot;Role id: &quot; + r.getRoleId());</span>
+<span class="nc" id="L294">                System.out.println(&quot;Role name: &quot; + r.getRoleName());</span>
+<span class="nc" id="L295">            });</span>
+<span class="nc" id="L296">            System.out.println(&quot;Contact: &quot;);</span>
+<span class="nc" id="L297">            p.getContactInformations().stream().forEach((c)-&gt;{</span>
+<span class="nc" id="L298">                System.out.println(&quot;==========&quot;);</span>
+<span class="nc" id="L299">                System.out.println(&quot;Contact id: &quot; + c.getContactId());</span>
+<span class="nc" id="L300">                System.out.println(&quot;Landline: &quot; + c.getLandline());</span>
+<span class="nc" id="L301">                System.out.println(&quot;Mobile Number: &quot; + c.getMobileNumber());</span>
+<span class="nc" id="L302">                System.out.println(&quot;Contact id: &quot; + c.getContactId());</span>
+<span class="nc" id="L303">            });</span>
+<span class="nc" id="L304">        });</span>
+<span class="nc" id="L305">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

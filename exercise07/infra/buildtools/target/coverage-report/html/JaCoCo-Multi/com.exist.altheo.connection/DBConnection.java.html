@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>DBConnection.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">JaCoCo-Multi Project</a> &gt; <a href="../index.html" class="el_bundle">JaCoCo-Multi</a> &gt; <a href="index.source.html" class="el_package">com.exist.altheo.connection</a> &gt; <span class="el_source">DBConnection.java</span></div><h1>DBConnection.java</h1><pre class="source lang-java linenums">package com.exist.altheo.connection;
+
+import org.hibernate.MappingException;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
+
+//TODO - ADD AUTOMATIC GENERATION OF TABLE WITHOUT USING hbmbml.auto PROPERTY
+<span class="nc" id="L11">public class DBConnection {</span>
+    
+    public static SessionFactory setSessionFactory( SessionFactory sessionFactory) {
+        // A SessionFactory is set up once for an application!
+<span class="nc" id="L15">		final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()</span>
+<span class="nc" id="L16">                .configure(&quot;hibernate.cfg.xml&quot;).build();</span>
+        try {
+<span class="nc" id="L18">            System.out.println(&quot;ON TRY BLOCK&quot;);  </span>
+<span class="nc" id="L19">            sessionFactory =  new MetadataSources( registry ).buildMetadata().buildSessionFactory();</span>
+            // sessionFactory = new Configuration().configure(&quot;/hibernate.cfg.xml&quot;).buildSessionFactory();
+<span class="nc" id="L21">        }</span>
+<span class="nc" id="L22">        catch (MappingException e){</span>
+<span class="nc" id="L23">           System.out.println(&quot;MAPPING EXCEPTION&quot;);</span>
+<span class="nc" id="L24">           System.out.println(e.getMessage());</span>
+<span class="nc" id="L25">           StandardServiceRegistryBuilder.destroy( registry );</span>
+        }
+<span class="nc" id="L27">        catch (Exception e) {</span>
+            // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
+            // so destroy it manually.
+<span class="nc" id="L30">            System.out.println(e.getMessage());</span>
+<span class="nc" id="L31">            StandardServiceRegistryBuilder.destroy( registry );</span>
+        }
+<span class="nc" id="L33">        return sessionFactory;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

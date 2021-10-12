@@ -18,10 +18,12 @@ import org.hibernate.query.Query;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 
 import junit.framework.TestCase;
 
 public class RoleDaoTest extends TestCase {
+	
     private RoleDao roleDao;
     private SessionFactory sessionFactory;
 
@@ -35,14 +37,17 @@ public class RoleDaoTest extends TestCase {
 	private String testZipcode;
 	private String testAddress;
 	private LocalDate testDate;
+	private LocalDate testBirthDate;
 	private boolean testIsCurrentlyEmployed;
     
+
     @Override
     @BeforeAll
     protected void setUp() throws Exception {
         this.roleDao = new RoleDao();
         this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
-
+		DBConnection.flushDbTables(sessionFactory);
+		DBConnection.executeStartingSQLScript(sessionFactory);
 		//Sets test values for test person obj
 		this.testFirstName = "John";
 		this.testMiddleName = "Doo";
@@ -53,6 +58,7 @@ public class RoleDaoTest extends TestCase {
 		this.testZipcode = "Doo1";
 		this.testAddress = "Winterfell, The North, Westeros";
 		this.testDate = LocalDate.now();
+		this.testBirthDate = LocalDate.of(2012, 12, 30);
 		this.testIsCurrentlyEmployed = true;
     }
 
@@ -60,6 +66,7 @@ public class RoleDaoTest extends TestCase {
     @Override
     @AfterEach
 	protected void tearDown() throws Exception {
+		DBConnection.flushDbTables(sessionFactory);
 		if ( sessionFactory != null ) {
 			sessionFactory.close();
 		}
@@ -88,7 +95,7 @@ public class RoleDaoTest extends TestCase {
 
 		int savedPersonId1 = (Integer) session.save(
 			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
-			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
+			testSuffix, testTitle, testAddress, testDate,testBirthDate ,testIsCurrentlyEmployed));
 			
 		session.getTransaction().commit();
 		session.close();
@@ -111,7 +118,7 @@ public class RoleDaoTest extends TestCase {
     @Test 
     public void test_add_role_and_assign_to_person_success() {
 		PersonDao personDao = new PersonDao();
-		personDao.addPerson("Manila City", 5, "555", LocalDate.now(), false, 
+		personDao.addPerson("Manila City", 5, "555", LocalDate.now(),testBirthDate ,false, 
         "John", "Doo", "Doe", "", "The Third"); //ID OF 1
 
 		roleDao.addRoleAndAssignToPerson("Mamba", 1); //ID OF 1
@@ -140,7 +147,7 @@ public class RoleDaoTest extends TestCase {
 
 		int savedPersonId1 = (Integer) session.save(
 			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
-			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
+			testSuffix, testTitle, testAddress, testDate,testBirthDate ,testIsCurrentlyEmployed));
 
 		session.getTransaction().commit();
 		session.close();
@@ -171,19 +178,6 @@ public class RoleDaoTest extends TestCase {
 	
 	@Test
 	public void test_update_role_fail(){
-		//Add Person Obj first
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-
-		int savedPersonId1 = (Integer) session.save(
-			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
-			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
-
-		session.getTransaction().commit();
-		session.close();
-
-		//Secondly, create a role named Admin with id of 1
-		roleDao.addRoleAndAssignToPerson("Admin",savedPersonId1);
 		int selectedRoleId = 5;
 		String input= "Hecker";
 
@@ -197,8 +191,9 @@ public class RoleDaoTest extends TestCase {
     @Test //TODO - FIX BUG, STUCK ON EXECUTING TEST CASE UPON BULK TEST EXECUTION
 	public void test_select_role(){
 		//Add Person Obj first
-		new PersonDao().addPerson(testAddress, testGwa, testZipcode, testDate, testIsCurrentlyEmployed, 
-		testFirstName, testMiddleName, testLastName, testSuffix, testTitle); //ID OF 1
+		new PersonDao().addPerson(testAddress, testGwa, testZipcode, testDate,
+		testBirthDate ,testIsCurrentlyEmployed, testFirstName, testMiddleName, 
+		testLastName, testSuffix, testTitle); //ID OF 1
 
 		// Firstly, create the role and assign them to person
 		roleDao.addRoleAndAssignToPerson("Admin", 1);//ID OF 1
@@ -222,7 +217,8 @@ public class RoleDaoTest extends TestCase {
 
 		int savedPersonId1 = (Integer) session.save(
 			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
-			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
+			testSuffix, testTitle, testAddress, testDate,testBirthDate ,
+			testIsCurrentlyEmployed));
 
 		session.getTransaction().commit();
 		session.close();
@@ -253,8 +249,8 @@ public class RoleDaoTest extends TestCase {
 
 	@Test
 	public void test_list_all_roles() {
-		new PersonDao().addPerson("Manila City", 5, "555", LocalDate.now(), false, 
-        "John", "Doo", "Doe", "", "The Third"); //ID OF 1
+		new PersonDao().addPerson("Manila City", 5, "555", LocalDate.now(),testBirthDate ,
+		false, "John", "Doo", "Doe", "", "The Third"); //ID OF 1
 
 		roleDao.addRoleAndAssignToPerson("Hotdog", 1);
 		roleDao.addRoleAndAssignToPerson("Cheesedog", 1);

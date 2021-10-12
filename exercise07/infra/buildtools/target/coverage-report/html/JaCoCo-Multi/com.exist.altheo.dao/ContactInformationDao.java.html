@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ContactInformationDao.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">JaCoCo-Multi Project</a> &gt; <a href="../index.html" class="el_bundle">JaCoCo-Multi</a> &gt; <a href="index.source.html" class="el_package">com.exist.altheo.dao</a> &gt; <span class="el_source">ContactInformationDao.java</span></div><h1>ContactInformationDao.java</h1><pre class="source lang-java linenums">package com.exist.altheo.dao;
+
+
+import javax.persistence.NoResultException;
+
+import com.exist.altheo.connection.DBConnection;
+import com.exist.altheo.model.ContactInformation;
+import com.exist.altheo.model.Person;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+public class ContactInformationDao {
+    private SessionFactory sessionFactory;
+
+<span class="nc" id="L16">    public ContactInformationDao(){</span>
+<span class="nc" id="L17">        this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);</span>
+<span class="nc" id="L18">    }</span>
+
+   
+    public void addContactInformation(
+        String landline, String mobileNumber, String email, int personSelectId
+    ) throws NoResultException{
+<span class="nc" id="L24">        Session session = sessionFactory.openSession();</span>
+<span class="nc" id="L25">        session.beginTransaction();</span>
+
+<span class="nc" id="L27">        int getContactId = (Integer) session.save(new ContactInformation(landline, mobileNumber, email));</span>
+      
+<span class="nc" id="L29">        ContactInformation contactInformation = session.get(ContactInformation.class, getContactId);</span>
+<span class="nc" id="L30">        Person person = session.get(Person.class, personSelectId);</span>
+
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        if(person == null)</span>
+<span class="nc" id="L33">            throw new NoResultException(&quot;person id &quot; + personSelectId + &quot; does not exist&quot;);</span>
+    
+<span class="nc" id="L35">        contactInformation.setPerson(person);</span>
+
+<span class="nc" id="L37">        session.update(contactInformation);</span>
+
+<span class="nc" id="L39">        session.getTransaction().commit();</span>
+<span class="nc" id="L40">        session.close();</span>
+<span class="nc" id="L41">    }</span>
+
+    public void updateContactInformation(
+        int selectedContactId, String inputlandline, String inputMobileNumber,
+        String inputEmail
+    ) throws NoResultException{
+<span class="nc" id="L47">        Session session = sessionFactory.openSession();</span>
+<span class="nc" id="L48">        session.beginTransaction();</span>
+        //Setting the update statement
+
+<span class="nc" id="L51">        ContactInformation contactInformation = session.get(ContactInformation.class, selectedContactId);</span>
+
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        if(contactInformation == null)</span>
+<span class="nc" id="L54">            throw new NoResultException(&quot;Person id &quot; + selectedContactId + &quot; does not exist&quot;);</span>
+
+<span class="nc" id="L56">        contactInformation.setLandline(inputlandline);</span>
+<span class="nc" id="L57">        contactInformation.setMobileNumber(inputMobileNumber);</span>
+<span class="nc" id="L58">        contactInformation.setEmail(inputEmail);</span>
+
+
+<span class="nc" id="L61">        session.getTransaction().commit();</span>
+
+<span class="nc" id="L63">        session.close();</span>
+
+<span class="nc" id="L65">    }</span>
+
+    public void deleteContact(
+        int selectedContactId
+    )throws NoResultException{
+<span class="nc" id="L70">        Session session = sessionFactory.openSession();</span>
+<span class="nc" id="L71">        session.beginTransaction();</span>
+
+<span class="nc" id="L73">        ContactInformation contactInformation = session.get(ContactInformation.class, selectedContactId);</span>
+
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        if(contactInformation == null)</span>
+<span class="nc" id="L76">            throw new NoResultException(&quot;person id &quot; + selectedContactId + &quot; does not exist&quot;);</span>
+
+<span class="nc" id="L78">        session.delete(contactInformation);</span>
+<span class="nc" id="L79">        session.getTransaction().commit();</span>
+<span class="nc" id="L80">        session.close();</span>
+
+<span class="nc" id="L82">    }</span>
+
+    //Helper method to select a specific contact
+    public ContactInformation selectContact(int selectedContactId) {
+<span class="nc" id="L86">        Session session = sessionFactory.openSession();</span>
+<span class="nc" id="L87">        session.beginTransaction();</span>
+<span class="nc" id="L88">        ContactInformation contactInformation = session.get(ContactInformation.class, selectedContactId);</span>
+    
+<span class="nc" id="L90">        session.close();</span>
+
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if(contactInformation == null){</span>
+<span class="nc" id="L93">            throw new NoResultException(&quot;Role id &quot; + selectedContactId + &quot; does not exist&quot;);</span>
+        }else{
+<span class="nc" id="L95">            return contactInformation;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

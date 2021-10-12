@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>RoleController.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">JaCoCo-Multi Project</a> &gt; <a href="../index.html" class="el_bundle">JaCoCo-Multi</a> &gt; <a href="index.source.html" class="el_package">com.exist.altheo.service</a> &gt; <span class="el_source">RoleController.java</span></div><h1>RoleController.java</h1><pre class="source lang-java linenums">package com.exist.altheo.service;
+
+import java.util.List;
+
+import javax.persistence.NoResultException;
+import javax.xml.bind.ValidationException;
+
+import com.exist.altheo.dao.RoleDao;
+import com.exist.altheo.model.Role;
+import com.exist.altheo.utility.Reader;
+import com.exist.altheo.view.Display;
+
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.exception.ConstraintViolationException;
+
+public class RoleController {
+    private RoleDao roleDao;
+
+<span class="nc" id="L19">    public RoleController(){</span>
+<span class="nc" id="L20">        roleDao = new RoleDao();</span>
+<span class="nc" id="L21">    }</span>
+
+    public void addNewRoleController(String input,int assignedPersonId)
+        throws ValidationException
+    {
+        //Returns true if valid otherwise returns false
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        if(StringUtils.isEmpty(input)){</span>
+<span class="nc" id="L28">            throw new ValidationException(&quot;Input must not be blank&quot;);</span>
+        }
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        else if(!StringUtils.isAsciiPrintable(input)){</span>
+<span class="nc" id="L31">            throw new ValidationException(&quot;Input must be a ascii char&quot;);</span>
+        }else{
+<span class="nc" id="L33">            roleDao.addRoleAndAssignToPerson(input,assignedPersonId);</span>
+        }
+<span class="nc" id="L35">    }</span>
+
+    public void deleteRoleController(int selectedRoleIdToDelete) throws NoResultException{
+<span class="nc" id="L38">        roleDao.deleteRole(selectedRoleIdToDelete);</span>
+<span class="nc" id="L39">    }</span>
+
+    public void updateRoleController(String input, int selectedRoleIdToUpdate) throws ValidationException{ 
+
+        //Returns true if valid otherwise returns false
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        if(StringUtils.isEmpty(input)){</span>
+<span class="nc" id="L45">            throw new ValidationException(&quot;Input must not be blank&quot;);</span>
+        }
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        else if(!StringUtils.isAsciiPrintable(input)){</span>
+<span class="nc" id="L48">            throw new ValidationException(&quot;Input must be a ascii char&quot;);</span>
+        }else{
+<span class="nc" id="L50">            roleDao.updateRole(selectedRoleIdToUpdate, input);</span>
+        }
+<span class="nc" id="L52">    }</span>
+
+    public void listAllRolesController(){
+<span class="nc" id="L55">        List&lt;Role&gt; rolesList= roleDao.getListsOfRoles();</span>
+        
+<span class="nc" id="L57">        rolesList.stream().forEach((role)-&gt;{</span>
+<span class="nc" id="L58">            System.out.println(&quot;===================&quot;);</span>
+<span class="nc" id="L59">            System.out.println(&quot;Role Id: &quot;+ role.getRoleId());</span>
+<span class="nc" id="L60">            System.out.println(&quot;Role Name: &quot;+ role.getRoleName());</span>
+<span class="nc" id="L61">        });</span>
+         
+<span class="nc" id="L63">    }</span>
+
+    //The Role Function UI
+    public void roleUserInterface() {
+<span class="nc" id="L67">        System.out.println(&quot;You are now in the Role Functionality Interface&quot;);</span>
+<span class="nc" id="L68">        boolean isEndRoleUserInterface = false;</span>
+        
+
+        do {
+<span class="nc" id="L72">            String command = Reader.readString(&quot;Enter command: &quot;);</span>
+<span class="nc bnc" id="L73" title="All 6 branches missed.">            switch (command.toUpperCase()) {</span>
+                case &quot;A&quot;:
+<span class="nc" id="L75">                    String inputAdd = Reader.readString(&quot;Enter rolename &quot;);</span>
+<span class="nc" id="L76">                    int assignedPersonId = Reader.readInt(&quot;Enter assigned person id &quot;);</span>
+                    try {
+<span class="nc" id="L78">                        addNewRoleController(inputAdd,assignedPersonId);</span>
+<span class="nc" id="L79">                    } catch (ValidationException e) {</span>
+<span class="nc" id="L80">                       System.out.println(e.getMessage());</span>
+<span class="nc" id="L81">                    } catch(ConstraintViolationException e){ </span>
+<span class="nc" id="L82">                        System.out.println(e.getMessage());</span>
+                    }
+<span class="nc" id="L84">                    break;</span>
+                case &quot;D&quot;:
+<span class="nc" id="L86">                    int selectedRoleIdToDelete = Reader.readInt(&quot;Enter roleId you wish to delete &quot;);</span>
+                    try {
+<span class="nc" id="L88">                        deleteRoleController(selectedRoleIdToDelete);</span>
+<span class="nc" id="L89">                    } catch (NoResultException nre) {</span>
+<span class="nc" id="L90">                        System.out.println(nre.getMessage());</span>
+                    }
+<span class="nc" id="L92">                    break;</span>
+                case &quot;U&quot;:
+<span class="nc" id="L94">                    String inputUpdate = Reader.readString(&quot;Enter rolename &quot;);</span>
+<span class="nc" id="L95">                    int selectedRoleIdToUpdate = Reader.readInt(&quot;Enter roleId you wish to update&quot;);</span>
+                    try {
+<span class="nc" id="L97">                        updateRoleController(inputUpdate,selectedRoleIdToUpdate);</span>
+<span class="nc" id="L98">                    } catch (NoResultException nre) {</span>
+<span class="nc" id="L99">                        System.out.println(nre.getMessage());</span>
+<span class="nc" id="L100">                    } catch (ValidationException ve) {</span>
+<span class="nc" id="L101">                        System.out.println(ve.getMessage());</span>
+                    }
+<span class="nc" id="L103">                    break;</span>
+                case &quot;L&quot;:
+<span class="nc" id="L105">                    listAllRolesController();</span>
+<span class="nc" id="L106">                    break;</span>
+                case &quot;V&quot;:
+<span class="nc" id="L108">                    Display.displayRoleInterfaceCommands();</span>
+<span class="nc" id="L109">                    break;</span>
+                default:
+<span class="nc" id="L111">                    System.out.println(&quot;Wrong input, please put a valid input&quot;);</span>
+                    break;
+            }
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        } while (isEndRoleUserInterface);</span>
+<span class="nc" id="L115">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

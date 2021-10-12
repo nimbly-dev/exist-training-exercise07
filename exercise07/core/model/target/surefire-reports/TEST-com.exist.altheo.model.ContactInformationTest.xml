@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="2" failures="0" name="com.exist.altheo.model.ContactInformationTest" time="0.012" errors="0" skipped="0">
+<testsuite tests="3" failures="0" name="com.exist.altheo.model.ContactInformationTest" time="0.011" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="java.vm.version" value="16.0.2+7-67"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-16.0.2\bin"/>
-    <property name="maven.multiModuleProjectDirectory" value="C:/Users/nimbl/Desktop/java-ws/exercises-training/exist-training-exercise07/exercise07"/>
+    <property name="maven.multiModuleProjectDirectory" value="C:/Users/nimbl/Desktop/java-ws/exercises-training/exist-training-exercise07/exercise07/core"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="java.vendor.url" value="https://java.oracle.com/"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -15,7 +15,7 @@
     <property name="user.country" value="PH"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="C:\Users\nimbl\Desktop\java-ws\exercises-training\exist-training-exercise07\exercise07"/>
+    <property name="user.dir" value="C:\Users\nimbl\Desktop\java-ws\exercises-training\exist-training-exercise07\exercise07\core"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="java.runtime.version" value="16.0.2+7-67"/>
     <property name="os.arch" value="amd64"/>
@@ -57,6 +57,7 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="com.exist.altheo.model.ContactInformationTest" name="test_contact_information_setters" time="0.012"/>
+  <testcase classname="com.exist.altheo.model.ContactInformationTest" name="test_contact_information_setters" time="0.011"/>
+  <testcase classname="com.exist.altheo.model.ContactInformationTest" name="test_enum" time="0"/>
   <testcase classname="com.exist.altheo.model.ContactInformationTest" name="test_contact_information_getters" time="0"/>
 </testsuite>

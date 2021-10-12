@@ -1,5 +1,7 @@
 package com.exist.altheo.model;
 
+import java.util.EnumMap;
+
 public class ContactInformation {
     int contactId;
     int personId;
@@ -7,24 +9,24 @@ public class ContactInformation {
     String mobileNumber;
     String email;
 
+    //TODO- APPLY ENUM TO DB
+    enum Contact{
+        LANDLINE, MOBILE_NUMBER, EMAIL
+    }
+
+    EnumMap<Contact, String> addressMap = new EnumMap<>(Contact.class);
+
     Person person;
 
-    public ContactInformation(){ }
-
+    public ContactInformation(){ 
+        
+    }
 
     public ContactInformation(String landline, String mobileNumber, String email) {
         this.landline = landline;
         this.mobileNumber = mobileNumber;
         this.email = email;
     }
-
-    public ContactInformation(String landline, String mobileNumber, String email, Person person) {
-        this.landline = landline;
-        this.mobileNumber = mobileNumber;
-        this.email = email;
-        this.person = person;
-    }
-
 
 
     public int getContactId() {
@@ -73,6 +75,16 @@ public class ContactInformation {
 
     public void setPersonId(int personId) {
         this.personId = personId;
+    }
+
+
+    public EnumMap<Contact, String> getAddressMap() {
+        return addressMap;
+    }
+
+
+    public void setAddressMap(EnumMap<Contact, String> addressMap) {
+        this.addressMap = addressMap;
     }
     
 }

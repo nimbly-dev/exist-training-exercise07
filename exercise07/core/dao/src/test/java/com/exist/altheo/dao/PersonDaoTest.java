@@ -35,6 +35,7 @@ public class PersonDaoTest extends TestCase {
 	private String testZipcode;
 	private String testAddress;
 	private LocalDate testDate;
+    private LocalDate testBirthDate;
 	private boolean testIsCurrentlyEmployed;
     
    
@@ -46,6 +47,9 @@ public class PersonDaoTest extends TestCase {
         this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
 		this.personDao = new PersonDao();
 
+		DBConnection.flushDbTables(sessionFactory);
+		DBConnection.executeStartingSQLScript(sessionFactory);
+
 		//Sets test values for test person obj
         this.testFirstName = "John";
 		this.testMiddleName = "Doo";
@@ -56,13 +60,14 @@ public class PersonDaoTest extends TestCase {
 		this.testZipcode = "Doo1";
 		this.testAddress = "Winterfell, The North, Westeros";
 		this.testDate = LocalDate.now();
+        this.testBirthDate = LocalDate.of(2015, 1, 12);
 		this.testIsCurrentlyEmployed = true;
-
     }
 
     @Override
     @AfterEach
 	protected void tearDown() throws Exception {
+        DBConnection.flushDbTables(sessionFactory);
 		if ( sessionFactory != null ) {
 			sessionFactory.close();
 		}
@@ -76,7 +81,7 @@ public class PersonDaoTest extends TestCase {
 
 		int savedPersonId1 = (Integer) session.save(
 			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
-			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
+			testSuffix, testTitle, testAddress, testDate,testBirthDate ,testIsCurrentlyEmployed));
 
 		session.getTransaction().commit();
 		session.close();
@@ -102,7 +107,7 @@ public class PersonDaoTest extends TestCase {
 
         //Create person with id of 1
         personDao.addPerson(testAddress, testGwa, testZipcode, 
-        testDate, testIsCurrentlyEmployed, testFirstName, 
+        testDate,testBirthDate ,testIsCurrentlyEmployed, testFirstName, 
         testMiddleName, testLastName, testSuffix, testTitle);
 
         roleDao.addNewRole("Admin");
@@ -121,7 +126,8 @@ public class PersonDaoTest extends TestCase {
         assertEquals(result.getAddress(), testAddress);
         assertEquals(result.getGwa(), testGwa);
         assertEquals(result.getZipCode(), testZipcode);
-        assertEquals(result.getDateHired(), testDate);
+        assertEquals(result.getDateHired(), LocalDate.of(2015, 1, 12));//2015-01-12
+        assertEquals(result.getBirthday(), testDate);
         assertEquals(result.getIsCurrentlyEmployed(), testIsCurrentlyEmployed);
         assertEquals(result.getRoles().get(0).getRoleName(), "Admin");
 
@@ -132,7 +138,7 @@ public class PersonDaoTest extends TestCase {
     public void test_update_person_success(){
         //Create person with id of 1
         personDao.addPerson(testAddress, testGwa, testZipcode, 
-        testDate, testIsCurrentlyEmployed, testFirstName, 
+        testDate,testBirthDate ,testIsCurrentlyEmployed, testFirstName, 
         testMiddleName, testLastName, testSuffix, testTitle);
 
         String inputUpdateFirstName = "Scooby";
@@ -147,7 +153,7 @@ public class PersonDaoTest extends TestCase {
         boolean testIsCurrentlyEmployed = false;
 
         personDao.updatePerson(inputUpdateAddress, inputUpdateGwa, inputUpdateZipCode, 
-        inputUpdateDate, testIsCurrentlyEmployed, inputUpdateFirstName, 
+        inputUpdateDate, LocalDate.now(),testIsCurrentlyEmployed, inputUpdateFirstName, 
         inputUpdateMiddle, inputUpdateLastName, inputUpdateSuffix, inputUpdateTitle, 1);
 
 		Person results = personDao.selectPerson(1);
@@ -181,7 +187,7 @@ public class PersonDaoTest extends TestCase {
 
         NoResultException exception = assertThrows(NoResultException.class, 
         ()->  personDao.updatePerson(inputUpdateAddress, inputUpdateGwa, inputUpdateZipCode, 
-        inputUpdateDate, testIsCurrentlyEmployed, inputUpdateFirstName, 
+        inputUpdateDate, inputUpdateDate, testIsCurrentlyEmployed, inputUpdateFirstName, 
         inputUpdateMiddle, inputUpdateLastName, inputUpdateSuffix, inputUpdateTitle, inputUpdateId));
 
         assertEquals(exception.getMessage(), "Person id " + inputUpdateId + " does not exist");
@@ -191,7 +197,7 @@ public class PersonDaoTest extends TestCase {
     public void test_delete_person_success(){
         //Create person with id of 1
         personDao.addPerson(testAddress, testGwa, testZipcode, 
-        testDate, testIsCurrentlyEmployed, testFirstName, 
+        testDate,testBirthDate ,testIsCurrentlyEmployed, testFirstName, 
         testMiddleName, testLastName, testSuffix, testTitle);
 
         personDao.deletePerson(1);
@@ -213,7 +219,7 @@ public class PersonDaoTest extends TestCase {
     public void test_select_nonexistent_personId_fail(){
         //Create person with id of 1
         personDao.addPerson(testAddress, testGwa, testZipcode, 
-        testDate, testIsCurrentlyEmployed, testFirstName, 
+        testDate,testBirthDate ,testIsCurrentlyEmployed, testFirstName, 
         testMiddleName, testLastName, testSuffix, testTitle);
 
         NoResultException exception = assertThrows(NoResultException.class, 
@@ -226,11 +232,11 @@ public class PersonDaoTest extends TestCase {
     public void test_get_list_of_persons(){
         //Add persons to database
         personDao.addPerson(testAddress, testGwa, testZipcode, 
-        testDate, testIsCurrentlyEmployed, testFirstName, 
+        testDate, testBirthDate,testIsCurrentlyEmployed, testFirstName, 
         testMiddleName, testLastName, testSuffix, testTitle);
 
         personDao.addPerson(testAddress, testGwa, testZipcode, 
-        testDate, testIsCurrentlyEmployed, "Another Person", 
+        testDate,testBirthDate ,testIsCurrentlyEmployed, "Another Person", 
         testMiddleName, testLastName, testSuffix, testTitle);
 
         List<Person> personList = personDao.getListPerson();

@@ -20,11 +20,11 @@ public class PersonDao {
 
     public void addPerson(
         String address, double gwa, String zipCode,
-        LocalDate dateHired, boolean isCurrentlyEmployed, String firstName,
+        LocalDate dateHired,LocalDate birthday,boolean isCurrentlyEmployed, String firstName,
         String middleName, String lastName, String suffix, String title
     ) {
         Person person =new Person(gwa, zipCode, firstName, middleName, lastName, suffix, title, 
-        address, dateHired, isCurrentlyEmployed);
+        address, dateHired,birthday ,isCurrentlyEmployed);
 
         Session session = sessionFactory.openSession();
 
@@ -55,7 +55,7 @@ public class PersonDao {
 
     public void updatePerson(
         String address, double gwa, String zipCode,
-        LocalDate dateHired, boolean isCurrentlyEmployed, String firstName,
+        LocalDate dateHired, LocalDate inputBirthdate, boolean isCurrentlyEmployed, String firstName,
         String middleName, String lastName, String suffix, String title,
         int selectedPersonId
     ){
@@ -78,7 +78,7 @@ public class PersonDao {
         person.setGwa(gwa);
         person.setDateHired(dateHired);
 
-        session.update(person);
+        session.persist(person);
         session.getTransaction().commit();
         session.close();
  

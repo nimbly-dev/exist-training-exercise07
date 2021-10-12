@@ -19,9 +19,9 @@ public class Person implements Serializable{
     String suffix;
     String title;
 
-    //TODO - CHANGE TO ENUM
     String address;
 
+    LocalDate birthday;
     LocalDate dateHired;
     boolean isCurrentlyEmployed;
     Set<ContactInformation> contactInformations = new HashSet<ContactInformation>(0);
@@ -32,7 +32,7 @@ public class Person implements Serializable{
     }
 
     public Person(double gwa, String zipCode, String firstName, String middleName, String lastName, String suffix,
-            String title, String address, LocalDate dateHired, boolean isCurrentlyEmployed) {
+            String title, String address, LocalDate birthday, LocalDate dateHired, boolean isCurrentlyEmployed) {
         this.gwa = gwa;
         this.zipCode = zipCode;
         this.firstName = firstName;
@@ -41,10 +41,10 @@ public class Person implements Serializable{
         this.suffix = suffix;
         this.title = title;
         this.address = address;
+        this.birthday = birthday;
         this.dateHired = dateHired;
         this.isCurrentlyEmployed = isCurrentlyEmployed;
     }
-
 
 
     public int getPersonId() {
@@ -154,5 +154,14 @@ public class Person implements Serializable{
     public void setCurrentlyEmployed(boolean isCurrentlyEmployed) {
         this.isCurrentlyEmployed = isCurrentlyEmployed;
     }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
     
 }

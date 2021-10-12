@@ -3,6 +3,8 @@ package com.exist.altheo.model;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
+import com.exist.altheo.model.ContactInformation.Contact;
+
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -28,16 +30,17 @@ public class ContactInformationTest extends TestCase {
         // "Doobi Manila", dateToday, true);
 
         this.person2 = new Person(5, "322", "Scooby", "Doobo", "Doo", "Sr.", 
-        "Dog", "Makati", dateToday, true);
+        "Dog", "Makati", dateToday, exampleDate, true);
         
         this.jolibee =  new Person(3, "52", "Bida", "Ang", "Saya", "Bumblee", "Bee", 
-        "Brasil Brazil", exampleDate, true);
+        "Brasil Brazil", exampleDate, dateToday,true);
 	}
 
     @Test
     public void test_contact_information_getters() {
         ContactInformation contactInformation1 = new ContactInformation(
-            "1111", "2222-3333", "hotdigitydog@gmail.com", person2);
+            "1111", "2222-3333", "hotdigitydog@gmail.com");
+        contactInformation1.setPerson(person2);
 
         assertTrue(contactInformation1.getLandline() == "1111");
         assertTrue(contactInformation1.getMobileNumber() == "2222-3333");
@@ -48,7 +51,7 @@ public class ContactInformationTest extends TestCase {
     @Test 
     public void test_contact_information_setters(){
         ContactInformation contactInformation = new ContactInformation(
-            "4444", "5555", "feedback@jfc.com.ph", person2);
+            "4444", "5555", "feedback@jfc.com.ph");
 
         contactInformation.setLandline("9999");
         contactInformation.setMobileNumber("8-7000");
@@ -59,5 +62,16 @@ public class ContactInformationTest extends TestCase {
         assertTrue(contactInformation.getMobileNumber() == "8-7000");
         assertTrue(contactInformation.getEmail() == "writeus@ph.mcd.com");
         assertTrue(contactInformation.getPerson().getFirstName()== "Bida");
+    }
+
+    @Test
+    public void test_enum(){
+        ContactInformation contactInformation = new ContactInformation(
+            "4444", "5555", "feedback@jfc.com.ph");
+
+        contactInformation.getAddressMap().put(Contact.EMAIL, "feedback@jfc.com.ph");
+
+        System.out.println(contactInformation.getAddressMap().get(Contact.EMAIL));
+        
     }
 }

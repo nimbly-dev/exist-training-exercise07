@@ -34,6 +34,7 @@ public class ContactInformationDaoTest extends TestCase {
     private String testZipcode;
     private String testAddress;
     private LocalDate testDate;
+    private LocalDate testBirthDate;
     private boolean testIsCurrentlyEmployed;
     //Data testfields for contact
     private String testLandline;
@@ -47,6 +48,9 @@ public class ContactInformationDaoTest extends TestCase {
         this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
         this.personDao = new PersonDao();
 
+		DBConnection.flushDbTables(sessionFactory);
+		DBConnection.executeStartingSQLScript(sessionFactory);
+
 		//Sets test values for test person obj
 		this.testFirstName = "John";
 		this.testMiddleName = "Doo";
@@ -57,6 +61,7 @@ public class ContactInformationDaoTest extends TestCase {
         this.testZipcode = "Doo1";
         this.testAddress = "Winterfell, The North, Westeros";
         this.testDate = LocalDate.now();
+        this.testBirthDate = LocalDate.of(2012, 12, 30);
         this.testIsCurrentlyEmployed = true;
 
         
@@ -69,6 +74,7 @@ public class ContactInformationDaoTest extends TestCase {
     @Override
     @AfterEach
 	protected void tearDown() throws Exception {
+		DBConnection.flushDbTables(sessionFactory);
 		if ( sessionFactory != null ) {
 			sessionFactory.close();
 		}
@@ -83,7 +89,7 @@ public class ContactInformationDaoTest extends TestCase {
 
 		int savedPersonId1 = (Integer) session.save(
 			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
-			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
+			testSuffix, testTitle, testAddress, testDate,testBirthDate ,testIsCurrentlyEmployed));
 
         session.getTransaction().commit();
         session.close();
@@ -109,7 +115,7 @@ public class ContactInformationDaoTest extends TestCase {
 
 		int savedPersonId1 = (Integer) session.save(
 			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
-			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
+			testSuffix, testTitle, testAddress, testDate,testBirthDate ,testIsCurrentlyEmployed));
 
         session.getTransaction().commit();
         session.close();
@@ -141,7 +147,7 @@ public class ContactInformationDaoTest extends TestCase {
 
 		int savedPersonId1 = (Integer) session.save(
 			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
-			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
+			testSuffix, testTitle, testAddress, testDate,testBirthDate ,testIsCurrentlyEmployed));
 
         session.getTransaction().commit();
         session.close();
@@ -179,7 +185,7 @@ public class ContactInformationDaoTest extends TestCase {
 
 		int savedPersonId1 = (Integer) session.save(
 			new Person(testGwa, testZipcode, testFirstName, testMiddleName, testLastName, 
-			testSuffix, testTitle, testAddress, testDate, testIsCurrentlyEmployed));
+			testSuffix, testTitle, testAddress, testDate,testBirthDate ,testIsCurrentlyEmployed));
 
         session.getTransaction().commit();
         session.close();

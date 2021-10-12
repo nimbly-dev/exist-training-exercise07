@@ -24,4 +24,41 @@
       <version>${project.version}</version>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+                 <!-- Plugin to modify jarfile generation to suit project needs -->
+                 <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-assembly-plugin</artifactId>
+                  <version>${maven-assembly-plugin.version}</version>
+
+                  <configuration>
+                     <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                     </descriptorRefs> 
+                     <!--Set the main classpath upon run  -->
+                     <archive>
+                        <manifest>
+                        <addClasspath>true</addClasspath>
+                        <classpathPrefix>lib/</classpathPrefix>
+                        <mainClass>com.exist.altheo.App</mainClass>
+                        </manifest>
+                     </archive>
+                     
+                  </configuration>
+
+                  <!-- Add the dependency jar files on the generated jar file upon build -->
+                  <executions>
+                     <execution>
+                        <id>assemble-all</id>
+                        <phase>package</phase>
+                        <goals>
+                              <goal>single</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+            </plugin>
+    </plugins>
+  </build>
 </project>

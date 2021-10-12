@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>PersonDao.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">JaCoCo-Multi Project</a> &gt; <a href="../index.html" class="el_bundle">JaCoCo-Multi</a> &gt; <a href="index.source.html" class="el_package">com.exist.altheo.dao</a> &gt; <span class="el_source">PersonDao.java</span></div><h1>PersonDao.java</h1><pre class="source lang-java linenums">package com.exist.altheo.dao;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import javax.persistence.NoResultException;
+
+import com.exist.altheo.connection.DBConnection;
+import com.exist.altheo.model.Person;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+public class PersonDao {
+    private SessionFactory sessionFactory;
+
+<span class="nc" id="L17">    public PersonDao(){</span>
+<span class="nc" id="L18">        this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);</span>
+<span class="nc" id="L19">    }</span>
+
+    public void addPerson(
+        String address, double gwa, String zipCode,
+        LocalDate dateHired, boolean isCurrentlyEmployed, String firstName,
+        String middleName, String lastName, String suffix, String title
+    ) {
+<span class="nc" id="L26">        Person person =new Person(gwa, zipCode, firstName, middleName, lastName, suffix, title, </span>
+<span class="nc" id="L27">        address, dateHired, isCurrentlyEmployed);</span>
+
+<span class="nc" id="L29">        Session session = sessionFactory.openSession();</span>
+
+<span class="nc" id="L31">        session.beginTransaction();</span>
+<span class="nc" id="L32">        session.save(person);</span>
+
+<span class="nc" id="L34">        session.getTransaction().commit();</span>
+<span class="nc" id="L35">        session.close();</span>
+<span class="nc" id="L36">    }</span>
+
+    //Helper method to select a specific contact
+    public Person selectPerson(int selectedPersonId) throws NoResultException{
+<span class="nc" id="L40">        Session session = sessionFactory.openSession();</span>
+<span class="nc" id="L41">        session.beginTransaction();</span>
+<span class="nc" id="L42">        Person person = session.get(Person.class, selectedPersonId);</span>
+    	// String hsql_eager_select_query = &quot;SELECT p FROM Person p inner join p.roles where p.personId=1&quot;;
+        // Person person = (Person) session.createQuery(hsql_eager_select_query).getSingleResult();
+
+<span class="nc" id="L46">        session.getTransaction().commit();</span>
+<span class="nc" id="L47">        session.close();</span>
+
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if(person == null){</span>
+<span class="nc" id="L50">            throw new NoResultException(&quot;Person id &quot; + selectedPersonId + &quot; does not exist&quot;);</span>
+        }else{
+<span class="nc" id="L52">            return person;</span>
+        }
+    }
+
+    public void updatePerson(
+        String address, double gwa, String zipCode,
+        LocalDate dateHired, boolean isCurrentlyEmployed, String firstName,
+        String middleName, String lastName, String suffix, String title,
+        int selectedPersonId
+    ){
+<span class="nc" id="L62">        Session session = sessionFactory.openSession();</span>
+<span class="nc" id="L63">        session.beginTransaction();</span>
+
+<span class="nc" id="L65">        Person person = session.get(Person.class, selectedPersonId);</span>
+        
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if(person == null)</span>
+<span class="nc" id="L68">            throw new NoResultException(&quot;Person id &quot; + selectedPersonId + &quot; does not exist&quot;);</span>
+
+<span class="nc" id="L70">        person.setFirstName(firstName);</span>
+<span class="nc" id="L71">        person.setMiddleName(middleName);</span>
+<span class="nc" id="L72">        person.setLastName(lastName);</span>
+<span class="nc" id="L73">        person.setSuffix(suffix);</span>
+<span class="nc" id="L74">        person.setTitle(title);</span>
+<span class="nc" id="L75">        person.setAddress(address);</span>
+<span class="nc" id="L76">        person.setIsCurrentlyEmployed(isCurrentlyEmployed);</span>
+<span class="nc" id="L77">        person.setZipCode(zipCode);</span>
+<span class="nc" id="L78">        person.setGwa(gwa);</span>
+<span class="nc" id="L79">        person.setDateHired(dateHired);</span>
+
+<span class="nc" id="L81">        session.update(person);</span>
+<span class="nc" id="L82">        session.getTransaction().commit();</span>
+<span class="nc" id="L83">        session.close();</span>
+ 
+<span class="nc" id="L85">    }</span>
+
+    public void deletePerson(int selectedPersonId)throws NoResultException{
+<span class="nc" id="L88">        Session session = sessionFactory.openSession();</span>
+        // String hsql = &quot;DELETE from Person where personId=:id&quot;;
+<span class="nc" id="L90">        session.beginTransaction();</span>
+
+<span class="nc" id="L92">        Person person = session.get(Person.class, selectedPersonId);</span>
+
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        if(person == null)</span>
+<span class="nc" id="L95">            throw new NoResultException(&quot;Person id &quot; + selectedPersonId + &quot; does not exist&quot;);</span>
+
+<span class="nc" id="L97">        session.delete(person);</span>
+
+        // Query&lt;Role&gt; query = session.createQuery(hsql);
+        // query.setParameter(&quot;id&quot;, selectedPersonId);
+
+        // int result = query.executeUpdate();
+
+<span class="nc" id="L104">        session.getTransaction().commit();</span>
+<span class="nc" id="L105">        session.close();</span>
+
+<span class="nc" id="L107">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public List&lt;Person&gt; getListPerson(){
+<span class="nc" id="L111">        Session session = sessionFactory.openSession();</span>
+<span class="nc" id="L112">        session.beginTransaction();</span>
+
+<span class="nc" id="L114">        List&lt;Person&gt; persons = session.createQuery(&quot;From Person&quot;).list();</span>
+
+<span class="nc" id="L116">        session.getTransaction().commit();</span>
+<span class="nc" id="L117">        session.close();</span>
+
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        if(persons.size() == 0)</span>
+<span class="nc" id="L120">            throw new NoResultException(&quot;No Persons found on database&quot;);</span>
+        else
+<span class="nc" id="L122">            return persons;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -8,10 +8,12 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.xml.bind.ValidationException;
 
+import com.exist.altheo.connection.DBConnection;
 import com.exist.altheo.dao.ContactInformationDao;
 import com.exist.altheo.dao.PersonDao;
 import com.exist.altheo.dao.RoleDao;
 
+import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -24,6 +26,8 @@ public class PersonControllerTest extends TestCase {
     private RoleDao roleDao;
     private PersonController personController;
 
+    private SessionFactory sessionFactory;
+
     @Override
     @BeforeEach
     protected void setUp() throws Exception {
@@ -31,15 +35,18 @@ public class PersonControllerTest extends TestCase {
         this.roleDao = new RoleDao();
         this.personController = new PersonController();
         this.contactInformationDao = new ContactInformationDao();
+        this.sessionFactory = DBConnection.setSessionFactory(sessionFactory);
+		DBConnection.flushDbTables(sessionFactory);
+        DBConnection.executeStartingSQLScript(sessionFactory);
 	}
 
     @Test
     public void test_print_person_list(){
-        personDao.addPerson("Manila City", 5, "555", LocalDate.now(), false, 
-        "John", "Doo", "Doe", "", "The Third");
+        personDao.addPerson("Manila City", 5, "555", LocalDate.now(),  LocalDate.now(),
+        false, "John", "Doo", "Doe", "", "The Third");
 
-        personDao.addPerson("Manila City",1 , "555", LocalDate.of(2020, 2, 12), false, 
-        "Simba", "", "Zimba", "", "The Lion King");
+        personDao.addPerson("Manila City",1 , "555", LocalDate.of(2020, 2, 12),  LocalDate.now(), 
+        false,  "Simba", "", "Zimba", "", "The Lion King");
 
         contactInformationDao.addContactInformation("2222", "8-7000", "jolibee@delivery.ph", 1);
 
@@ -57,11 +64,11 @@ public class PersonControllerTest extends TestCase {
     @Test
     public void test_print_person_list_by_gwa(){
         
-        personDao.addPerson("Manila City", 5, "555", LocalDate.now(), false, 
-        "John", "Doo", "Doe", "", "The Third");
+        personDao.addPerson("Manila City", 5, "555", LocalDate.now(),  LocalDate.now(),
+        false, "John", "Doo", "Doe", "", "The Third");
 
-        personDao.addPerson("Manila City",1 , "555", LocalDate.of(2020, 2, 12), false, 
-        "Simba", "", "Zimba", "", "The Lion King");
+        personDao.addPerson("Manila City",1 , "555", LocalDate.of(2020, 2, 12), LocalDate.now(), 
+        false, "Simba", "", "Zimba", "", "The Lion King");
 
         contactInformationDao.addContactInformation("2222", "8-7000", "jolibee@delivery.ph", 1);
 
@@ -78,14 +85,14 @@ public class PersonControllerTest extends TestCase {
 
     @Test
     public void test_print_person_list_by_last_name(){
-        personDao.addPerson("Winterfell, The North",1 , "555", LocalDate.now(), false, 
+        personDao.addPerson("Winterfell, The North",1 , "555", LocalDate.now(), LocalDate.now(), false, 
         "Jon", "", "Snow", "", "The King In the North");
 
-        personDao.addPerson("Manila City", 5, "555", LocalDate.now(), false, 
-        "John", "Doo", "Doe", "", "The Third");
+        personDao.addPerson("Manila City", 5, "555", LocalDate.now(), 
+        LocalDate.now(),false, "John", "Doo", "Doe", "", "The Third");
 
-        personDao.addPerson("Manila City",1.5 , "555", LocalDate.now(), false, 
-        "Simba", "", "Zimba", "", "The Lion King");
+        personDao.addPerson("Manila City",1.5 , "555", LocalDate.now(), LocalDate.now(),
+        false, "Simba", "", "Zimba", "", "The Lion King");
 
         personController.printPersonsByLastName();
     }
@@ -93,11 +100,11 @@ public class PersonControllerTest extends TestCase {
     @Test 
     public void test_print_person_list_by_date_hired(){
         
-        personDao.addPerson("Manila City", 5, "555", LocalDate.now(), false, 
-        "John", "Doo", "Doe", "", "The Third");
+        personDao.addPerson("Manila City", 5, "555", LocalDate.now(),
+        LocalDate.now(), false, "John", "Doo", "Doe", "", "The Third");
 
-        personDao.addPerson("Manila City",1 , "555", LocalDate.of(2020, 2, 12), false, 
-        "Simba", "", "Zimba", "", "The Lion King");
+        personDao.addPerson("Manila City",1 , "555", LocalDate.of(2020, 2, 12),LocalDate.now(),
+        false, "Simba", "", "Zimba", "", "The Lion King");
 
         contactInformationDao.addContactInformation("2222", "8-7000", "jolibee@delivery.ph", 1);
 
@@ -115,7 +122,7 @@ public class PersonControllerTest extends TestCase {
     public void test_add_person_controller_success(){
         try {
             personController.addPersonController("Ad", "mortem,", " inimīcus!", 
-            "", "", 1.25, "Ashfield", "55", LocalDate.now(), 
+            "", "", 1.25, "Ashfield", "55", LocalDate.now(), LocalDate.now(),
             true);
         } catch (ValidationException e) {
             e.printStackTrace();
@@ -127,7 +134,7 @@ public class PersonControllerTest extends TestCase {
       
         ValidationException exception = assertThrows(ValidationException.class, 
         ()-> personController.addPersonController("", ",", "", 
-        "", "", 1.25, "Ashfield", "55", LocalDate.now(), 
+        "", "", 1.25, "Ashfield", "55", LocalDate.now(), LocalDate.now(),
         true));
 
         assertEquals(exception.getMessage(), "Input is blank, please fill out the fields");
@@ -136,7 +143,7 @@ public class PersonControllerTest extends TestCase {
     public void test_add_person_controller_with_input_non_ascii_char_fail(){
         ValidationException exception = assertThrows(ValidationException.class, 
         ()-> personController.addPersonController("a", "a,", "手田水口火竹口竹火竹", 
-        "", "", 1.25, "Ashfield", "55", LocalDate.now(), 
+        "", "", 1.25, "Ashfield", "55", LocalDate.now(), LocalDate.now(),
         true));
 
         assertEquals(exception.getMessage(), "Input characters are not supported ");
@@ -144,12 +151,12 @@ public class PersonControllerTest extends TestCase {
 
     @Test 
     public void test_update_person_controller_success(){
-        personDao.addPerson("Manila City", 5, "555", LocalDate.now(), false, 
+        personDao.addPerson("Manila City", 5, "555", LocalDate.now(),LocalDate.now() ,false, 
         "John", "Doo", "Doe", "", "The Third"); //ID OF 1
 
         try {
             personController.updatePersonController("Lo", "Mi", "noodles", "", 
-            "The Fourth", 5, "Makati", "555", LocalDate.of(2000, 1, 12), true, 
+            "The Fourth", 5, "Makati", "555", LocalDate.of(2000, 1, 12),LocalDate.now() ,true, 
             1);
         } catch (NoResultException | ValidationException e) {
             e.printStackTrace();
@@ -160,8 +167,8 @@ public class PersonControllerTest extends TestCase {
     @Test 
     public void test_update_person_controller_with_blank_input_fail(){
         ValidationException exception = assertThrows(ValidationException.class, 
-        ()->personController.updatePersonController("Lo", "Mi", "noodles", "", 
-        "The Fourth", 5, "Makati", "555", LocalDate.of(2000, 1, 12), true, 
+        ()->personController.updatePersonController("Lo", "", "", "", 
+        "The Fourth", 5, "Makati", "555", LocalDate.of(2000, 1, 12),LocalDate.now() ,true, 
         1));
         
         assertEquals(exception.getMessage(), "Input is blank, please fill out the fields");
@@ -171,7 +178,7 @@ public class PersonControllerTest extends TestCase {
     public void test_update_person_controller_with_input_non_ascii_char_fail(){
         ValidationException exception = assertThrows(ValidationException.class, 
         ()->personController.updatePersonController("Lo", "Mi", "手田水口火竹口竹火竹", "", 
-        "The Fourth", 5, "Makati", "555", LocalDate.of(2000, 1, 12), true, 
+        "The Fourth", 5, "Makati", "555", LocalDate.of(2000, 1, 12),LocalDate.now() ,true, 
         1));
         
         assertEquals(exception.getMessage(), "Input characters are not supported ");
@@ -181,7 +188,7 @@ public class PersonControllerTest extends TestCase {
     public void test_update_person_controller_with_nonexistent_person_id_fail(){
         NoResultException exception = assertThrows(NoResultException.class, 
         ()->personController.updatePersonController("Lo", "Mi", "noodles", "", 
-        "The Fourth", 5, "Makati", "555", LocalDate.of(2000, 1, 12), true, 
+        "The Fourth", 5, "Makati", "555", LocalDate.of(2000, 1, 12),LocalDate.now() ,true, 
         5));
         
         assertEquals(exception.getMessage(), "Person id " + 5 + " does not exist");
@@ -189,7 +196,7 @@ public class PersonControllerTest extends TestCase {
 
     @Test 
     public void test_delete_person_controller_success(){
-        personDao.addPerson("Manila City", 5, "555", LocalDate.now(), false, 
+        personDao.addPerson("Manila City", 5, "555", LocalDate.now(), LocalDate.now(),false, 
         "John", "Doo", "Doe", "", "The Third"); //ID OF 1
 
         personController.deletePersonController(1);
@@ -205,7 +212,7 @@ public class PersonControllerTest extends TestCase {
 
     @Test
     public void test_assign_role_to_person_controller_success() {
-        personDao.addPerson("Manila City", 5, "555", LocalDate.now(), false, 
+        personDao.addPerson("Manila City", 5, "555", LocalDate.now(), LocalDate.now() ,false, 
         "John", "Doo", "Doe", "", "The Third"); //ID OF 1
 
         try {
@@ -234,7 +241,7 @@ public class PersonControllerTest extends TestCase {
 
     @Test
     public void test_assign_role_to_person_controller_non_existent_id_fail() {
-        personDao.addPerson("Manila City", 5, "555", LocalDate.now(), false, 
+        personDao.addPerson("Manila City", 5, "555", LocalDate.now(), LocalDate.now() ,false, 
         "John", "Doo", "Doe", "", "The Third"); //ID OF 1
 
         PersistenceException exception = assertThrows(PersistenceException.class, 
@@ -245,7 +252,7 @@ public class PersonControllerTest extends TestCase {
 
     @Test
     public void test_assign_contact_to_person_controller_success() {
-        personDao.addPerson("Manila City", 5, "555", LocalDate.now(), false, 
+        personDao.addPerson("Manila City", 5, "555", LocalDate.now(), LocalDate.now() ,false, 
         "John", "Doo", "Doe", "", "The Third"); //ID OF 1
 
         try {
